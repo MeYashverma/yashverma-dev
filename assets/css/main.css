@@ -357,6 +357,79 @@ section { position: relative; padding: 0 var(--gutter); }
 }
 
 /* ============================================================
+   LIVE — Discord presence + now-playing
+   ============================================================ */
+.live { padding-top: 56px; padding-bottom: 56px; border-bottom: 1px solid var(--line-soft); }
+.live__row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--line-soft); border: 1px solid var(--line-soft); border-radius: 16px; overflow: hidden;
+}
+.live-card {
+  background: var(--bg); padding: 22px 24px 20px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.live-card__head { display: flex; align-items: center; gap: 9px; }
+.live-card__dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--text-faint);
+  flex-shrink: 0; transition: background .3s;
+}
+.live-card__dot.is-live { background: var(--accent); box-shadow: 0 0 0 0 var(--accent-glow); animation: pulse 2s infinite; }
+.live-card__label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text-dim);
+}
+.live-card__body { display: flex; align-items: center; gap: 16px; min-height: 56px; }
+
+.live-card__avatar-wrap, .live-card__art-wrap { position: relative; flex-shrink: 0; }
+.live-card__avatar, .live-card__art {
+  width: 56px; height: 56px; border-radius: 14px; object-fit: cover;
+  border: 1px solid var(--line); background: var(--panel);
+}
+.live-card__avatar { border-radius: 50%; }
+.live-card__status-badge {
+  position: absolute; bottom: -2px; right: -2px; width: 16px; height: 16px;
+  border-radius: 50%; border: 3px solid var(--bg); background: var(--text-faint);
+}
+.live-card__status-badge.status-online { background: #3ba55d; }
+.live-card__status-badge.status-idle { background: #faa61a; }
+.live-card__status-badge.status-dnd { background: #ed4245; }
+.live-card__status-badge.status-offline { background: #747f8d; }
+
+.live-card__eq {
+  position: absolute; bottom: 4px; right: 4px; display: none;
+  align-items: flex-end; gap: 2px; height: 12px; padding: 2px;
+  background: rgba(0,0,0,0.55); border-radius: 4px;
+}
+.live-card__eq.is-playing { display: flex; }
+.live-card__eq i {
+  width: 2px; background: var(--accent); display: block;
+  animation: eq-bounce 0.9s ease-in-out infinite;
+}
+.live-card__eq i:nth-child(1) { height: 40%; animation-delay: 0s; }
+.live-card__eq i:nth-child(2) { height: 100%; animation-delay: 0.2s; }
+.live-card__eq i:nth-child(3) { height: 60%; animation-delay: 0.4s; }
+@keyframes eq-bounce { 0%, 100% { transform: scaleY(0.4); } 50% { transform: scaleY(1); } }
+
+.live-card__info { min-width: 0; flex: 1; }
+.live-card__name {
+  font-family: var(--font-display); font-weight: 500; font-size: 16px;
+  color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.live-card__sub {
+  font-size: 12.5px; color: var(--text-dim); margin-top: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.live-card__link {
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+  align-self: flex-start; transition: color .3s;
+}
+.live-card__link:hover { color: var(--accent); }
+
+@media (max-width: 760px) {
+  .live__row { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
    WORK
    ============================================================ */
 .work { padding-top: clamp(100px,14vw,180px); padding-bottom: clamp(100px,14vw,180px); }
