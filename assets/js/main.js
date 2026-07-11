@@ -19,50 +19,96 @@
   document.documentElement.classList.toggle('no-motion', !!reducedMotion);
 
   /* ------------------------------------------------------------ */
-  /* Preloader                                                     */
+  /* Preloader — a fake boot log, typed line by line, using real   */
+  /* stack/repo facts rather than generic "Loading..." filler.     */
   /* ------------------------------------------------------------ */
+  var BOOT_LINES = [
+    'yashverma.sys — cold boot',
+    'mounting /dev/github-actions as primary compute  [ok]',
+    'checking free-tier quota ................ 0 / \u221e  [ok]',
+    'spawning daemons: lyrically, vinyl.fm, waifu-widget  [ok]',
+    'linking discord widget api ............... 200 OK',
+    'linking lanyard + last.fm .................. live',
+    'compiling shader: domain-warped fbm field  [ok]',
+    'rendering portfolio ...................... ready'
+  ];
+
   function runPreloader(done) {
     var pct = document.getElementById('preloaderPct');
     var fill = document.getElementById('preloaderFill');
+    var log = document.getElementById('preloaderLog');
     var el = document.getElementById('preloader');
     if (!el) { done(); return; }
 
-    var progress = { v: 0 };
-    var target = 100;
     var finished = false;
 
     function finish() {
       if (finished) return;
       finished = true;
-      if (hasGSAP) {
-        gsap.to(el, {
-          yPercent: -100,
-          duration: 0.9,
-          ease: 'power4.inOut',
-          onComplete: function () { el.style.display = 'none'; done(); }
-        });
-      } else {
-        el.style.transition = 'transform .6s ease';
-        el.style.transform = 'translateY(-100%)';
-        setTimeout(function () { el.style.display = 'none'; done(); }, 650);
+      // CSS-transition-driven dismiss (not a GSAP/rAF tween) so this can
+      // never visually hang even if the main thread is under heavy load —
+      // the compositor drives the transition independently of JS ticking.
+      el.style.transition = 'transform .7s cubic-bezier(.65,0,.35,1)';
+      el.style.transform = 'translateY(-100%)';
+      var cleaned = false;
+      function cleanup() {
+        if (cleaned) return;
+        cleaned = true;
+        el.style.display = 'none';
+        done();
       }
+      el.addEventListener('transitionend', cleanup, { once: true });
+      // Belt-and-braces: if transitionend never fires for any reason
+      // (reduced-motion stripping transitions, etc.), don't block forever.
+      setTimeout(cleanup, 900);
     }
 
-    if (hasGSAP) {
-      gsap.to(progress, {
-        v: target, duration: 1.6, ease: 'power2.out',
-        onUpdate: function () {
-          var val = Math.round(progress.v);
-          if (pct) pct.textContent = val;
-          if (fill) fill.style.width = val + '%';
-        },
-        onComplete: finish
+    // Type out the boot log, one line every ~150ms, independent of GSAP
+    // (plain timeouts) so it still runs even if GSAP failed to load.
+    if (log) {
+      BOOT_LINES.forEach(function (text, i) {
+        setTimeout(function () {
+          var line = document.createElement('div');
+          line.className = 'preloader__log-line';
+          var okIdx = text.lastIndexOf('[ok]');
+          if (okIdx !== -1) {
+            line.textContent = text.slice(0, okIdx);
+            var okSpan = document.createElement('span');
+            okSpan.className = 'ok';
+            okSpan.textContent = '[ok]';
+            line.appendChild(okSpan);
+          } else {
+            line.textContent = text;
+          }
+          log.appendChild(line);
+          // Keep only the last few lines visible (terminal scroll-off feel).
+          while (log.children.length > 6) log.removeChild(log.firstChild);
+        }, i * 150);
       });
-    } else {
-      if (pct) pct.textContent = '100';
-      if (fill) fill.style.width = '100%';
-      setTimeout(finish, 400);
     }
+
+    // Progress bar/percentage is a plain CSS transition on width, not a
+    // GSAP tween — same reasoning as the dismiss animation above: it must
+    // keep moving even if the JS thread is momentarily starved (heavy
+    // shader compile, big layout pass, etc. on lower-end hardware).
+    if (fill) {
+      fill.style.transition = 'width 1.7s cubic-bezier(.16,1,.3,1)';
+      // Force a reflow so the transition reliably triggers from 0%.
+      // eslint-disable-next-line no-unused-expressions
+      fill.offsetWidth;
+      fill.style.width = '100%';
+    }
+    if (pct) {
+      var pctStart = Date.now();
+      var pctDuration = 1700;
+      var pctRaf = function () {
+        var t = Math.min(1, (Date.now() - pctStart) / pctDuration);
+        pct.textContent = Math.round(t * 100);
+        if (t < 1 && !finished) requestAnimationFrame(pctRaf);
+      };
+      requestAnimationFrame(pctRaf);
+    }
+    setTimeout(finish, 1750);
 
     // Absolute safety net: never let the preloader block the page for more
     // than 3.5s even if something above misbehaves.
@@ -138,6 +184,154 @@
         cursor.classList.remove('is-active', 'is-view');
       });
     });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Magnetic buttons — elements pull toward the cursor within a    */
+  /* radius, then spring back on mouseleave. Desktop/hover only.    */
+  /* ------------------------------------------------------------ */
+  function initMagnetic() {
+    if (window.matchMedia('(hover: none)').matches) return;
+    var els = document.querySelectorAll('[data-magnetic]');
+    if (!els.length) return;
+
+    els.forEach(function (el) {
+      var strength = parseFloat(el.getAttribute('data-magnetic')) || 0.35;
+
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var relX = e.clientX - (r.left + r.width / 2);
+        var relY = e.clientY - (r.top + r.height / 2);
+        if (hasGSAP) {
+          gsap.to(el, { x: relX * strength, y: relY * strength, duration: 0.5, ease: 'power3.out' });
+        } else {
+          el.style.transform = 'translate(' + (relX * strength) + 'px,' + (relY * strength) + 'px)';
+        }
+      });
+
+      el.addEventListener('mouseleave', function () {
+        if (hasGSAP) {
+          gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
+        } else {
+          el.style.transform = 'translate(0,0)';
+        }
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Text scramble — hover an element with data-scramble and its    */
+  /* text characters shuffle through random glyphs before settling  */
+  /* back on the real text. Used on nav links / section titles.     */
+  /* ------------------------------------------------------------ */
+  var SCRAMBLE_CHARS = '!<>-_\\/[]{}—=+*^?#________';
+
+  function scrambleText(el) {
+    if (el.__scrambling) return;
+    var original = el.getAttribute('data-scramble-text') || el.textContent;
+    el.setAttribute('data-scramble-text', original);
+    el.__scrambling = true;
+
+    var frame = 0;
+    var totalFrames = 14;
+    var revealAt = original.split('').map(function (_, i) {
+      return Math.floor((i / original.length) * totalFrames * 0.6) + Math.floor(Math.random() * (totalFrames * 0.3));
+    });
+
+    function tick() {
+      var out = '';
+      for (var i = 0; i < original.length; i++) {
+        var ch = original[i];
+        if (ch === ' ' || ch === '\u00A0') { out += ch; continue; }
+        if (frame >= revealAt[i]) {
+          out += ch;
+        } else {
+          out += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        }
+      }
+      el.textContent = out;
+      frame++;
+      if (frame <= totalFrames) {
+        requestAnimationFrame(function () { setTimeout(tick, 22); });
+      } else {
+        el.textContent = original;
+        el.__scrambling = false;
+      }
+    }
+    tick();
+  }
+
+  function initTextScramble() {
+    if (window.matchMedia('(hover: none)').matches) return;
+    var els = document.querySelectorAll('[data-scramble]');
+    els.forEach(function (el) {
+      el.addEventListener('mouseenter', function () { scrambleText(el); });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* 3D tilt — cards rotate slightly toward the cursor within their */
+  /* own bounds, with a glossy highlight following the pointer.     */
+  /* ------------------------------------------------------------ */
+  function initTilt() {
+    if (window.matchMedia('(hover: none)').matches) return;
+    var els = document.querySelectorAll('[data-tilt]');
+    if (!els.length) return;
+
+    els.forEach(function (el) {
+      var maxTilt = 7;
+      el.style.transformStyle = 'preserve-3d';
+
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width;
+        var py = (e.clientY - r.top) / r.height;
+        var rx = (0.5 - py) * maxTilt * 2;
+        var ry = (px - 0.5) * maxTilt * 2;
+
+        if (hasGSAP) {
+          gsap.to(el, {
+            rotateX: rx, rotateY: ry, duration: 0.4, ease: 'power2.out',
+            transformPerspective: 700
+          });
+        } else {
+          el.style.transform = 'perspective(700px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+        }
+
+        el.style.setProperty('--tilt-x', (px * 100) + '%');
+        el.style.setProperty('--tilt-y', (py * 100) + '%');
+      });
+
+      el.addEventListener('mouseleave', function () {
+        if (hasGSAP) {
+          gsap.to(el, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'power3.out' });
+        } else {
+          el.style.transform = 'none';
+        }
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Click ripple — every click sends a coordinate into the WebGL   */
+  /* background shader (see background.js) so the whole page reacts */
+  /* to clicks, not just buttons. Also draws a quick DOM-level ring  */
+  /* at the click point as a fallback / extra tactile feedback.      */
+  /* ------------------------------------------------------------ */
+  function initClickRipple() {
+    document.addEventListener('pointerdown', function (e) {
+      if (typeof window.__addBackgroundRipple === 'function') {
+        window.__addBackgroundRipple(e.clientX, e.clientY);
+      }
+
+      var ring = document.createElement('div');
+      ring.className = 'click-ring';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+      document.body.appendChild(ring);
+      ring.addEventListener('animationend', function () { ring.remove(); });
+      setTimeout(function () { if (ring.parentNode) ring.remove(); }, 900);
+    }, { passive: true });
   }
 
   /* ------------------------------------------------------------ */
@@ -457,6 +651,10 @@
     initBackToTop();
     initYear();
     initAnchorLinks();
+    initMagnetic();
+    initTextScramble();
+    initTilt();
+    initClickRipple();
 
     if (hasScrollTrigger) {
       setTimeout(function () { ScrollTrigger.refresh(); }, 300);

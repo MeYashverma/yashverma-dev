@@ -22,10 +22,29 @@
   }
 
   var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var tabHidden = document.hidden;
+  document.addEventListener('visibilitychange', function () {
+    tabHidden = document.hidden;
+  });
 
   var renderer, scene, camera, mesh, clock;
   var mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
   var scrollProgress = 0;
+
+  // Click ripples: up to 6 concurrent, each vec3(x, y, startTime). Inactive
+  // slots use startTime = -1 so the shader can skip them cheaply.
+  var MAX_RIPPLES = 6;
+  var ripples = [];
+  for (var ri = 0; ri < MAX_RIPPLES; ri++) ripples.push(new THREE.Vector3(0, 0, -1));
+  var rippleCursor = 0;
+
+  window.__addBackgroundRipple = function (clientX, clientY) {
+    if (!mesh) return;
+    var x = clientX / window.innerWidth;
+    var y = 1.0 - clientY / window.innerHeight;
+    ripples[rippleCursor].set(x, y, clock ? clock.getElapsedTime() : 0);
+    rippleCursor = (rippleCursor + 1) % MAX_RIPPLES;
+  };
 
   var vertexShader = [
     'varying vec2 vUv;',
@@ -44,6 +63,7 @@
     'uniform vec2 uMouse;',
     'uniform float uScroll;',
     'uniform vec2 uResolution;',
+    'uniform vec3 uRipples[6];',
     '',
     'vec2 hash(vec2 p) {',
     '  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));',
@@ -66,7 +86,7 @@
     'float fbm(vec2 p) {',
     '  float v = 0.0;',
     '  float a = 0.5;',
-    '  for (int i = 0; i < 5; i++) {',
+    '  for (int i = 0; i < 4; i++) {',
     '    v += a * noise(p);',
     '    p *= 2.02;',
     '    a *= 0.5;',
@@ -103,6 +123,22 @@
     '  float vig = distance(uv, vec2(0.5));',
     '  color *= smoothstep(0.9, 0.25, vig);',
     '',
+    '  // Click ripples: expanding rings that fade out over ~1.6s, additive',
+    '  // so overlapping ripples brighten rather than occlude each other.',
+    '  vec3 rippleAccent = vec3(0.85, 1.0, 0.25);',
+    '  for (int i = 0; i < 6; i++) {',
+    '    vec3 rp = uRipples[i];',
+    '    if (rp.z < 0.0) continue;',
+    '    float age = uTime - rp.z;',
+    '    if (age < 0.0 || age > 1.6) continue;',
+    '    vec2 rpos = (rp.xy - 0.5) * vec2(aspect, 1.0) * 2.2;',
+    '    float d = distance(p, rpos);',
+    '    float radius = age * 1.8;',
+    '    float ring = 1.0 - smoothstep(0.0, 0.05, abs(d - radius));',
+    '    float fade = 1.0 - (age / 1.6);',
+    '    color += rippleAccent * ring * fade * 0.5;',
+    '  }',
+    '',
     '  gl_FragColor = vec4(color, 1.0);',
     '}'
   ].join('\n');
@@ -118,7 +154,7 @@
       alpha: false,
       powerPreference: 'low-power'
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
 
     var geometry = new THREE.PlaneBufferGeometry(2, 2);
     var material = new THREE.ShaderMaterial({
@@ -128,7 +164,8 @@
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0.5, 0.5) },
         uScroll: { value: 0 },
-        uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+        uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        uRipples: { value: ripples }
       }
     });
     mesh = new THREE.Mesh(geometry, material);
@@ -159,8 +196,20 @@
     scrollProgress = max > 0 ? window.scrollY / max : 0;
   }
 
-  function animate() {
+  var FRAME_INTERVAL = 1000 / 30; // cap the shader at ~30fps — an ambient
+  // background doesn't benefit from 60fps, and this roughly halves the
+  // per-second GPU cost, which matters a lot on software/low-end rendering.
+  var lastFrameTime = 0;
+
+  function animate(now) {
     requestAnimationFrame(animate);
+
+    // Skip rendering entirely while the tab isn't visible (saves power/CPU
+    // on background tabs) and throttle to FRAME_INTERVAL otherwise.
+    if (tabHidden) return;
+    if (now - lastFrameTime < FRAME_INTERVAL) return;
+    lastFrameTime = now;
+
     mouse.x += (mouse.tx - mouse.x) * 0.04;
     mouse.y += (mouse.ty - mouse.y) * 0.04;
 

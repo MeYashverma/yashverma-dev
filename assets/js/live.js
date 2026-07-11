@@ -18,6 +18,38 @@
 
   var POLL_MS = 30000; // refresh every 30s
 
+  // Last.fm returns this exact grey-star placeholder image (same hash for
+  // every user/track) whenever no real album art exists. There's no flag in
+  // the API response for this -- the only way to detect it is comparing the
+  // hash in the URL. Matching it lets us swap in our own on-brand fallback
+  // (an inline SVG vinyl glyph) instead of showing Last.fm's default art.
+  var LASTFM_BLANK_ART_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
+
+  // On-brand fallback artwork for "no album art available" — a small inline
+  // SVG data URI (lime vinyl glyph on the site's panel colour) so it never
+  // depends on an external request and always matches the theme.
+  var FALLBACK_ART = 'data:image/svg+xml,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
+    '<rect width="64" height="64" fill="#0d0d10"/>' +
+    '<circle cx="32" cy="32" r="22" fill="none" stroke="#2a2a30" stroke-width="1.5"/>' +
+    '<circle cx="32" cy="32" r="16" fill="none" stroke="#2a2a30" stroke-width="1.5"/>' +
+    '<circle cx="32" cy="32" r="10" fill="none" stroke="#d9ff3f" stroke-width="1.5" opacity="0.7"/>' +
+    '<circle cx="32" cy="32" r="3.2" fill="#d9ff3f"/>' +
+    '</svg>'
+  );
+
+  function isUsableArt(url) {
+    if (!url) return false;
+    if (url.indexOf(LASTFM_BLANK_ART_HASH) !== -1) return false;
+    return true;
+  }
+
+  function pickArt(images) {
+    if (!images || !images.length) return FALLBACK_ART;
+    var url = images[images.length - 1]['#text'];
+    return isUsableArt(url) ? url : FALLBACK_ART;
+  }
+
   var STATUS_LABEL = {
     online: 'Online',
     idle: 'Idle',
@@ -119,7 +151,16 @@
     if (eq) eq.classList.toggle('is-playing', !!opts.isLive);
     if (track) track.textContent = opts.track;
     if (artist) artist.textContent = opts.artist || '\u00A0';
-    if (art && opts.art) art.src = opts.art;
+    if (art) {
+      art.src = opts.art || FALLBACK_ART;
+      // Second safety net: if even the chosen art URL 404s / fails to load
+      // (dead CDN link, transient error, anything), fall back to the
+      // on-brand SVG rather than showing a browser broken-image icon.
+      art.onerror = function () {
+        art.onerror = null;
+        art.src = FALLBACK_ART;
+      };
+    }
     if (link && opts.link) {
       link.href = opts.link;
       link.textContent = opts.linkText || 'Scrobbles on Last.fm \u2197';
@@ -135,7 +176,7 @@
         isLive: true,
         track: sp.song,
         artist: sp.artist,
-        art: sp.album_art_url,
+        art: isUsableArt(sp.album_art_url) ? sp.album_art_url : FALLBACK_ART,
         link: 'https://open.spotify.com/track/' + (sp.track_id || ''),
         linkText: 'Open in Spotify \u2197'
       });
@@ -150,6 +191,7 @@
       isLive: false,
       track: 'Nothing playing right now',
       artist: '',
+      art: FALLBACK_ART,
       link: 'https://www.last.fm/user/' + LASTFM_USER,
       linkText: 'Scrobbles on Last.fm \u2197'
     });
@@ -170,14 +212,12 @@
         if (t && t['@attr'] && t['@attr']['nowplaying'] === 'true') {
           // Last.fm says something is actively scrobbling right now — highest
           // priority per requested order (Last.fm first, then Discord).
-          var images = t.image || [];
-          var art = images.length ? images[images.length - 1]['#text'] : '';
           setMusicCard({
             label: 'Now playing (Last.fm)',
             isLive: true,
             track: t.name,
             artist: t.artist && t.artist['#text'],
-            art: art,
+            art: pickArt(t.image),
             link: t.url,
             linkText: 'Open on Last.fm \u2197'
           });
@@ -191,14 +231,12 @@
         // Neither is live — fall back to Last.fm's most recent play, framed
         // as "last played" rather than "now playing".
         if (t) {
-          var images2 = t.image || [];
-          var art2 = images2.length ? images2[images2.length - 1]['#text'] : '';
           setMusicCard({
             label: 'Last played (Last.fm)',
             isLive: false,
             track: t.name,
             artist: t.artist && t.artist['#text'],
-            art: art2,
+            art: pickArt(t.image),
             link: t.url,
             linkText: 'Open on Last.fm \u2197'
           });
