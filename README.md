@@ -13,22 +13,20 @@ so it works fully offline and loads fast).
   All vendored in `assets/js/vendor/` — no CDN calls at runtime.
 - **Background**: a hand-written WebGL fragment shader
   (`assets/js/background.js`, raw [Three.js](https://threejs.org)) — a
-  slow-moving domain-warped noise field that reacts to pointer position,
-  scroll depth, and click position (every click sends an expanding-ring
-  ripple into the shader itself, not just a DOM effect). Capped at ~30fps
-  and paused entirely on hidden tabs to keep it cheap. Falls back to a
-  static CSS gradient if WebGL isn't available, so the page is never broken
-  by it.
+  slow-moving domain-warped noise field that reacts subtly to pointer
+  position and scroll depth only (kept deliberately calm/minimal, no click
+  reactions). Capped at ~30fps and paused entirely on hidden tabs to keep
+  it cheap. Falls back to a static CSS gradient if WebGL isn't available,
+  so the page is never broken by it.
 - **Interaction layer** (`assets/js/main.js`): a terminal-style boot-log
   preloader (typed line by line, real stack/repo facts instead of generic
   "Loading..."), magnetic buttons (`data-magnetic`) that pull toward the
   cursor within their own bounds, a text-scramble hover effect
-  (`data-scramble`) used on card/work titles, 3D pointer-reactive tilt with
-  a glare highlight (`data-tilt`) on lab/favourite cards, and a DOM-level
-  click ripple that pairs with the WebGL one above. All of it is
-  hover/pointer-gated (`matchMedia('(hover: none)')`) so touch devices get
-  plain, fast, non-gimmicky interactions instead of a broken imitation of
-  the desktop effects.
+  (`data-scramble`) used on card/work titles, and 3D pointer-reactive tilt
+  with a glare highlight (`data-tilt`) on work/lab/favourite/live cards.
+  All of it is hover/pointer-gated (`matchMedia('(hover: none)')`) so touch
+  devices get plain, fast, non-gimmicky interactions instead of a broken
+  imitation of the desktop effects.
 - **Type**: Space Grotesk (display), Inter (body), JetBrains Mono (labels/UI
   chrome) — self-hosted `.woff` files in `assets/fonts/`.
 - **Live data**: a "right now" strip (`assets/js/live.js`) pulls real-time
@@ -55,7 +53,9 @@ assets/
   fonts/                — self-hosted woff files + fonts-local.css
   images/
     avatar.jpg           — profile photo
-    projects/            — project preview screenshots
+    logo.svg              — site mark, used as favicon + nav logo (add your own; falls back to a "YV" text mark if missing)
+    projects/            — legacy project preview screenshots
+    widgets/              — real screenshots of the 5 live Discord widgets shown in Selected Work
     arts/                — digital art gallery pieces (11 real pieces)
     whatilike/           — "favourites" imagery used in the About section
 ```

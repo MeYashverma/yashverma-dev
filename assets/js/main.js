@@ -313,28 +313,6 @@
   }
 
   /* ------------------------------------------------------------ */
-  /* Click ripple — every click sends a coordinate into the WebGL   */
-  /* background shader (see background.js) so the whole page reacts */
-  /* to clicks, not just buttons. Also draws a quick DOM-level ring  */
-  /* at the click point as a fallback / extra tactile feedback.      */
-  /* ------------------------------------------------------------ */
-  function initClickRipple() {
-    document.addEventListener('pointerdown', function (e) {
-      if (typeof window.__addBackgroundRipple === 'function') {
-        window.__addBackgroundRipple(e.clientX, e.clientY);
-      }
-
-      var ring = document.createElement('div');
-      ring.className = 'click-ring';
-      ring.style.left = e.clientX + 'px';
-      ring.style.top = e.clientY + 'px';
-      document.body.appendChild(ring);
-      ring.addEventListener('animationend', function () { ring.remove(); });
-      setTimeout(function () { if (ring.parentNode) ring.remove(); }, 900);
-    }, { passive: true });
-  }
-
-  /* ------------------------------------------------------------ */
   /* Nav: hide on scroll down, show on scroll up + live clock       */
   /* ------------------------------------------------------------ */
   function initNav() {
@@ -415,9 +393,9 @@
       });
     });
 
-    gsap.utils.toArray('.work-item').forEach(function (el, i) {
+    gsap.utils.toArray('.work-card').forEach(function (el, i) {
       gsap.fromTo(el, { opacity: 0, y: 24 }, {
-        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+        opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: (i % 3) * 0.06,
         scrollTrigger: { trigger: el, start: 'top 92%' }
       });
     });
@@ -486,29 +464,6 @@
     }
   }
 
-  /* ------------------------------------------------------------ */
-  /* Work item hover preview that follows the cursor                */
-  /* ------------------------------------------------------------ */
-  function initWorkPreviews() {
-    var items = document.querySelectorAll('.work-item');
-    if (!items.length || window.matchMedia('(hover: none)').matches) return;
-
-    items.forEach(function (item) {
-      var preview = item.querySelector('[data-preview]');
-      if (!preview) return;
-
-      item.addEventListener('mouseenter', function () {
-        preview.classList.add('is-visible');
-      });
-      item.addEventListener('mouseleave', function () {
-        preview.classList.remove('is-visible');
-      });
-      item.addEventListener('mousemove', function (e) {
-        preview.style.left = e.clientX + 'px';
-        preview.style.top = e.clientY + 'px';
-      });
-    });
-  }
 
   /* ------------------------------------------------------------ */
   /* Lab filter buttons                                              */
@@ -538,17 +493,42 @@
   /* Arts gallery lightbox                                           */
   /* ------------------------------------------------------------ */
   function initLightbox() {
-    var cards = document.querySelectorAll('.arts-card');
+    var grid = document.getElementById('artsGrid');
     var lightbox = document.getElementById('lightbox');
     var lightboxImg = document.getElementById('lightboxImg');
     var lightboxCaption = document.getElementById('lightboxCaption');
     var closeBtn = document.getElementById('lightboxClose');
-    if (!cards.length || !lightbox || !lightboxImg) return;
+    var prevBtn = document.getElementById('lightboxPrev');
+    var nextBtn = document.getElementById('lightboxNext');
+    if (!grid || !lightbox || !lightboxImg) return;
 
-    function open(src, alt, caption) {
-      lightboxImg.src = src;
-      lightboxImg.alt = alt || '';
-      if (lightboxCaption) lightboxCaption.textContent = caption || '';
+    var currentIndex = -1;
+
+    function visibleCards() {
+      // Only cycle through cards that pass the active arts filter.
+      return Array.prototype.slice.call(grid.querySelectorAll('.arts-card'))
+        .filter(function (c) { return !c.classList.contains('is-hidden'); });
+    }
+
+    function renderAt(index) {
+      var cards = visibleCards();
+      if (!cards.length) return;
+      currentIndex = (index + cards.length) % cards.length;
+      var card = cards[currentIndex];
+      var img = card.querySelector('img');
+      var title = card.querySelector('.arts-card__title');
+      var meta = card.querySelector('.arts-card__meta');
+      if (!img) return;
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || '';
+      if (lightboxCaption) {
+        lightboxCaption.textContent = (title ? title.textContent : '') +
+          (meta ? '  —  ' + meta.textContent : '');
+      }
+    }
+
+    function open(index) {
+      renderAt(index);
       lightbox.classList.add('is-open');
       document.body.style.overflow = 'hidden';
     }
@@ -556,22 +536,54 @@
       lightbox.classList.remove('is-open');
       document.body.style.overflow = '';
     }
+    function next() { renderAt(currentIndex + 1); }
+    function prev() { renderAt(currentIndex - 1); }
 
-    cards.forEach(function (card) {
-      card.addEventListener('click', function () {
-        var img = card.querySelector('img');
-        var caption = card.querySelector('figcaption');
-        if (!img) return;
-        open(img.src, img.alt, caption ? caption.textContent : '');
-      });
+    grid.addEventListener('click', function (e) {
+      var card = e.target.closest('.arts-card');
+      if (!card) return;
+      var cards = visibleCards();
+      var idx = cards.indexOf(card);
+      if (idx === -1) return;
+      open(idx);
     });
 
     if (closeBtn) closeBtn.addEventListener('click', close);
+    if (nextBtn) nextBtn.addEventListener('click', function (e) { e.stopPropagation(); next(); });
+    if (prevBtn) prevBtn.addEventListener('click', function (e) { e.stopPropagation(); prev(); });
     lightbox.addEventListener('click', function (e) {
       if (e.target === lightbox) close();
     });
     document.addEventListener('keydown', function (e) {
+      if (!lightbox.classList.contains('is-open')) return;
       if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Arts filter buttons (mirrors the Lab filter pattern)            */
+  /* ------------------------------------------------------------ */
+  function initArtsFilters() {
+    var filters = document.getElementById('artsFilters');
+    var grid = document.getElementById('artsGrid');
+    if (!filters || !grid) return;
+
+    var buttons = filters.querySelectorAll('.arts__filter');
+    var cards = grid.querySelectorAll('.arts-card');
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        var filter = btn.getAttribute('data-filter');
+        cards.forEach(function (card) {
+          var match = filter === 'all' || card.getAttribute('data-cat') === filter;
+          card.classList.toggle('is-hidden', !match);
+        });
+        if (hasScrollTrigger) ScrollTrigger.refresh();
+      });
     });
   }
 
@@ -644,9 +656,9 @@
     initHeroReveal();
     initScrollReveals();
     initCounters();
-    initWorkPreviews();
     initLabFilters();
     initLightbox();
+    initArtsFilters();
     initEmailCopy();
     initBackToTop();
     initYear();
@@ -654,7 +666,6 @@
     initMagnetic();
     initTextScramble();
     initTilt();
-    initClickRipple();
 
     if (hasScrollTrigger) {
       setTimeout(function () { ScrollTrigger.refresh(); }, 300);

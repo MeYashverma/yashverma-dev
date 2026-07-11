@@ -2,7 +2,8 @@
  * Live data widgets: real-time Discord presence (via the public Lanyard API)
  * and "now playing" / "last played" music (Last.fm first, falling back to
  * Discord's own Spotify presence via Lanyard, falling back to Last.fm's most
- * recent scrobble labelled as "last played").
+ * recent scrobble labelled as "last played") plus supporting stats (total
+ * scrobbles, top artist this week, Discord platform/status detail).
  *
  * Both APIs are public, read-only, and CORS-enabled, so this runs entirely
  * client-side with no backend/build step, consistent with the rest of the
@@ -50,6 +51,13 @@
     return isUsableArt(url) ? url : FALLBACK_ART;
   }
 
+  function formatCompactNumber(n) {
+    if (typeof n !== 'number' || isNaN(n)) return '\u2014';
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return String(n);
+  }
+
   var STATUS_LABEL = {
     online: 'Online',
     idle: 'Idle',
@@ -64,9 +72,13 @@
     var name = document.getElementById('liveDiscordName');
     var activity = document.getElementById('liveDiscordActivity');
     var dot = document.getElementById('liveDiscordDot');
+    var statusText = document.getElementById('liveDiscordStatusText');
+    var platform = document.getElementById('liveDiscordPlatform');
     if (name) name.textContent = 'yashylash';
     if (activity) activity.textContent = 'Status unavailable right now';
     if (dot) dot.classList.remove('is-live');
+    if (statusText) statusText.textContent = '\u2014';
+    if (platform) platform.textContent = '\u2014';
   }
 
   function renderDiscord(data) {
@@ -74,12 +86,16 @@
     var status = data.discord_status || 'offline';
 
     var nameEl = document.getElementById('liveDiscordName');
+    var handleEl = document.getElementById('liveDiscordHandle');
     var activityEl = document.getElementById('liveDiscordActivity');
     var dotEl = document.getElementById('liveDiscordDot');
     var avatarEl = document.getElementById('liveDiscordAvatar');
     var badgeEl = document.getElementById('liveDiscordStatusBadge');
+    var statusTextEl = document.getElementById('liveDiscordStatusText');
+    var platformEl = document.getElementById('liveDiscordPlatform');
 
     if (nameEl) nameEl.textContent = user.global_name || user.username || 'yashylash';
+    if (handleEl) handleEl.textContent = '@' + (user.username || 'yashylash');
 
     if (avatarEl && user.id && user.avatar) {
       var ext = user.avatar.indexOf('a_') === 0 ? 'gif' : 'png';
@@ -90,6 +106,15 @@
       badgeEl.className = 'live-card__status-badge status-' + status;
     }
     if (dotEl) dotEl.classList.toggle('is-live', status === 'online');
+    if (statusTextEl) statusTextEl.textContent = STATUS_LABEL[status] || 'Offline';
+
+    // Which client surface is active — desktop / mobile / web / embedded.
+    var platformLabel = '\u2014';
+    if (data.active_on_discord_desktop) platformLabel = 'Desktop';
+    else if (data.active_on_discord_mobile) platformLabel = 'Mobile';
+    else if (data.active_on_discord_web) platformLabel = 'Web';
+    else if (data.active_on_discord_embedded) platformLabel = 'Embedded';
+    if (platformEl) platformEl.textContent = platformLabel;
 
     // Pick a human activity line: prefer a non-custom-status, non-Spotify
     // activity (game / streaming / app), then custom status, then just the
@@ -163,7 +188,7 @@
     }
     if (link && opts.link) {
       link.href = opts.link;
-      link.textContent = opts.linkText || 'Scrobbles on Last.fm \u2197';
+      link.textContent = opts.linkText || 'View listening history \u2197';
     }
   }
 
@@ -172,7 +197,7 @@
     if (data && data.listening_to_spotify && data.spotify) {
       var sp = data.spotify;
       setMusicCard({
-        label: 'Now playing (Discord)',
+        label: 'Now playing',
         isLive: true,
         track: sp.song,
         artist: sp.artist,
@@ -193,17 +218,17 @@
       artist: '',
       art: FALLBACK_ART,
       link: 'https://www.last.fm/user/' + LASTFM_USER,
-      linkText: 'Scrobbles on Last.fm \u2197'
+      linkText: 'View listening history \u2197'
     });
   }
 
-  function fetchLastfm() {
+  function fetchLastfmRecent() {
     var url = 'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks'
       + '&user=' + encodeURIComponent(LASTFM_USER)
       + '&api_key=' + LASTFM_API_KEY
       + '&format=json&limit=1';
 
-    fetch(url, { cache: 'no-store' })
+    return fetch(url, { cache: 'no-store' })
       .then(function (res) { if (!res.ok) throw new Error('lastfm http ' + res.status); return res.json(); })
       .then(function (json) {
         var tracks = json && json.recenttracks && json.recenttracks.track;
@@ -213,13 +238,13 @@
           // Last.fm says something is actively scrobbling right now — highest
           // priority per requested order (Last.fm first, then Discord).
           setMusicCard({
-            label: 'Now playing (Last.fm)',
+            label: 'Now playing',
             isLive: true,
             track: t.name,
             artist: t.artist && t.artist['#text'],
             art: pickArt(t.image),
             link: t.url,
-            linkText: 'Open on Last.fm \u2197'
+            linkText: 'Open track \u2197'
           });
           return;
         }
@@ -232,13 +257,13 @@
         // as "last played" rather than "now playing".
         if (t) {
           setMusicCard({
-            label: 'Last played (Last.fm)',
+            label: 'Last played',
             isLive: false,
             track: t.name,
             artist: t.artist && t.artist['#text'],
             art: pickArt(t.image),
             link: t.url,
-            linkText: 'Open on Last.fm \u2197'
+            linkText: 'Open track \u2197'
           });
         } else {
           renderMusicFallback();
@@ -251,6 +276,34 @@
       });
   }
 
+  function fetchLastfmStats() {
+    var scrobblesEl = document.getElementById('liveMusicScrobbles');
+    var topArtistEl = document.getElementById('liveMusicTopArtist');
+
+    var infoUrl = 'https://ws.audioscrobbler.com/2.0/?method=user.getinfo'
+      + '&user=' + encodeURIComponent(LASTFM_USER) + '&api_key=' + LASTFM_API_KEY + '&format=json';
+    var topUrl = 'https://ws.audioscrobbler.com/2.0/?method=user.gettopartists'
+      + '&user=' + encodeURIComponent(LASTFM_USER) + '&api_key=' + LASTFM_API_KEY
+      + '&format=json&period=7day&limit=1';
+
+    fetch(infoUrl, { cache: 'no-store' })
+      .then(function (res) { if (!res.ok) throw new Error('http ' + res.status); return res.json(); })
+      .then(function (json) {
+        var playcount = json && json.user && parseInt(json.user.playcount, 10);
+        if (scrobblesEl && !isNaN(playcount)) scrobblesEl.textContent = formatCompactNumber(playcount);
+      })
+      .catch(function () { if (scrobblesEl) scrobblesEl.textContent = '\u2014'; });
+
+    fetch(topUrl, { cache: 'no-store' })
+      .then(function (res) { if (!res.ok) throw new Error('http ' + res.status); return res.json(); })
+      .then(function (json) {
+        var artists = json && json.topartists && json.topartists.artist;
+        var top = Array.isArray(artists) ? artists[0] : artists;
+        if (topArtistEl) topArtistEl.textContent = (top && top.name) || 'No plays this week';
+      })
+      .catch(function () { if (topArtistEl) topArtistEl.textContent = '\u2014'; });
+  }
+
   /* ------------------------------------------------------------ */
   /* Boot + polling                                                  */
   /* ------------------------------------------------------------ */
@@ -258,14 +311,18 @@
     fetchDiscord();
     // Slight delay so Lanyard data is available for the Spotify fallback
     // path before Last.fm's fetch resolves and needs it.
-    setTimeout(fetchLastfm, 150);
+    setTimeout(fetchLastfmRecent, 150);
   }
 
   function init() {
     var hasLiveSection = document.getElementById('live');
     if (!hasLiveSection || typeof fetch !== 'function') return;
     refreshAll();
+    fetchLastfmStats();
     setInterval(refreshAll, POLL_MS);
+    // Stats (total scrobbles / top artist) change slowly — refresh far less
+    // often than the live now-playing/presence data.
+    setInterval(fetchLastfmStats, POLL_MS * 10);
   }
 
   if (document.readyState === 'loading') {

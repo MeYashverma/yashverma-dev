@@ -6,6 +6,7 @@
 <title>Yash Verma — Systems, Widgets &amp; Weird Automation</title>
 <meta name="description" content="Yash Verma — Python/cloud engineer building GitHub-Actions-native Discord widgets, real-time data pipelines, and other things that shouldn't run on free infrastructure but do.">
 <meta name="color-scheme" content="dark">
+<link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
 <link rel="icon" href="assets/images/avatar.jpg">
 
 <link rel="stylesheet" href="assets/fonts/fonts-local.css">
@@ -51,7 +52,10 @@
 <!-- Nav                                                            -->
 <!-- ============================================================ -->
 <header class="nav" id="siteNav">
-  <a href="#top" class="nav__mark" data-cursor="text" data-cursor-text="TOP">YV</a>
+  <a href="#top" class="nav__mark" data-cursor="text" data-cursor-text="TOP">
+    <img src="assets/images/logo.svg" alt="Yash Verma" class="nav__mark-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'">
+    <span class="nav__mark-text">YV</span>
+  </a>
   <nav class="nav__links">
     <a href="#work" data-cursor="text" data-cursor-text="VIEW"><span>01</span>Work</a>
     <a href="#lab" data-cursor="text" data-cursor-text="VIEW"><span>02</span>Lab</a>
@@ -184,7 +188,7 @@
   <section class="live" id="live" aria-label="Live status">
     <div class="live__row">
 
-      <div class="live-card live-card--discord" id="liveDiscord">
+      <div class="live-card live-card--discord" id="liveDiscord" data-tilt>
         <div class="live-card__head">
           <span class="live-card__dot" id="liveDiscordDot"></span>
           <span class="live-card__label">Discord — right now</span>
@@ -196,13 +200,18 @@
           </div>
           <div class="live-card__info">
             <div class="live-card__name" id="liveDiscordName">yashylash</div>
+            <div class="live-card__handle" id="liveDiscordHandle">@yashylash</div>
             <div class="live-card__sub" id="liveDiscordActivity">Loading live status&hellip;</div>
           </div>
+        </div>
+        <div class="live-card__facts" id="liveDiscordFacts">
+          <div class="live-card__fact"><span id="liveDiscordStatusText">&mdash;</span><label>Status</label></div>
+          <div class="live-card__fact"><span id="liveDiscordPlatform">&mdash;</span><label>Platform</label></div>
         </div>
         <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener" class="live-card__link" data-cursor="text" data-cursor-text="↗">Add on Discord ↗</a>
       </div>
 
-      <div class="live-card live-card--music" id="liveMusic">
+      <div class="live-card live-card--music" id="liveMusic" data-tilt>
         <div class="live-card__head">
           <span class="live-card__dot" id="liveMusicDot"></span>
           <span class="live-card__label" id="liveMusicLabel">Now playing</span>
@@ -217,7 +226,11 @@
             <div class="live-card__sub" id="liveMusicArtist">&nbsp;</div>
           </div>
         </div>
-        <a href="https://www.last.fm/user/The_Berlin" target="_blank" rel="noopener" class="live-card__link" id="liveMusicLink" data-cursor="text" data-cursor-text="↗">Scrobbles on Last.fm ↗</a>
+        <div class="live-card__facts">
+          <div class="live-card__fact"><span id="liveMusicScrobbles">&mdash;</span><label>Total scrobbles</label></div>
+          <div class="live-card__fact"><span id="liveMusicTopArtist">&mdash;</span><label>Top artist (7d)</label></div>
+        </div>
+        <a href="https://www.last.fm/user/The_Berlin" target="_blank" rel="noopener" class="live-card__link" id="liveMusicLink" data-cursor="text" data-cursor-text="↗">View listening history ↗</a>
       </div>
 
     </div>
@@ -233,157 +246,131 @@
       <p class="section-head__desc">
         The daemon engine, more or less. Every one of these is a "no VPS, no
         database, no server" build&nbsp;— GitHub Actions doing a job it was never
-        designed for, on purpose.
+        designed for, on purpose. Screenshots are the real, running widgets.
       </p>
     </div>
 
-    <div class="work-list" id="workList">
+    <div class="work-grid" id="workList">
 
-      <article class="work-item" data-index="01">
-        <a href="https://github.com/MeYashverma/Discord-Lyrically-Widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
-          <div class="work-item__row">
-            <div class="work-item__title-wrap">
-              <span class="work-item__index">01</span>
-              <h3 class="work-item__title" data-scramble>Lyrically</h3>
-            </div>
-            <div class="work-item__tags">
-              <span>Python</span><span>LRCLIB</span><span>Discord Widget API</span>
-            </div>
-            <div class="work-item__arrow">↗</div>
-          </div>
-          <p class="work-item__desc">Real-time Spotify lyric sync piped straight into a Discord profile widget — line-accurate, self-healing, running as a GitHub Actions cloud daemon with adaptive rate-limit pacing.</p>
+      <article class="work-card" data-tilt>
+        <a href="https://github.com/MeYashverma/Discord-Lyrically-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <img src="assets/images/widgets/lyrically.png" alt="Lyrically Discord widget showing real-time synced lyrics for 'I Had Some Help' by Post Malone" loading="lazy">
+          <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
-        <div class="work-item__preview" data-preview>
-          <div class="work-item__preview-inner widget-mock widget-mock--lyrics">
-            <div class="widget-mock__row">
-              <span class="widget-mock__badge">♪ Lyrically</span>
-            </div>
-            <div class="widget-mock__title">Sanwaar Loon</div>
-            <div class="widget-mock__sub">Monali Thakur — Lootera</div>
-            <div class="widget-mock__lyric">Hawa ke jhonke aaj mausamon se rooth gaye</div>
-            <div class="widget-mock__progress"><div class="widget-mock__progress-fill" style="width:38%"></div></div>
+        <div class="work-card__body">
+          <div class="work-card__head">
+            <h3 class="work-card__title" data-scramble>Lyrically</h3>
+            <a href="https://github.com/MeYashverma/Discord-Lyrically-Widget" target="_blank" rel="noopener" class="work-card__arrow" data-cursor="view">↗</a>
+          </div>
+          <p class="work-card__desc">Real-time, line-accurate lyric sync piped straight into a Discord profile widget — polls Spotify presence, resolves timestamps against LRCLIB, and self-heals when a track has no synced lyrics available.</p>
+          <div class="work-card__tags">
+            <span>Python</span><span>LRCLIB</span><span>Discord Widget API</span><span>Spotify</span>
+          </div>
+          <div class="work-card__meta">
+            <span>GitHub Actions daemon</span><span>·</span><span>Updated Jul 2026</span>
           </div>
         </div>
       </article>
 
-      <article class="work-item" data-index="02">
-        <a href="https://github.com/MeYashverma/discord-vinyl-fm-widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
-          <div class="work-item__row">
-            <div class="work-item__title-wrap">
-              <span class="work-item__index">02</span>
-              <h3 class="work-item__title" data-scramble>Vinyl.fm</h3>
-            </div>
-            <div class="work-item__tags">
-              <span>TypeScript</span><span>Last.fm</span><span>Discord Presence</span>
-            </div>
-            <div class="work-item__arrow">↗</div>
-          </div>
-          <p class="work-item__desc">A dual-source now-playing widget — Discord's own Spotify presence with a Last.fm fallback, rotating listening stats, and a hand-ported D.W.I.F image pipeline for pixel-correct album art.</p>
+      <article class="work-card" data-tilt>
+        <a href="https://github.com/MeYashverma/discord-vinyl-fm-widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <img src="assets/images/widgets/vinyl-fm.png" alt="Vinyl.fm Discord widget showing now-playing track plus 4-week and 6-month top artist/album/song stats" loading="lazy">
+          <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
-        <div class="work-item__preview" data-preview>
-          <div class="work-item__preview-inner widget-mock widget-mock--vinyl">
-            <div class="widget-mock__row"><span class="widget-mock__badge">◉ Vinyl.fm</span></div>
-            <div class="widget-mock__title">DARE</div>
-            <div class="widget-mock__sub">Gorillaz — Demon Days</div>
-            <div class="widget-mock__stats">
-              <div><b>28.4K</b><span>listeners</span></div>
-              <div><b>23.0K</b><span>scrobbles</span></div>
-            </div>
+        <div class="work-card__body">
+          <div class="work-card__head">
+            <h3 class="work-card__title" data-scramble>Vinyl.fm</h3>
+            <a href="https://github.com/MeYashverma/discord-vinyl-fm-widget" target="_blank" rel="noopener" class="work-card__arrow" data-cursor="view">↗</a>
+          </div>
+          <p class="work-card__desc">A dual-source now-playing widget — Discord's own Spotify presence with a Last.fm fallback — plus rolling top-artist / top-album / top-song stats for both the last 4 weeks and the last 6 months.</p>
+          <div class="work-card__tags">
+            <span>TypeScript</span><span>Last.fm API</span><span>Discord Presence</span>
+          </div>
+          <div class="work-card__meta">
+            <span>GitHub Actions daemon</span><span>·</span><span>Updated Jul 2026</span>
           </div>
         </div>
       </article>
 
-      <article class="work-item" data-index="03">
-        <a href="https://github.com/MeYashverma/discord-waifu-widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
-          <div class="work-item__row">
-            <div class="work-item__title-wrap">
-              <span class="work-item__index">03</span>
-              <h3 class="work-item__title" data-scramble>Waifu&nbsp;Widget</h3>
-            </div>
-            <div class="work-item__tags">
-              <span>Node.js</span><span>AniList</span><span>remove.bg</span>
-            </div>
-            <div class="work-item__arrow">↗</div>
-          </div>
-          <p class="work-item__desc">A rotating "character of the day" widget backed by AniList, Jikan and Kitsu with automatic fallback chains, and a background-removal pipeline that trusts the AI cutout instead of fighting it.</p>
+      <article class="work-card" data-tilt>
+        <a href="https://github.com/MeYashverma/discord-waifu-widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <img src="assets/images/widgets/waifu-widget.png" alt="Waifu of the Day Discord widget showing character Formidable from Azur Lane with simp count, vibe and rank stats" loading="lazy">
+          <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
-        <div class="work-item__preview" data-preview>
-          <div class="work-item__preview-inner widget-mock widget-mock--waifu">
-            <div class="widget-mock__row"><span class="widget-mock__badge">✿ Waifu of the Day</span></div>
-            <div class="widget-mock__title">Jeanne</div>
-            <div class="widget-mock__sub">Bayonetta — Vampire · Chevalier</div>
-            <div class="widget-mock__stats">
-              <div><b>231.5K</b><span>simps</span></div>
-              <div><b>ICONIC</b><span>rank</span></div>
-            </div>
+        <div class="work-card__body">
+          <div class="work-card__head">
+            <h3 class="work-card__title" data-scramble>Waifu&nbsp;Widget</h3>
+            <a href="https://github.com/MeYashverma/discord-waifu-widget" target="_blank" rel="noopener" class="work-card__arrow" data-cursor="view">↗</a>
+          </div>
+          <p class="work-card__desc">A rotating "character of the day" widget backed by AniList, Jikan and Kitsu with automatic fallback chains between sources, and a background-removal pipeline that trusts the AI cutout instead of fighting it.</p>
+          <div class="work-card__tags">
+            <span>Node.js</span><span>AniList</span><span>remove.bg</span>
+          </div>
+          <div class="work-card__meta">
+            <span>GitHub Actions daemon</span><span>·</span><span>Updated Jul 2026</span>
           </div>
         </div>
       </article>
 
-      <article class="work-item" data-index="04">
-        <a href="https://github.com/MeYashverma/Genshin-Stats" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
-          <div class="work-item__row">
-            <div class="work-item__title-wrap">
-              <span class="work-item__index">04</span>
-              <h3 class="work-item__title" data-scramble>Genshin&nbsp;Stats</h3>
-            </div>
-            <div class="work-item__tags">
-              <span>Node.js</span><span>Enka.Network</span><span>GitHub Actions</span>
-            </div>
-            <div class="work-item__arrow">↗</div>
-          </div>
-          <p class="work-item__desc">Pulls a public Genshin Impact profile from Enka.Network and mirrors adventure rank, world level and Spiral Abyss progress onto a live Discord widget on a schedule.</p>
+      <article class="work-card" data-tilt>
+        <a href="https://github.com/MeYashverma/Genshin-Stats" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <img src="assets/images/widgets/genshin-stats.png" alt="Genshin Stats Discord widget showing character Tighnari at level 40 with adventure rank, achievements and Spiral Abyss progress" loading="lazy">
+          <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
-        <div class="work-item__preview" data-preview>
-          <div class="work-item__preview-inner">
-            <img src="assets/images/projects/genshin-stats.png" alt="Genshin Stats Discord widget preview" loading="lazy">
+        <div class="work-card__body">
+          <div class="work-card__head">
+            <h3 class="work-card__title" data-scramble>Genshin&nbsp;Stats</h3>
+            <a href="https://github.com/MeYashverma/Genshin-Stats" target="_blank" rel="noopener" class="work-card__arrow" data-cursor="view">↗</a>
+          </div>
+          <p class="work-card__desc">Pulls a public Genshin Impact profile from Enka.Network and mirrors adventure rank, world level, achievements and Spiral Abyss progress onto a live Discord widget on a schedule.</p>
+          <div class="work-card__tags">
+            <span>Node.js</span><span>Enka.Network</span><span>GitHub Actions</span>
+          </div>
+          <div class="work-card__meta">
+            <span>2 stars on GitHub</span><span>·</span><span>Updated Jul 2026</span>
           </div>
         </div>
       </article>
 
-      <article class="work-item" data-index="05">
-        <a href="https://github.com/MeYashverma/Discord-LaunchPad-Widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
-          <div class="work-item__row">
-            <div class="work-item__title-wrap">
-              <span class="work-item__index">05</span>
-              <h3 class="work-item__title" data-scramble>LaunchPad</h3>
-            </div>
-            <div class="work-item__tags">
-              <span>Python</span><span>Launch Library 2</span><span>SpaceX API</span>
-            </div>
-            <div class="work-item__arrow">↗</div>
-          </div>
-          <p class="work-item__desc">A live space-launch tracker that PATCHes your Discord widget with the next scheduled rocket — mission patch, pad, and a graceful exit right before the runner's hard timeout.</p>
+      <article class="work-card" data-tilt>
+        <a href="https://github.com/MeYashverma/Discord-LaunchPad-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <img src="assets/images/widgets/launchpad.png" alt="LaunchPad Discord widget showing the next scheduled Falcon 9 launch, countdown, pad and mission details" loading="lazy">
+          <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
-        <div class="work-item__preview" data-preview>
-          <div class="work-item__preview-inner widget-mock widget-mock--launch">
-            <div class="widget-mock__row"><span class="widget-mock__badge">🚀 Next Launch</span></div>
-            <div class="widget-mock__title">Falcon 9 Block 5</div>
-            <div class="widget-mock__sub">Starlink Group 12-4 — SLC-40</div>
-            <div class="widget-mock__progress"><div class="widget-mock__progress-fill" style="width:72%"></div></div>
+        <div class="work-card__body">
+          <div class="work-card__head">
+            <h3 class="work-card__title" data-scramble>LaunchPad</h3>
+            <a href="https://github.com/MeYashverma/Discord-LaunchPad-Widget" target="_blank" rel="noopener" class="work-card__arrow" data-cursor="view">↗</a>
+          </div>
+          <p class="work-card__desc">A live space-launch tracker that patches your Discord widget with the next scheduled rocket — mission name, provider, launch window countdown, pad and orbit — and exits cleanly right before the runner's hard timeout.</p>
+          <div class="work-card__tags">
+            <span>Python</span><span>Launch Library 2</span><span>SpaceX API</span>
+          </div>
+          <div class="work-card__meta">
+            <span>GitHub Actions daemon</span><span>·</span><span>Updated Jul 2026</span>
           </div>
         </div>
       </article>
 
-      <article class="work-item" data-index="06">
-        <a href="https://github.com/MeYashverma/discord-lastfm-widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
-          <div class="work-item__row">
-            <div class="work-item__title-wrap">
-              <span class="work-item__index">06</span>
-              <h3 class="work-item__title" data-scramble>Last.fm&nbsp;Widget</h3>
-            </div>
-            <div class="work-item__tags">
-              <span>Node.js</span><span>Last.fm API</span><span>Cron Daemon</span>
-            </div>
-            <div class="work-item__arrow">↗</div>
-          </div>
-          <p class="work-item__desc">The prototype that started the pattern — a minimal Last.fm-to-Discord relay and the first proof that GitHub Actions could self-trigger its way into an always-on service.</p>
-        </a>
-        <div class="work-item__preview" data-preview>
-          <div class="work-item__preview-inner widget-mock widget-mock--lastfm">
+      <article class="work-card" data-tilt>
+        <a href="https://github.com/MeYashverma/discord-lastfm-widget" target="_blank" rel="noopener" class="work-card__media work-card__media--placeholder" data-cursor="view">
+          <div class="widget-mock widget-mock--lastfm">
             <div class="widget-mock__row"><span class="widget-mock__badge">▶ Now Scrobbling</span></div>
-            <div class="widget-mock__title">TRACK — DARE</div>
-            <div class="widget-mock__sub">Status: LIVE</div>
+            <div class="widget-mock__title">Track title</div>
+            <div class="widget-mock__sub">Artist — Album</div>
+          </div>
+        </a>
+        <div class="work-card__body">
+          <div class="work-card__head">
+            <h3 class="work-card__title" data-scramble>Last.fm&nbsp;Widget</h3>
+            <a href="https://github.com/MeYashverma/discord-lastfm-widget" target="_blank" rel="noopener" class="work-card__arrow" data-cursor="view">↗</a>
+          </div>
+          <p class="work-card__desc">The prototype that started the pattern — a minimal Last.fm-to-Discord relay and the first proof that GitHub Actions could self-trigger its way into an always-on service.</p>
+          <div class="work-card__tags">
+            <span>Node.js</span><span>Last.fm API</span><span>Cron Daemon</span>
+          </div>
+          <div class="work-card__meta">
+            <span>Prototype / earliest version</span><span>·</span><span>Updated Jun 2026</span>
           </div>
         </div>
       </article>
@@ -532,61 +519,69 @@
       </p>
     </div>
 
+    <div class="arts__filters" id="artsFilters">
+      <button class="arts__filter is-active" data-filter="all">All (11)</button>
+      <button class="arts__filter" data-filter="fanart">Fanart</button>
+      <button class="arts__filter" data-filter="portrait">Portraits</button>
+      <button class="arts__filter" data-filter="landscape">Landscapes</button>
+      <button class="arts__filter" data-filter="minimal">Minimal</button>
+    </div>
+
     <div class="arts__grid" id="artsGrid">
 
-      <figure class="arts-card" data-cursor="view">
+      <figure class="arts-card" data-cursor="view" data-cat="fanart" data-index="01">
         <img src="assets/images/arts/genshin-lineart.jpg" alt="Genshin Impact character lineart, uncolored ink drawing of a girl with a flag and clouds" loading="lazy">
-        <figcaption>Genshin Impact fanart — lineart study</figcaption>
+        <figcaption><span class="arts-card__num">01</span><span class="arts-card__title">Genshin Impact — lineart study</span><span class="arts-card__meta">Ibispaint X &middot; Fanart</span></figcaption>
       </figure>
 
-      <figure class="arts-card" data-cursor="view">
+      <figure class="arts-card" data-cursor="view" data-cat="portrait" data-index="02">
         <img src="assets/images/arts/birthday-portrait.jpg" alt="Digitally painted birthday portrait with balloons, commissioned piece" loading="lazy">
-        <figcaption>Birthday portrait — digital painting</figcaption>
+        <figcaption><span class="arts-card__num">02</span><span class="arts-card__title">Birthday portrait</span><span class="arts-card__meta">Ibispaint X &middot; Digital painting</span></figcaption>
       </figure>
 
-      <figure class="arts-card" data-cursor="view">
+      <figure class="arts-card" data-cursor="view" data-cat="fanart" data-index="03">
         <img src="assets/images/arts/spider-gwen.jpg" alt="Spider-Gwen fanart sitting on a rooftop with headphones" loading="lazy">
-        <figcaption>Spider-Gwen fanart</figcaption>
+        <figcaption><span class="arts-card__num">03</span><span class="arts-card__title">Spider-Gwen</span><span class="arts-card__meta">Ibispaint X &middot; Fanart</span></figcaption>
       </figure>
 
-      <figure class="arts-card arts-card--tall" data-cursor="view">
+      <figure class="arts-card arts-card--tall" data-cursor="view" data-cat="fanart" data-index="04">
         <img src="assets/images/arts/zelda-link.jpg" alt="Zelda and Link falling through rain, half-inked half-colored fanart from Breath of the Wild" loading="lazy">
-        <figcaption>Zelda &amp; Link — Breath of the Wild fanart</figcaption>
+        <figcaption><span class="arts-card__num">04</span><span class="arts-card__title">Zelda &amp; Link — Breath of the Wild</span><span class="arts-card__meta">Ibispaint X &middot; Fanart, in progress</span></figcaption>
       </figure>
 
-      <figure class="arts-card" data-cursor="view">
+      <figure class="arts-card" data-cursor="view" data-cat="portrait" data-index="05">
         <img src="assets/images/arts/pigeon-peanit.jpg" alt="Detailed lineart portrait of a woman taking a selfie in traditional dress" loading="lazy">
-        <figcaption>Portrait lineart — detailed inkwork</figcaption>
+        <figcaption><span class="arts-card__num">05</span><span class="arts-card__title">Portrait — detailed inkwork</span><span class="arts-card__meta">Ibispaint X &middot; Lineart</span></figcaption>
       </figure>
 
-      <figure class="arts-card" data-cursor="view">
+      <figure class="arts-card" data-cursor="view" data-cat="minimal" data-index="06">
         <img src="assets/images/arts/bike-lineart.jpg" alt="Lineart illustration of a person sitting in a chair beside a bicycle" loading="lazy">
-        <figcaption>Everyday scene — lineart</figcaption>
+        <figcaption><span class="arts-card__num">06</span><span class="arts-card__title">Everyday scene</span><span class="arts-card__meta">Ibispaint X &middot; Lineart</span></figcaption>
       </figure>
 
-      <figure class="arts-card arts-card--tall" data-cursor="view">
+      <figure class="arts-card arts-card--tall" data-cursor="view" data-cat="landscape" data-index="07">
         <img src="assets/images/arts/swing-landscape.jpg" alt="Digital landscape painting of a swing under a tree at dusk with a pink sky" loading="lazy">
-        <figcaption>Swing at dusk — landscape painting</figcaption>
+        <figcaption><span class="arts-card__num">07</span><span class="arts-card__title">Swing at dusk</span><span class="arts-card__meta">Ibispaint X &middot; Landscape painting</span></figcaption>
       </figure>
 
-      <figure class="arts-card" data-cursor="view">
+      <figure class="arts-card" data-cursor="view" data-cat="minimal" data-index="08">
         <img src="assets/images/arts/chilling-goose.jpg" alt="Minimal illustration of a goose lying down next to a cup of tea, captioned 'Chilling'" loading="lazy">
-        <figcaption>&ldquo;Chilling&rdquo; — minimal illustration</figcaption>
+        <figcaption><span class="arts-card__num">08</span><span class="arts-card__title">&ldquo;Chilling&rdquo;</span><span class="arts-card__meta">Ibispaint X &middot; Minimal illustration</span></figcaption>
       </figure>
 
-      <figure class="arts-card" data-cursor="view">
+      <figure class="arts-card" data-cursor="view" data-cat="fanart" data-index="09">
         <img src="assets/images/arts/twitch-2yr.jpg" alt="Chibi anime-style character celebrating a 2-year Twitch anniversary" loading="lazy">
-        <figcaption>2-year Twitch anniversary art</figcaption>
+        <figcaption><span class="arts-card__num">09</span><span class="arts-card__title">2-year Twitch anniversary</span><span class="arts-card__meta">Ibispaint X &middot; Chibi illustration</span></figcaption>
       </figure>
 
-      <figure class="arts-card arts-card--tall" data-cursor="view">
+      <figure class="arts-card arts-card--tall" data-cursor="view" data-cat="portrait" data-index="10">
         <img src="assets/images/arts/portrait-lineart.jpg" alt="Lineart self-portrait style illustration of a woman with long hair and cherry blossoms, signed Yash" loading="lazy">
-        <figcaption>Signed lineart portrait</figcaption>
+        <figcaption><span class="arts-card__num">10</span><span class="arts-card__title">Signed lineart portrait</span><span class="arts-card__meta">Ibispaint X &middot; Lineart</span></figcaption>
       </figure>
 
-      <figure class="arts-card arts-card--wide" data-cursor="view">
+      <figure class="arts-card arts-card--wide" data-cursor="view" data-cat="fanart" data-index="11">
         <img src="assets/images/arts/minecraft-fanart.jpg" alt="Colorful Minecraft-themed fanart with the Ender Dragon, TNT and player characters" loading="lazy">
-        <figcaption>Minecraft fanart — full colour</figcaption>
+        <figcaption><span class="arts-card__num">11</span><span class="arts-card__title">Minecraft fanart</span><span class="arts-card__meta">Ibispaint X &middot; Full colour, fanart</span></figcaption>
       </figure>
 
     </div>
@@ -604,6 +599,8 @@
   <!-- ============================================================ -->
   <div class="lightbox" id="lightbox">
     <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous piece">&larr;</button>
+    <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next piece">&rarr;</button>
     <img class="lightbox__img" id="lightboxImg" src="" alt="">
     <div class="lightbox__caption" id="lightboxCaption"></div>
   </div>
@@ -626,36 +623,51 @@
         <span class="section-head__index">04</span>
         <h2 class="about__title">About&nbsp;me</h2>
         <p class="about__lead">
-          Hey, I'm Yash — most people just call me <strong>Yashy</strong>.
-          By day I'm a software engineer at HCLTech and a student at
-          BITS&nbsp;Pilani; by night I'm the guy who gets weirdly attached to
-          side-projects that have no business existing.
+          Hi, I'm <strong>Yash Verma</strong>.
         </p>
         <p class="about__body">
-          The running joke among people who've seen my GitHub is that I
-          treat "free tier" as a personal challenge. My favourite trick is
-          what I call the GitHub Actions daemon pattern — instead of paying
-          for a server, I self-trigger workflows that run for ~5h50m, exit
-          right before the runner's hard timeout, and kick off the next one.
-          It's a genuinely free, always-on service, and I've used it to keep
-          a small fleet of Discord widgets alive in real time — synced to
-          Spotify, Last.fm, AniList, my Genshin profile, even live rocket
-          launches. None of it needed to be built. I built it anyway.
+          I'm originally from Churu, a city in Rajasthan, India, and
+          currently spend most of my time balancing life between work,
+          studies, and an ever-growing list of side projects that seemed
+          like a good idea at 2&nbsp;AM.
         </p>
         <p class="about__body">
-          Outside of code I draw — mostly digital fanart in Ibispaint&nbsp;X,
-          usually late at night with something loud playing. I'm the kind of
-          person who has strong, slightly unhinged opinions about Iron Man,
-          will not shut up about the Nissan GT-R, and considers "Sunflower"
-          by Post Malone a personality trait at this point. If you scroll
-          up to the Arts section, that's not a portfolio flex — that's
-          genuinely just what I do to unwind.
+          By profession, I work as a GRC Analyst at HCLTech, and
+          academically I'm pursuing a degree in Design &amp; Computing at
+          BITS&nbsp;Pilani. But outside of titles and roles, I'm simply
+          someone who loves understanding how things work and imagining how
+          they could work better.
         </p>
         <p class="about__body">
-          I'm not trying to sound impressive here. I like building things
-          that shouldn't work, I like drawing things nobody asked for, and
-          I like it when both of those things are a little too online. If
-          any of that sounds like your kind of weird, scroll down and say hi.
+          I'm fascinated by technology, design, cybersecurity, artificial
+          intelligence, and futuristic interfaces. I enjoy building projects
+          that sit somewhere between engineering experiments and creative
+          playgrounds — often combining dozens of APIs, real-time data, and
+          ideas that most people would probably consider unnecessary.
+        </p>
+        <p class="about__body">
+          Music is a huge part of my life. I enjoy discovering new artists,
+          tracking listening habits, building music-related projects, and
+          finding ways to blend technology with the things I listen to every
+          day.
+        </p>
+        <p class="about__body">
+          I have a habit of falling into internet rabbit holes — whether
+          that's exploring obscure APIs, learning about space missions,
+          aviation, operating systems, user interfaces, or some random
+          technology I discovered five minutes ago and suddenly need to
+          understand completely.
+        </p>
+        <p class="about__body">
+          I'm also drawn to products and experiences that feel thoughtful
+          and timeless. Companies like Apple, Stripe, Linear, and Vercel
+          inspire the way I think about software: simple on the surface,
+          powerful underneath, and designed with intention.
+        </p>
+        <p class="about__body">
+          At the end of the day, I'm just someone who enjoys learning,
+          creating, and occasionally spending far too much time trying to
+          make a browser tab behave like an operating system.
         </p>
 
         <div class="about__now">
@@ -663,8 +675,8 @@
           <ul class="about__now-list">
             <li><span class="about__now-dot"></span>Keeping ~6 Discord daemons alive on infrastructure that was never meant to host them</li>
             <li><span class="about__now-dot"></span>Slowly redrawing an old sketch I'm not happy with (again)</li>
-            <li><span class="about__now-dot"></span>Deep in a Post Malone / KK rotation, no in-between</li>
-            <li><span class="about__now-dot"></span>Pretending I don't want a Nissan GT-R more than is reasonable</li>
+            <li><span class="about__now-dot"></span>Falling down a rabbit hole about some space mission or obscure API</li>
+            <li><span class="about__now-dot"></span>Trying to make a browser tab behave like an operating system</li>
           </ul>
         </div>
 
