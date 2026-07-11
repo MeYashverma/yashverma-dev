@@ -166,6 +166,7 @@
     var label = document.getElementById('liveMusicLabel');
     var dot = document.getElementById('liveMusicDot');
     var art = document.getElementById('liveMusicArt');
+    var backdrop = document.getElementById('liveMusicBackdrop');
     var eq = document.getElementById('liveMusicEq');
     var track = document.getElementById('liveMusicTrack');
     var artist = document.getElementById('liveMusicArtist');
@@ -177,14 +178,24 @@
     if (track) track.textContent = opts.track;
     if (artist) artist.textContent = opts.artist || '\u00A0';
     if (art) {
-      art.src = opts.art || FALLBACK_ART;
+      var artUrl = opts.art || FALLBACK_ART;
+      art.src = artUrl;
       // Second safety net: if even the chosen art URL 404s / fails to load
       // (dead CDN link, transient error, anything), fall back to the
       // on-brand SVG rather than showing a browser broken-image icon.
       art.onerror = function () {
         art.onerror = null;
         art.src = FALLBACK_ART;
+        if (backdrop) backdrop.classList.remove('is-visible');
       };
+      // The blurred ambient backdrop only makes sense for real album art —
+      // showing a blurred copy of the on-brand fallback glyph would look
+      // like a bug, not a feature, so it's only enabled for real artwork.
+      if (backdrop) {
+        var isFallback = artUrl === FALLBACK_ART;
+        backdrop.classList.toggle('is-visible', !isFallback);
+        if (!isFallback) backdrop.style.backgroundImage = 'url("' + artUrl + '")';
+      }
     }
     if (link && opts.link) {
       link.href = opts.link;
