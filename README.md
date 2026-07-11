@@ -18,6 +18,14 @@ so it works fully offline and loads fast).
   available, so the page is never broken by it.
 - **Type**: Space Grotesk (display), Inter (body), JetBrains Mono (labels/UI
   chrome) — self-hosted `.woff` files in `assets/fonts/`.
+- **Live data**: a "right now" strip (`assets/js/live.js`) pulls real-time
+  Discord presence from the public [Lanyard](https://lanyard.rest) API and
+  "now playing" / "last played" from the [Last.fm](https://www.last.fm/api)
+  API — both public, read-only, CORS-enabled endpoints called directly from
+  the browser (no backend, no proxy). Priority order: Last.fm "now playing"
+  → Discord's own Spotify presence (via Lanyard) → Last.fm's most recent
+  scrobble labelled "last played" → a static "nothing playing" fallback if
+  both APIs are unreachable. Polls every 30s.
 - **No backend, no CMS.** Content lives directly in `index.html`.
 
 ## Structure
@@ -29,6 +37,7 @@ assets/
   js/
     main.js            — cursor, nav, reveals, lab filters, misc UI wiring
     background.js       — the WebGL shader background
+    live.js              — Discord presence + now-playing widgets (Lanyard + Last.fm)
     vendor/             — gsap, ScrollTrigger, three.js, lenis (vendored)
   fonts/                — self-hosted woff files + fonts-local.css
   images/
@@ -48,6 +57,19 @@ an art piece, copy an `.arts-card` figure block inside `#artsGrid` (add
 `arts-card--tall` or `arts-card--wide` modifiers for grid variety) — the
 lightbox click-to-zoom wiring in `main.js` picks up any `.arts-card`
 automatically, no extra JS needed.
+
+To point the **Live** strip at different accounts, edit the constants at the
+top of `assets/js/live.js`:
+
+```js
+var DISCORD_USER_ID = '848100520509308989'; // Lanyard needs this
+var LASTFM_USER = 'The_Berlin';
+var LASTFM_API_KEY = 'c928f4b7b51bd314bc09ec438eaf85ec'; // free, get one at last.fm/api/account/create
+```
+
+Note: Lanyard only reports presence for Discord users who have joined the
+[Lanyard Discord server](https://discord.gg/lanyard) — without that, the
+Discord card will always show as unavailable/offline regardless of the code.
 
 ## Local preview
 
