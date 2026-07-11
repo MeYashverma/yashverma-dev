@@ -1,0 +1,473 @@
+/**
+ * Main interaction layer: preloader, smooth scroll (Lenis), custom cursor,
+ * GSAP reveal/scroll animations, nav behaviour, lab filters, work-item
+ * hover previews, misc small widgets (clock, counters, marquee tie-in).
+ *
+ * Every feature is guarded so a missing library / reduced-motion preference
+ * degrades gracefully instead of breaking the page.
+ */
+(function () {
+  'use strict';
+
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGSAP = typeof gsap !== 'undefined';
+  var hasScrollTrigger = hasGSAP && typeof ScrollTrigger !== 'undefined';
+  var hasLenis = typeof Lenis !== 'undefined';
+
+  if (hasGSAP && hasScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+  document.documentElement.classList.toggle('no-motion', !!reducedMotion);
+
+  /* ------------------------------------------------------------ */
+  /* Preloader                                                     */
+  /* ------------------------------------------------------------ */
+  function runPreloader(done) {
+    var pct = document.getElementById('preloaderPct');
+    var fill = document.getElementById('preloaderFill');
+    var el = document.getElementById('preloader');
+    if (!el) { done(); return; }
+
+    var progress = { v: 0 };
+    var target = 100;
+    var finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      if (hasGSAP) {
+        gsap.to(el, {
+          yPercent: -100,
+          duration: 0.9,
+          ease: 'power4.inOut',
+          onComplete: function () { el.style.display = 'none'; done(); }
+        });
+      } else {
+        el.style.transition = 'transform .6s ease';
+        el.style.transform = 'translateY(-100%)';
+        setTimeout(function () { el.style.display = 'none'; done(); }, 650);
+      }
+    }
+
+    if (hasGSAP) {
+      gsap.to(progress, {
+        v: target, duration: 1.6, ease: 'power2.out',
+        onUpdate: function () {
+          var val = Math.round(progress.v);
+          if (pct) pct.textContent = val;
+          if (fill) fill.style.width = val + '%';
+        },
+        onComplete: finish
+      });
+    } else {
+      if (pct) pct.textContent = '100';
+      if (fill) fill.style.width = '100%';
+      setTimeout(finish, 400);
+    }
+
+    // Absolute safety net: never let the preloader block the page for more
+    // than 3.5s even if something above misbehaves.
+    setTimeout(finish, 3500);
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Smooth scroll (Lenis) wired to ScrollTrigger + rAF             */
+  /* ------------------------------------------------------------ */
+  var lenis = null;
+  function initSmoothScroll() {
+    if (!hasLenis || reducedMotion) return;
+    lenis = new Lenis({
+      duration: 1.1,
+      easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+      smoothWheel: true
+    });
+    lenis.on('scroll', function () {
+      if (hasScrollTrigger) ScrollTrigger.update();
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Custom cursor                                                  */
+  /* ------------------------------------------------------------ */
+  function initCursor() {
+    var cursor = document.getElementById('cursor');
+    var dot = document.getElementById('cursorDot');
+    var ring = document.getElementById('cursorRing');
+    if (!cursor || !dot || !ring || window.matchMedia('(hover: none)').matches) return;
+
+    var pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    var ringPos = { x: pos.x, y: pos.y };
+    var label = null;
+
+    window.addEventListener('pointermove', function (e) {
+      pos.x = e.clientX; pos.y = e.clientY;
+      dot.style.transform = 'translate(' + pos.x + 'px,' + pos.y + 'px)';
+    });
+
+    function loop() {
+      ringPos.x += (pos.x - ringPos.x) * 0.18;
+      ringPos.y += (pos.y - ringPos.y) * 0.18;
+      ring.style.transform = 'translate(' + ringPos.x + 'px,' + ringPos.y + 'px)';
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    var interactiveEls = document.querySelectorAll('[data-cursor], a, button');
+    interactiveEls.forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        var mode = el.getAttribute('data-cursor');
+        if (mode === 'view') {
+          cursor.classList.add('is-view');
+        } else {
+          cursor.classList.add('is-active');
+          var text = el.getAttribute('data-cursor-text');
+          if (text) {
+            if (!label) {
+              label = document.createElement('span');
+              ring.appendChild(label);
+            }
+            label.textContent = text;
+          }
+        }
+      });
+      el.addEventListener('mouseleave', function () {
+        cursor.classList.remove('is-active', 'is-view');
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Nav: hide on scroll down, show on scroll up + live clock       */
+  /* ------------------------------------------------------------ */
+  function initNav() {
+    var nav = document.getElementById('siteNav');
+    if (!nav) return;
+    var lastY = window.scrollY;
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      if (y > lastY && y > 200) nav.classList.add('nav--hidden');
+      else nav.classList.remove('nav--hidden');
+      lastY = y;
+    }, { passive: true });
+
+    var clockEl = document.getElementById('navClock');
+    if (clockEl) {
+      function tick() {
+        var d = new Date();
+        var opts = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        try {
+          clockEl.textContent = d.toLocaleTimeString('en-GB', opts) + ' IST';
+        } catch (e) {
+          clockEl.textContent = d.toLocaleTimeString();
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Mobile menu overlay                                            */
+  /* ------------------------------------------------------------ */
+  function initMenu() {
+    var btn = document.getElementById('menuBtn');
+    var overlay = document.getElementById('menuOverlay');
+    if (!btn || !overlay) return;
+    btn.addEventListener('click', function () {
+      var open = overlay.classList.toggle('is-open');
+      btn.classList.toggle('is-open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    overlay.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        overlay.classList.remove('is-open');
+        btn.classList.remove('is-open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Hero title reveal + marquee-linked scroll parallax             */
+  /* ------------------------------------------------------------ */
+  function initHeroReveal() {
+    if (!hasGSAP) return;
+    var words = document.querySelectorAll('.reveal-word');
+    gsap.set(words, { yPercent: 110, opacity: 0 });
+    gsap.to(words, {
+      yPercent: 0, opacity: 1, duration: 1.1, ease: 'power4.out',
+      stagger: 0.06, delay: 0.15
+    });
+
+    gsap.fromTo('.hero__eyebrow', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.1 });
+    gsap.fromTo('.hero__sub', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.9, delay: 0.5 });
+    gsap.fromTo('.hero__cta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.9, delay: 0.65 });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Generic scroll reveals for section heads / cards                */
+  /* ------------------------------------------------------------ */
+  function initScrollReveals() {
+    if (!hasGSAP || !hasScrollTrigger) return;
+
+    gsap.utils.toArray('.section-head').forEach(function (el) {
+      gsap.fromTo(el.children, { opacity: 0, y: 30 }, {
+        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08,
+        scrollTrigger: { trigger: el, start: 'top 85%' }
+      });
+    });
+
+    gsap.utils.toArray('.work-item').forEach(function (el, i) {
+      gsap.fromTo(el, { opacity: 0, y: 24 }, {
+        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 92%' }
+      });
+    });
+
+    gsap.utils.toArray('.lab-card').forEach(function (el) {
+      gsap.fromTo(el, { opacity: 0, y: 20 }, {
+        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 95%' }
+      });
+    });
+
+    gsap.utils.toArray('.arts-card').forEach(function (el) {
+      gsap.fromTo(el, { opacity: 0, y: 20, scale: 0.97 }, {
+        opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 95%' }
+      });
+    });
+
+    gsap.utils.toArray('.favorite').forEach(function (el) {
+      gsap.fromTo(el, { opacity: 0, y: 20 }, {
+        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 95%' }
+      });
+    });
+
+    gsap.utils.toArray('.stat').forEach(function (el) {
+      gsap.fromTo(el, { opacity: 0, y: 20 }, {
+        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 95%' }
+      });
+    });
+
+    gsap.fromTo('.about__media', { opacity: 0, y: 30 }, {
+      opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: '.about__media', start: 'top 85%' }
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Animated counters for the stats strip                          */
+  /* ------------------------------------------------------------ */
+  function initCounters() {
+    var nums = document.querySelectorAll('.stat__num');
+    if (!nums.length) return;
+
+    function animateCount(el) {
+      var target = parseFloat(el.getAttribute('data-count')) || 0;
+      var suffix = el.getAttribute('data-suffix') || '';
+      if (!hasGSAP) { el.textContent = target + suffix; return; }
+      var obj = { v: 0 };
+      gsap.to(obj, {
+        v: target, duration: 1.4, ease: 'power2.out',
+        onUpdate: function () { el.textContent = Math.round(obj.v) + suffix; }
+      });
+    }
+
+    if (hasScrollTrigger) {
+      nums.forEach(function (el) {
+        ScrollTrigger.create({
+          trigger: el, start: 'top 90%', once: true,
+          onEnter: function () { animateCount(el); }
+        });
+      });
+    } else {
+      nums.forEach(animateCount);
+    }
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Work item hover preview that follows the cursor                */
+  /* ------------------------------------------------------------ */
+  function initWorkPreviews() {
+    var items = document.querySelectorAll('.work-item');
+    if (!items.length || window.matchMedia('(hover: none)').matches) return;
+
+    items.forEach(function (item) {
+      var preview = item.querySelector('[data-preview]');
+      if (!preview) return;
+
+      item.addEventListener('mouseenter', function () {
+        preview.classList.add('is-visible');
+      });
+      item.addEventListener('mouseleave', function () {
+        preview.classList.remove('is-visible');
+      });
+      item.addEventListener('mousemove', function (e) {
+        preview.style.left = e.clientX + 'px';
+        preview.style.top = e.clientY + 'px';
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Lab filter buttons                                              */
+  /* ------------------------------------------------------------ */
+  function initLabFilters() {
+    var filters = document.getElementById('labFilters');
+    var grid = document.getElementById('labGrid');
+    if (!filters || !grid) return;
+
+    var buttons = filters.querySelectorAll('.lab__filter');
+    var cards = grid.querySelectorAll('.lab-card');
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        var filter = btn.getAttribute('data-filter');
+        cards.forEach(function (card) {
+          var match = filter === 'all' || card.getAttribute('data-cat') === filter;
+          card.classList.toggle('is-hidden', !match);
+        });
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Arts gallery lightbox                                           */
+  /* ------------------------------------------------------------ */
+  function initLightbox() {
+    var cards = document.querySelectorAll('.arts-card');
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightboxImg');
+    var lightboxCaption = document.getElementById('lightboxCaption');
+    var closeBtn = document.getElementById('lightboxClose');
+    if (!cards.length || !lightbox || !lightboxImg) return;
+
+    function open(src, alt, caption) {
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || '';
+      if (lightboxCaption) lightboxCaption.textContent = caption || '';
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      lightbox.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    cards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        var img = card.querySelector('img');
+        var caption = card.querySelector('figcaption');
+        if (!img) return;
+        open(img.src, img.alt, caption ? caption.textContent : '');
+      });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Contact email copy-to-clipboard                                 */
+  /* ------------------------------------------------------------ */
+  function initEmailCopy() {
+    var link = document.getElementById('contactEmail');
+    if (!link) return;
+    link.addEventListener('click', function (e) {
+      var email = link.textContent.trim();
+      if (navigator.clipboard && window.isSecureContext) {
+        e.preventDefault();
+        navigator.clipboard.writeText(email).then(function () {
+          var original = link.textContent;
+          link.textContent = 'Copied — ' + email;
+          setTimeout(function () { link.textContent = original; }, 1600);
+        }).catch(function () {
+          window.location.href = 'mailto:' + email;
+        });
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Back to top                                                     */
+  /* ------------------------------------------------------------ */
+  function initBackToTop() {
+    var btn = document.getElementById('backToTop');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      if (lenis) lenis.scrollTo(0, { duration: 1.4 });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Footer year                                                     */
+  /* ------------------------------------------------------------ */
+  function initYear() {
+    var y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Anchor nav links smooth-scroll (works even without Lenis)      */
+  /* ------------------------------------------------------------ */
+  function initAnchorLinks() {
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var id = a.getAttribute('href');
+        if (!id || id === '#') return;
+        var target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        if (lenis) lenis.scrollTo(target, { duration: 1.2 });
+        else target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Boot sequence                                                   */
+  /* ------------------------------------------------------------ */
+  function boot() {
+    initSmoothScroll();
+    initCursor();
+    initNav();
+    initMenu();
+    initHeroReveal();
+    initScrollReveals();
+    initCounters();
+    initWorkPreviews();
+    initLabFilters();
+    initLightbox();
+    initEmailCopy();
+    initBackToTop();
+    initYear();
+    initAnchorLinks();
+
+    if (hasScrollTrigger) {
+      setTimeout(function () { ScrollTrigger.refresh(); }, 300);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      runPreloader(boot);
+    });
+  } else {
+    runPreloader(boot);
+  }
+})();

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Yash Verma — Systems, Widgets &amp; Weird Automation</title>
+<meta name="description" content="Yash Verma — Python/cloud engineer building GitHub-Actions-native Discord widgets, real-time data pipelines, and other things that shouldn't run on free infrastructure but do.">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="assets/images/avatar.jpg">
+
+<link rel="stylesheet" href="assets/fonts/fonts-local.css">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- Preloader                                                     -->
+<!-- ============================================================ -->
+<div id="preloader" aria-hidden="true">
+  <div class="preloader__count"><span id="preloaderPct">0</span><span>%</span></div>
+  <div class="preloader__bar"><div class="preloader__bar-fill" id="preloaderFill"></div></div>
+  <div class="preloader__label">BOOTING YASHVERMA.SYS</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Custom cursor                                                 -->
+<!-- ============================================================ -->
+<div class="cursor" id="cursor">
+  <div class="cursor__dot" id="cursorDot"></div>
+  <div class="cursor__ring" id="cursorRing"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Noise + grain overlay                                         -->
+<!-- ============================================================ -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ============================================================ -->
+<!-- WebGL background canvas (hero)                                -->
+<!-- ============================================================ -->
+<canvas id="glCanvas" aria-hidden="true"></canvas>
+
+<!-- ============================================================ -->
+<!-- Nav                                                            -->
+<!-- ============================================================ -->
+<header class="nav" id="siteNav">
+  <a href="#top" class="nav__mark" data-cursor="text" data-cursor-text="TOP">YV</a>
+  <nav class="nav__links">
+    <a href="#work" data-cursor="text" data-cursor-text="VIEW"><span>01</span>Work</a>
+    <a href="#lab" data-cursor="text" data-cursor-text="VIEW"><span>02</span>Lab</a>
+    <a href="#arts" data-cursor="text" data-cursor-text="VIEW"><span>03</span>Arts</a>
+    <a href="#about" data-cursor="text" data-cursor-text="VIEW"><span>04</span>About</a>
+    <a href="#contact" data-cursor="text" data-cursor-text="VIEW"><span>05</span>Contact</a>
+  </nav>
+  <button class="nav__menu-btn" id="menuBtn" aria-label="Toggle menu">
+    <span></span><span></span>
+  </button>
+  <div class="nav__clock" id="navClock"></div>
+</header>
+
+<!-- ============================================================ -->
+<!-- Fullscreen mobile / overlay menu                              -->
+<!-- ============================================================ -->
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-overlay__links">
+    <a href="#top" class="menu-link"><span class="menu-link__index">00</span><span class="menu-link__text">Top</span></a>
+    <a href="#work" class="menu-link"><span class="menu-link__index">01</span><span class="menu-link__text">Work</span></a>
+    <a href="#lab" class="menu-link"><span class="menu-link__index">02</span><span class="menu-link__text">Lab</span></a>
+    <a href="#arts" class="menu-link"><span class="menu-link__index">03</span><span class="menu-link__text">Arts</span></a>
+    <a href="#about" class="menu-link"><span class="menu-link__index">04</span><span class="menu-link__text">About</span></a>
+    <a href="#contact" class="menu-link"><span class="menu-link__index">05</span><span class="menu-link__text">Contact</span></a>
+  </div>
+  <div class="menu-overlay__footer">
+    <div class="menu-overlay__socials">
+      <a href="https://github.com/MeYashverma" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://instagram.com/me_yashverma" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://twitter.com/me_yashverma" target="_blank" rel="noopener">Twitter</a>
+      <a href="mailto:1yash2verma3@gmail.com">Email</a>
+    </div>
+    <div class="menu-overlay__meta">Delhi, India — IST</div>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ============================================================ -->
+  <!-- HERO                                                          -->
+  <!-- ============================================================ -->
+  <section class="hero" id="hero">
+    <div class="hero__eyebrow reveal-line">
+      <span class="dot-pulse"></span> AVAILABLE FOR INTERESTING PROBLEMS — BITS PILANI · HCLTECH
+    </div>
+
+    <h1 class="hero__title">
+      <div class="hero__title-line" data-speed="0.3">
+        <span class="reveal-word">I&nbsp;build</span>
+      </div>
+      <div class="hero__title-line" data-speed="0.5">
+        <span class="reveal-word hero__title-outline">systems</span>
+        <span class="reveal-word">that</span>
+      </div>
+      <div class="hero__title-line" data-speed="0.4">
+        <span class="reveal-word">shouldn&rsquo;t</span>
+        <span class="reveal-word hero__title-accent">exist</span>
+      </div>
+      <div class="hero__title-line" data-speed="0.6">
+        <span class="reveal-word">on&nbsp;free&nbsp;infra.</span>
+      </div>
+    </h1>
+
+    <p class="hero__sub reveal-up">
+      Yash Verma — cloud &amp; automation engineer. I turn GitHub Actions into
+      always-on daemons, wire APIs together until they misbehave less, and ship
+      Discord widgets that have no business updating in real time.
+    </p>
+
+    <div class="hero__cta reveal-up">
+      <a href="#work" class="btn btn--primary" data-cursor="text" data-cursor-text="GO">
+        <span>See the work</span>
+      </a>
+      <a href="#contact" class="btn btn--ghost" data-cursor="text" data-cursor-text="✉">
+        <span>Get in touch</span>
+      </a>
+    </div>
+
+    <div class="hero__scroll">
+      <span>Scroll</span>
+      <div class="hero__scroll-line"><div class="hero__scroll-fill"></div></div>
+    </div>
+
+    <div class="hero__marquee" aria-hidden="true">
+      <div class="hero__marquee-track">
+        <span>PYTHON</span><span>&middot;</span><span>NODE.JS</span><span>&middot;</span>
+        <span>GITHUB ACTIONS</span><span>&middot;</span><span>DISCORD API</span><span>&middot;</span>
+        <span>GOOGLE CLOUD</span><span>&middot;</span><span>SHARP / SHADERS</span><span>&middot;</span>
+        <span>REAL-TIME PIPELINES</span><span>&middot;</span>
+        <span>PYTHON</span><span>&middot;</span><span>NODE.JS</span><span>&middot;</span>
+        <span>GITHUB ACTIONS</span><span>&middot;</span><span>DISCORD API</span><span>&middot;</span>
+        <span>GOOGLE CLOUD</span><span>&middot;</span><span>SHARP / SHADERS</span><span>&middot;</span>
+        <span>REAL-TIME PIPELINES</span><span>&middot;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STATS STRIP                                                   -->
+  <!-- ============================================================ -->
+  <section class="stats" aria-label="Quick stats">
+    <div class="stats__row">
+      <div class="stat">
+        <div class="stat__num" data-count="29">0</div>
+        <div class="stat__label">Public repos</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-count="6">0</div>
+        <div class="stat__label">Cloud daemons in prod</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-count="0" data-suffix="₹">0</div>
+        <div class="stat__label">Monthly hosting cost</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-count="24" data-suffix="/7">0</div>
+        <div class="stat__label">Uptime target on free tiers</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- WORK — flagship case studies                                  -->
+  <!-- ============================================================ -->
+  <section class="work" id="work">
+    <div class="section-head">
+      <span class="section-head__index">01</span>
+      <h2 class="section-head__title">Selected&nbsp;Work</h2>
+      <p class="section-head__desc">
+        The daemon engine, more or less. Every one of these is a "no VPS, no
+        database, no server" build&nbsp;— GitHub Actions doing a job it was never
+        designed for, on purpose.
+      </p>
+    </div>
+
+    <div class="work-list" id="workList">
+
+      <article class="work-item" data-index="01">
+        <a href="https://github.com/MeYashverma/Discord-Lyrically-Widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
+          <div class="work-item__row">
+            <div class="work-item__title-wrap">
+              <span class="work-item__index">01</span>
+              <h3 class="work-item__title">Lyrically</h3>
+            </div>
+            <div class="work-item__tags">
+              <span>Python</span><span>LRCLIB</span><span>Discord Widget API</span>
+            </div>
+            <div class="work-item__arrow">↗</div>
+          </div>
+          <p class="work-item__desc">Real-time Spotify lyric sync piped straight into a Discord profile widget — line-accurate, self-healing, running as a GitHub Actions cloud daemon with adaptive rate-limit pacing.</p>
+        </a>
+        <div class="work-item__preview" data-preview>
+          <div class="work-item__preview-inner widget-mock widget-mock--lyrics">
+            <div class="widget-mock__row">
+              <span class="widget-mock__badge">♪ Lyrically</span>
+            </div>
+            <div class="widget-mock__title">Sanwaar Loon</div>
+            <div class="widget-mock__sub">Monali Thakur — Lootera</div>
+            <div class="widget-mock__lyric">Hawa ke jhonke aaj mausamon se rooth gaye</div>
+            <div class="widget-mock__progress"><div class="widget-mock__progress-fill" style="width:38%"></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-item" data-index="02">
+        <a href="https://github.com/MeYashverma/discord-vinyl-fm-widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
+          <div class="work-item__row">
+            <div class="work-item__title-wrap">
+              <span class="work-item__index">02</span>
+              <h3 class="work-item__title">Vinyl.fm</h3>
+            </div>
+            <div class="work-item__tags">
+              <span>TypeScript</span><span>Last.fm</span><span>Discord Presence</span>
+            </div>
+            <div class="work-item__arrow">↗</div>
+          </div>
+          <p class="work-item__desc">A dual-source now-playing widget — Discord's own Spotify presence with a Last.fm fallback, rotating listening stats, and a hand-ported D.W.I.F image pipeline for pixel-correct album art.</p>
+        </a>
+        <div class="work-item__preview" data-preview>
+          <div class="work-item__preview-inner widget-mock widget-mock--vinyl">
+            <div class="widget-mock__row"><span class="widget-mock__badge">◉ Vinyl.fm</span></div>
+            <div class="widget-mock__title">DARE</div>
+            <div class="widget-mock__sub">Gorillaz — Demon Days</div>
+            <div class="widget-mock__stats">
+              <div><b>28.4K</b><span>listeners</span></div>
+              <div><b>23.0K</b><span>scrobbles</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-item" data-index="03">
+        <a href="https://github.com/MeYashverma/discord-waifu-widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
+          <div class="work-item__row">
+            <div class="work-item__title-wrap">
+              <span class="work-item__index">03</span>
+              <h3 class="work-item__title">Waifu&nbsp;Widget</h3>
+            </div>
+            <div class="work-item__tags">
+              <span>Node.js</span><span>AniList</span><span>remove.bg</span>
+            </div>
+            <div class="work-item__arrow">↗</div>
+          </div>
+          <p class="work-item__desc">A rotating "character of the day" widget backed by AniList, Jikan and Kitsu with automatic fallback chains, and a background-removal pipeline that trusts the AI cutout instead of fighting it.</p>
+        </a>
+        <div class="work-item__preview" data-preview>
+          <div class="work-item__preview-inner widget-mock widget-mock--waifu">
+            <div class="widget-mock__row"><span class="widget-mock__badge">✿ Waifu of the Day</span></div>
+            <div class="widget-mock__title">Jeanne</div>
+            <div class="widget-mock__sub">Bayonetta — Vampire · Chevalier</div>
+            <div class="widget-mock__stats">
+              <div><b>231.5K</b><span>simps</span></div>
+              <div><b>ICONIC</b><span>rank</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-item" data-index="04">
+        <a href="https://github.com/MeYashverma/Genshin-Stats" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
+          <div class="work-item__row">
+            <div class="work-item__title-wrap">
+              <span class="work-item__index">04</span>
+              <h3 class="work-item__title">Genshin&nbsp;Stats</h3>
+            </div>
+            <div class="work-item__tags">
+              <span>Node.js</span><span>Enka.Network</span><span>GitHub Actions</span>
+            </div>
+            <div class="work-item__arrow">↗</div>
+          </div>
+          <p class="work-item__desc">Pulls a public Genshin Impact profile from Enka.Network and mirrors adventure rank, world level and Spiral Abyss progress onto a live Discord widget on a schedule.</p>
+        </a>
+        <div class="work-item__preview" data-preview>
+          <div class="work-item__preview-inner">
+            <img src="assets/images/projects/genshin-stats.png" alt="Genshin Stats Discord widget preview" loading="lazy">
+          </div>
+        </div>
+      </article>
+
+      <article class="work-item" data-index="05">
+        <a href="https://github.com/MeYashverma/Discord-LaunchPad-Widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
+          <div class="work-item__row">
+            <div class="work-item__title-wrap">
+              <span class="work-item__index">05</span>
+              <h3 class="work-item__title">LaunchPad</h3>
+            </div>
+            <div class="work-item__tags">
+              <span>Python</span><span>Launch Library 2</span><span>SpaceX API</span>
+            </div>
+            <div class="work-item__arrow">↗</div>
+          </div>
+          <p class="work-item__desc">A live space-launch tracker that PATCHes your Discord widget with the next scheduled rocket — mission patch, pad, and a graceful exit right before the runner's hard timeout.</p>
+        </a>
+        <div class="work-item__preview" data-preview>
+          <div class="work-item__preview-inner widget-mock widget-mock--launch">
+            <div class="widget-mock__row"><span class="widget-mock__badge">🚀 Next Launch</span></div>
+            <div class="widget-mock__title">Falcon 9 Block 5</div>
+            <div class="widget-mock__sub">Starlink Group 12-4 — SLC-40</div>
+            <div class="widget-mock__progress"><div class="widget-mock__progress-fill" style="width:72%"></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-item" data-index="06">
+        <a href="https://github.com/MeYashverma/discord-lastfm-widget" target="_blank" rel="noopener" class="work-item__link" data-cursor="view">
+          <div class="work-item__row">
+            <div class="work-item__title-wrap">
+              <span class="work-item__index">06</span>
+              <h3 class="work-item__title">Last.fm&nbsp;Widget</h3>
+            </div>
+            <div class="work-item__tags">
+              <span>Node.js</span><span>Last.fm API</span><span>Cron Daemon</span>
+            </div>
+            <div class="work-item__arrow">↗</div>
+          </div>
+          <p class="work-item__desc">The prototype that started the pattern — a minimal Last.fm-to-Discord relay and the first proof that GitHub Actions could self-trigger its way into an always-on service.</p>
+        </a>
+        <div class="work-item__preview" data-preview>
+          <div class="work-item__preview-inner widget-mock widget-mock--lastfm">
+            <div class="widget-mock__row"><span class="widget-mock__badge">▶ Now Scrobbling</span></div>
+            <div class="widget-mock__title">TRACK — DARE</div>
+            <div class="widget-mock__sub">Status: LIVE</div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- LAB — everything else, filterable archive                    -->
+  <!-- ============================================================ -->
+  <section class="lab" id="lab">
+    <div class="section-head">
+      <span class="section-head__index">02</span>
+      <h2 class="section-head__title">The&nbsp;Lab</h2>
+      <p class="section-head__desc">
+        Experiments, hobby builds, and things I shipped mostly to see if I
+        could. Filter by category.
+      </p>
+    </div>
+
+    <div class="lab__filters" id="labFilters">
+      <button class="lab__filter is-active" data-filter="all">All</button>
+      <button class="lab__filter" data-filter="widget">Discord Widgets</button>
+      <button class="lab__filter" data-filter="cloud">Cloud &amp; Infra</button>
+      <button class="lab__filter" data-filter="web">Web Experiments</button>
+      <button class="lab__filter" data-filter="misc">Misc / Hobby</button>
+    </div>
+
+    <div class="lab__grid" id="labGrid">
+
+      <div class="lab-card" data-cat="web">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">HTML / GSAP / Three.js / WebLLM</span>
+          <span class="lab-card__year">2026</span>
+        </div>
+        <h3 class="lab-card__title">AetherOS</h3>
+        <p class="lab-card__desc">A browser-native desktop OS simulation — draggable windows, a live 3D globe with real ISS tracking, and an in-browser LLM. Built as a "how far can a single HTML file go" experiment.</p>
+        <a href="https://github.com/MeYashverma/AetherOS-Prod" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="web">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">Three.js / Satellite APIs</span>
+          <span class="lab-card__year">2026</span>
+        </div>
+        <h3 class="lab-card__title">3D Earth Tracker</h3>
+        <p class="lab-card__desc">A real-time orbital visualization — satellites plotted on a spinning globe straight in the browser, no backend.</p>
+        <a href="https://github.com/MeYashverma/3d-Earth-Tracker" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="cloud">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">Shell / GCP</span>
+          <span class="lab-card__year">2025</span>
+        </div>
+        <h3 class="lab-card__title">mcserver</h3>
+        <p class="lab-card__desc">Free Minecraft server hosting via shell scripts on Google Cloud Shell — squeezing a persistent game server out of infrastructure that was never meant to host one.</p>
+        <a href="https://github.com/MeYashverma/mcserver" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="cloud">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">Python / REST</span>
+          <span class="lab-card__year">2025</span>
+        </div>
+        <h3 class="lab-card__title">Discord Avatar Tracker</h3>
+        <p class="lab-card__desc">A small bot that snapshots and archives Discord profile picture changes over time.</p>
+        <a href="https://github.com/MeYashverma/discord-avatar-tracker" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="web">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">HTML / CSS / Chart APIs</span>
+          <span class="lab-card__year">2026</span>
+        </div>
+        <h3 class="lab-card__title">Last.fm Dashboard</h3>
+        <p class="lab-card__desc">A personal scrobble-history dashboard — charts and stats pulled straight from the Last.fm API.</p>
+        <a href="https://github.com/MeYashverma/LASTFM-Dashboard" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="misc">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">Python</span>
+          <span class="lab-card__year">2026</span>
+        </div>
+        <h3 class="lab-card__title">Apollonian Gasket Generator</h3>
+        <p class="lab-card__desc">A recursive fractal-circle generator that renders to SVG — pure math, no dependencies, depth-configurable.</p>
+        <a href="https://github.com/MeYashverma/Codex" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="misc">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">Kotlin / Compose Multiplatform</span>
+          <span class="lab-card__year">2026</span>
+        </div>
+        <h3 class="lab-card__title">SimpMusic (contrib.)</h3>
+        <p class="lab-card__desc">Cross-platform YouTube Music client with Spotify-style features — SponsorBlock, ReturnYouTubeDislike, desktop + Android.</p>
+        <a href="https://github.com/MeYashverma/Music" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="misc">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">JSON / Health APIs</span>
+          <span class="lab-card__year">2026</span>
+        </div>
+        <h3 class="lab-card__title">WearBridge</h3>
+        <p class="lab-card__desc">A bridge layer for wearable health data — steps, heart rate, sleep and stress scores normalized into a single snapshot format.</p>
+        <a href="https://github.com/MeYashverma/WearBridge" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="widget">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">Node.js / Fork</span>
+          <span class="lab-card__year">2025</span>
+        </div>
+        <h3 class="lab-card__title">Spotify GitHub Profile</h3>
+        <p class="lab-card__desc">Self-hosted fork of the popular "now playing" README widget — Spotify status rendered as an SVG for any GitHub profile.</p>
+        <a href="https://github.com/MeYashverma/spotify-github-profile" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+      <div class="lab-card" data-cat="misc">
+        <div class="lab-card__top">
+          <span class="lab-card__tag">JavaScript / Service Workers</span>
+          <span class="lab-card__year">2024</span>
+        </div>
+        <h3 class="lab-card__title">Ultraviolet (self-hosted)</h3>
+        <p class="lab-card__desc">Self-hosted deployment of the Ultraviolet proxy — service-worker-based request interception for sandboxed browsing.</p>
+        <a href="https://github.com/MeYashverma/Ultraviolet" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- ARTS — digital art gallery                                    -->
+  <!-- ============================================================ -->
+  <section class="arts" id="arts">
+    <div class="section-head">
+      <span class="section-head__index">03</span>
+      <h2 class="section-head__title">Arts</h2>
+      <p class="section-head__desc">
+        Art is my language, and each stroke of the brush or pencil is a form
+        of self-expression. Digital pieces made in Ibispaint&nbsp;X — mostly
+        fanart, portraits, and the occasional landscape, exploring
+        <em>animals, the anime world, and minimal art</em>.
+      </p>
+    </div>
+
+    <div class="arts__grid" id="artsGrid">
+
+      <figure class="arts-card" data-cursor="view">
+        <img src="assets/images/arts/genshin-lineart.jpg" alt="Genshin Impact character lineart, uncolored ink drawing of a girl with a flag and clouds" loading="lazy">
+        <figcaption>Genshin Impact fanart — lineart study</figcaption>
+      </figure>
+
+      <figure class="arts-card" data-cursor="view">
+        <img src="assets/images/arts/birthday-portrait.jpg" alt="Digitally painted birthday portrait with balloons, commissioned piece" loading="lazy">
+        <figcaption>Birthday portrait — digital painting</figcaption>
+      </figure>
+
+      <figure class="arts-card" data-cursor="view">
+        <img src="assets/images/arts/spider-gwen.jpg" alt="Spider-Gwen fanart sitting on a rooftop with headphones" loading="lazy">
+        <figcaption>Spider-Gwen fanart</figcaption>
+      </figure>
+
+      <figure class="arts-card arts-card--tall" data-cursor="view">
+        <img src="assets/images/arts/zelda-link.jpg" alt="Zelda and Link falling through rain, half-inked half-colored fanart from Breath of the Wild" loading="lazy">
+        <figcaption>Zelda &amp; Link — Breath of the Wild fanart</figcaption>
+      </figure>
+
+      <figure class="arts-card" data-cursor="view">
+        <img src="assets/images/arts/pigeon-peanit.jpg" alt="Detailed lineart portrait of a woman taking a selfie in traditional dress" loading="lazy">
+        <figcaption>Portrait lineart — detailed inkwork</figcaption>
+      </figure>
+
+      <figure class="arts-card" data-cursor="view">
+        <img src="assets/images/arts/bike-lineart.jpg" alt="Lineart illustration of a person sitting in a chair beside a bicycle" loading="lazy">
+        <figcaption>Everyday scene — lineart</figcaption>
+      </figure>
+
+      <figure class="arts-card arts-card--tall" data-cursor="view">
+        <img src="assets/images/arts/swing-landscape.jpg" alt="Digital landscape painting of a swing under a tree at dusk with a pink sky" loading="lazy">
+        <figcaption>Swing at dusk — landscape painting</figcaption>
+      </figure>
+
+      <figure class="arts-card" data-cursor="view">
+        <img src="assets/images/arts/chilling-goose.jpg" alt="Minimal illustration of a goose lying down next to a cup of tea, captioned 'Chilling'" loading="lazy">
+        <figcaption>&ldquo;Chilling&rdquo; — minimal illustration</figcaption>
+      </figure>
+
+      <figure class="arts-card" data-cursor="view">
+        <img src="assets/images/arts/twitch-2yr.jpg" alt="Chibi anime-style character celebrating a 2-year Twitch anniversary" loading="lazy">
+        <figcaption>2-year Twitch anniversary art</figcaption>
+      </figure>
+
+      <figure class="arts-card arts-card--tall" data-cursor="view">
+        <img src="assets/images/arts/portrait-lineart.jpg" alt="Lineart self-portrait style illustration of a woman with long hair and cherry blossoms, signed Yash" loading="lazy">
+        <figcaption>Signed lineart portrait</figcaption>
+      </figure>
+
+      <figure class="arts-card arts-card--wide" data-cursor="view">
+        <img src="assets/images/arts/minecraft-fanart.jpg" alt="Colorful Minecraft-themed fanart with the Ender Dragon, TNT and player characters" loading="lazy">
+        <figcaption>Minecraft fanart — full colour</figcaption>
+      </figure>
+
+    </div>
+
+    <p class="arts__statement">
+      My work often explores themes of animals, the anime world, and minimal
+      art — inviting viewers to contemplate the intricacies of life and the
+      human experience. Whether through bold colours or subtle textures, I
+      aim to create a connection that transcends words.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- Lightbox for Arts gallery                                     -->
+  <!-- ============================================================ -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+    <img class="lightbox__img" id="lightboxImg" src="" alt="">
+    <div class="lightbox__caption" id="lightboxCaption"></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ABOUT                                                         -->
+  <!-- ============================================================ -->
+  <section class="about" id="about">
+    <div class="about__grid">
+      <div class="about__media">
+        <div class="about__img-frame">
+          <img src="assets/images/avatar.jpg" alt="Yash Verma" loading="lazy">
+        </div>
+        <div class="about__badge">
+          <span class="dot-pulse"></span> Delhi, India — IST (UTC+5:30)
+        </div>
+      </div>
+
+      <div class="about__content">
+        <span class="section-head__index">04</span>
+        <h2 class="about__title">About</h2>
+        <p class="about__lead">
+          I'm Yash — a software engineer at HCLTech and a student at
+          BITS&nbsp;Pilani, spending most of my actual free time trying to make
+          free-tier cloud infrastructure do things it explicitly wasn't
+          designed for.
+        </p>
+        <p class="about__body">
+          My running joke of a specialty is the "GitHub Actions daemon"
+          pattern: instead of paying for a VPS, I self-trigger workflows that
+          run for ~5h50m, exit cleanly right before the runner's hard timeout,
+          and kick off the next run — a genuinely free, always-on service with
+          zero infrastructure to maintain. I've used it to build a small fleet
+          of real-time Discord profile widgets synced to Spotify, Last.fm,
+          AniList, Genshin Impact and live rocket launches.
+        </p>
+        <p class="about__body">
+          Outside of that: cloud &amp; Windows administration, Python
+          automation, and enough scattered hobby projects — fractal
+          generators, browser-native OS simulations, wearable data bridges —
+          to make my GitHub contribution graph look more organized than my
+          actual thought process.
+        </p>
+
+        <div class="about__skills">
+          <div class="about__skills-col">
+            <h4>Languages</h4>
+            <ul><li>Python</li><li>JavaScript / TypeScript</li><li>Node.js</li><li>Kotlin (contrib.)</li></ul>
+          </div>
+          <div class="about__skills-col">
+            <h4>Infra &amp; Cloud</h4>
+            <ul><li>GitHub Actions</li><li>Google Cloud</li><li>Windows Administration</li><li>Linux / Git</li></ul>
+          </div>
+          <div class="about__skills-col">
+            <h4>APIs &amp; Integrations</h4>
+            <ul><li>Discord Widget API</li><li>Spotify / Last.fm</li><li>AniList / Jikan / Kitsu</li><li>Sharp / Image Pipelines</li></ul>
+          </div>
+        </div>
+
+        <div class="about__cta">
+          <a href="https://github.com/MeYashverma" target="_blank" rel="noopener" class="btn btn--outline" data-cursor="text" data-cursor-text="↗">
+            <span>@MeYashverma on GitHub</span>
+          </a>
+        </div>
+
+        <div class="favorites">
+          <h4 class="favorites__heading">A few of my favourites</h4>
+          <div class="favorites__grid">
+
+            <div class="favorite">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/ironman-marvel.jpg" alt="Iron Man mural artwork, representing Marvel universe fandom" loading="lazy">
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Marvel Universe</span>
+                <p class="favorite__quote">&ldquo;I am Iron Man.&rdquo; — Tony Stark</p>
+                <p class="favorite__desc">Die-hard Marvel fan — Iron Man's genius and Spider-Man's relatable optimism resonate the most.</p>
+              </div>
+            </div>
+
+            <div class="favorite">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/nature-escape.jpg" alt="Fantasy landscape painting of a cherry blossom tree over lava and mountains, representing nature escapes" loading="lazy">
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Nature Escapes</span>
+                <p class="favorite__quote">A secluded forest clearing — only rustling leaves and birdsong.</p>
+                <p class="favorite__desc">There's nothing quite like the tranquility of nature to soothe the soul and ignite the imagination.</p>
+              </div>
+            </div>
+
+            <div class="favorite">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/gtr-dreamcar.jpg" alt="White Nissan GT-R R34 modified car at night, representing dream car" loading="lazy">
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Dream Car</span>
+                <p class="favorite__quote">Nissan GT-R R34 — style, performance, engineering excellence.</p>
+                <p class="favorite__desc">Fascinated by the design, engineering marvels and sheer power of automobiles.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <ul class="favorites__list">
+            <li><span>Favourite singer</span>Krishnakumar Kunnath &mdash; KK</li>
+            <li><span>Favourite song</span>Sunflower &mdash; Post Malone</li>
+            <li><span>Currently drawing in</span>Ibispaint&nbsp;X</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CONTACT / OUTRO                                               -->
+  <!-- ============================================================ -->
+  <section class="contact" id="contact">
+    <div class="contact__inner">
+      <span class="section-head__index">05</span>
+      <h2 class="contact__title">
+        <a href="mailto:1yash2verma3@gmail.com" class="contact__title-link" data-cursor="text" data-cursor-text="COPY">
+          Let&rsquo;s&nbsp;build<br>something&nbsp;weird.
+        </a>
+      </h2>
+      <a href="mailto:1yash2verma3@gmail.com" class="contact__email" id="contactEmail">1yash2verma3@gmail.com</a>
+
+      <div class="contact__links">
+        <a href="https://github.com/MeYashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">GitHub</a>
+        <a href="https://instagram.com/me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Instagram</a>
+        <a href="https://twitter.com/me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Twitter</a>
+        <a href="https://www.youtube.com/@me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">YouTube</a>
+        <a href="https://twitch.tv/me_yashvema" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Twitch</a>
+        <a href="https://codepen.io/Me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">CodePen</a>
+        <a href="https://open.spotify.com/user/31xz5ux4pziergil5hsla5pzss4y" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Spotify</a>
+        <a href="https://beacons.ai/me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Beacons</a>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span>&copy; <span id="year"></span> Yash Verma. Built from scratch — no template.</span>
+      <span class="footer__back-top" id="backToTop" data-cursor="text" data-cursor-text="↑">Back to top</span>
+    </footer>
+  </section>
+
+</main>
+
+<script src="assets/js/vendor/gsap.min.js"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/js/vendor/three.min.js"></script>
+<script src="assets/js/vendor/lenis.min.js"></script>
+<script src="assets/js/background.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
