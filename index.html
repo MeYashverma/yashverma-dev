@@ -90,7 +90,7 @@
       <a href="https://instagram.com/yashardcore" target="_blank" rel="noopener">Instagram</a>
       <a href="https://twitter.com/me_yashverma" target="_blank" rel="noopener">Twitter</a>
       <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener">Discord</a>
-      <a href="/cdn-cgi/l/email-protection#4b7a322a3823793d2e39262a780b2c262a222765282426">Email</a>
+      <a href="/cdn-cgi/l/email-protection#bb8ac2dac8d389cddec9d6da88fbdcd6dad2d795d8d4d6">Email</a>
     </div>
     <div class="menu-overlay__meta">Delhi, India — IST</div>
   </div>
@@ -202,11 +202,15 @@
   <section class="live" id="live" aria-label="Live status">
     <div class="live__row">
 
+      <!-- ============================================================ -->
+      <!-- DISCORD — rich Lanyard readout                                -->
+      <!-- ============================================================ -->
       <div class="live-card live-card--discord" id="liveDiscord" data-tilt>
         <div class="live-card__head">
           <svg viewBox="0 0 24 24" class="live-card__brand-icon"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
           <span class="live-card__dot" id="liveDiscordDot"></span>
           <span class="live-card__label">Discord — right now</span>
+          <span class="live-card__source">via Lanyard</span>
         </div>
         <div class="live-card__body">
           <div class="live-card__avatar-wrap">
@@ -216,37 +220,78 @@
           <div class="live-card__info">
             <div class="live-card__name" id="liveDiscordName">yashylash</div>
             <div class="live-card__handle" id="liveDiscordHandle">@yashylash</div>
+            <div class="live-card__custom-status" id="liveDiscordCustomStatus" hidden>
+              <span class="live-card__custom-status-emoji" id="liveDiscordCustomEmoji" aria-hidden="true"></span>
+              <span id="liveDiscordCustomText"></span>
+            </div>
             <div class="live-card__sub" id="liveDiscordActivity"><span class="live-card__activity-icon" id="liveDiscordActivityIcon" aria-hidden="true"></span><span id="liveDiscordActivityText">Loading live status&hellip;</span></div>
           </div>
         </div>
+
+        <!-- Rich activity readout: appears only when there IS an activity -->
+        <div class="live-card__activity" id="liveDiscordActivityRich" hidden>
+          <img class="live-card__activity-art" id="liveDiscordActivityArt" src="" alt="">
+          <img class="live-card__activity-art-small" id="liveDiscordActivityArtSmall" src="" alt="">
+          <div class="live-card__activity-meta">
+            <div class="live-card__activity-name" id="liveDiscordActivityName">—</div>
+            <div class="live-card__activity-details" id="liveDiscordActivityDetails">—</div>
+            <div class="live-card__activity-state" id="liveDiscordActivityState">—</div>
+            <div class="live-card__activity-time" id="liveDiscordActivityTime">—</div>
+          </div>
+        </div>
+
         <div class="live-card__facts" id="liveDiscordFacts">
           <div class="live-card__fact"><span id="liveDiscordStatusText">&mdash;</span><label>Status</label></div>
           <div class="live-card__fact"><span class="live-card__platform" id="liveDiscordPlatform"><span class="live-card__platform-icon" id="liveDiscordPlatformIcon" aria-hidden="true"></span><span id="liveDiscordPlatformText">&mdash;</span></span><label>Platform</label></div>
+          <div class="live-card__fact"><span id="liveDiscordActivityCount">&mdash;</span><label>Active on</label></div>
         </div>
         <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener" class="live-card__link" data-cursor="text" data-cursor-text="↗">Add on Discord ↗</a>
       </div>
 
-
+      <!-- ============================================================ -->
+      <!-- NOW PLAYING / LAST PLAYED — hero album art + rich Last.fm     -->
+      <!-- ============================================================ -->
       <div class="live-card live-card--music" id="liveMusic" data-tilt>
         <div class="live-card__head">
+          <svg viewBox="0 0 24 24" class="live-card__brand-icon" aria-hidden="true"><path fill="currentColor" d="M10.584 17.21l-.88-2.392s-1.43 1.594-3.573 1.594c-1.897 0-3.244-1.649-3.244-4.288 0-3.382 1.704-4.591 3.381-4.591 2.42 0 3.189 1.567 3.849 3.574l.88 2.749c.88 2.666 2.529 4.81 7.285 4.81 3.409 0 5.718-1.044 5.718-3.793 0-2.227-1.265-3.381-3.63-3.931l-1.758-.385c-1.21-.275-1.567-.77-1.567-1.595 0-.934.742-1.484 1.952-1.484 1.32 0 2.034.495 2.144 1.677l2.749-.33c-.22-2.474-1.924-3.492-4.729-3.492-2.474 0-4.893.935-4.893 3.932 0 1.87.907 3.051 3.189 3.601l1.87.44c1.402.33 1.869.907 1.869 1.704 0 1.017-.99 1.43-2.86 1.43-2.776 0-3.93-1.457-4.59-3.464l-.907-2.75c-1.155-3.573-2.997-4.893-6.653-4.893C2.144 5.333 0 7.89 0 12.233c0 4.18 2.144 6.434 5.993 6.434 3.106 0 4.591-1.457 4.591-1.457z"/></svg>
           <span class="live-card__dot" id="liveMusicDot"></span>
           <span class="live-card__label" id="liveMusicLabel">Now playing</span>
+          <span class="live-card__source">via Last.fm</span>
         </div>
-        <div class="live-card__body">
+
+        <!-- Hero row: BIG album art + track/artist/album -->
+        <div class="live-card__body live-card__body--music">
           <div class="live-card__art-backdrop" id="liveMusicBackdrop" aria-hidden="true"></div>
           <div class="live-card__art-wrap">
             <img class="live-card__art" id="liveMusicArt" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230d0d10'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%232a2a30' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%232a2a30' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='10' fill='none' stroke='%23d9ff3f' stroke-width='1.5' opacity='0.7'/%3E%3Ccircle cx='32' cy='32' r='3.2' fill='%23d9ff3f'/%3E%3C/svg%3E" alt="Album art" loading="lazy">
-            <span class="live-card__eq" id="liveMusicEq" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="live-card__eq" id="liveMusicEq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           </div>
           <div class="live-card__info">
             <div class="live-card__name" id="liveMusicTrack">Loading&hellip;</div>
             <div class="live-card__sub" id="liveMusicArtist">&nbsp;</div>
+            <div class="live-card__album" id="liveMusicAlbum">&nbsp;</div>
+            <div class="live-card__progress" id="liveMusicProgress" hidden>
+              <span class="live-card__progress-time" id="liveMusicElapsed">0:00</span>
+              <span class="live-card__progress-bar"><span class="live-card__progress-fill" id="liveMusicProgressFill"></span></span>
+              <span class="live-card__progress-time" id="liveMusicDuration">0:00</span>
+            </div>
           </div>
         </div>
-        <div class="live-card__facts">
+
+        <!-- Stats row -->
+        <div class="live-card__facts live-card__facts--music">
           <div class="live-card__fact"><span id="liveMusicScrobbles">&mdash;</span><label>Total scrobbles</label></div>
-          <div class="live-card__fact"><span id="liveMusicTopArtist">&mdash;</span><label>Top artist (7d)</label></div>
+          <div class="live-card__fact"><span id="liveMusicArtistCount">&mdash;</span><label>Unique artists</label></div>
+          <div class="live-card__fact"><span id="liveMusicTopArtist">&mdash;</span><label>Top artist · 7d</label></div>
+          <div class="live-card__fact"><span id="liveMusicTopAlbum">&mdash;</span><label>Top album · 7d</label></div>
         </div>
+
+        <!-- Recent tracks — mini history from Last.fm -->
+        <div class="live-card__recent" id="liveMusicRecent">
+          <span class="live-card__recent-label">Recently played</span>
+          <ul class="live-card__recent-list" id="liveMusicRecentList"></ul>
+        </div>
+
         <a href="https://www.last.fm/user/The_Berlin" target="_blank" rel="noopener" class="live-card__link" id="liveMusicLink" data-cursor="text" data-cursor-text="↗">View listening history ↗</a>
       </div>
 
@@ -268,6 +313,32 @@
     </div>
 
     <div class="work-grid" id="workList">
+
+      <!-- FEATURED — AetherOS spans the full row -->
+      <article class="work-card work-card--featured" data-tilt>
+        <a href="https://meyashverma.github.io/AetherOS-Prod/" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/aetheros.png')"></div>
+          <img src="assets/images/widgets/aetheros.png" alt="AetherOS — browser-native desktop OS with dock, floating windows, live telemetry panel, and Aether Chat sidebar" loading="lazy">
+          <span class="work-card__live-badge"><span class="dot-pulse"></span> Live · try it</span>
+          <span class="work-card__featured-badge">Featured</span>
+        </a>
+        <div class="work-card__body">
+          <div class="work-card__head">
+            <h3 class="work-card__title" data-scramble>AetherOS</h3>
+            <div class="work-card__head-actions">
+              <a href="https://meyashverma.github.io/AetherOS-Prod/" target="_blank" rel="noopener" class="work-card__cta" data-cursor="view">Open the OS ↗</a>
+              <a href="https://github.com/MeYashverma/AetherOS-Prod" target="_blank" rel="noopener" class="work-card__arrow" data-cursor="view" aria-label="Source on GitHub">↗</a>
+            </div>
+          </div>
+          <p class="work-card__desc">A browser-native operating environment built as a side project — single HTML file, client-side, deliberately over-engineered. Window manager with drag boundaries and magnify dock, liquid-glass surfaces, a Cmd-K palette, local persistence, an in-browser LLM sidebar (Aether Chat), 3D ISS tracking, live radio, wiki canvas, and 30+ other window modules.</p>
+          <div class="work-card__tags">
+            <span>Single-file HTML</span><span>GSAP Draggable</span><span>Three.js</span><span>WebLLM</span><span>Last.fm / Lanyard</span><span>Open-Meteo</span><span>NASA APIs</span>
+          </div>
+          <div class="work-card__meta">
+            <span>19 commits · updated Jun 2026</span><span>·</span><span>1 star</span><span>·</span><span>MIT</span>
+          </div>
+        </div>
+      </article>
 
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/Discord-Lyrically-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
@@ -422,16 +493,6 @@
     </div>
 
     <div class="lab__grid" id="labGrid">
-
-      <div class="lab-card" data-cat="web" data-tilt>
-        <div class="lab-card__top">
-          <span class="lab-card__tag">HTML / GSAP / Three.js / WebLLM</span>
-          <span class="lab-card__year">2026</span>
-        </div>
-        <h3 class="lab-card__title" data-scramble>AetherOS</h3>
-        <p class="lab-card__desc">A browser-native desktop OS simulation — draggable windows, a live 3D globe with real ISS tracking, and an in-browser LLM. Built as a "how far can a single HTML file go" experiment.</p>
-        <a href="https://github.com/MeYashverma/AetherOS-Prod" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
-      </div>
 
       <div class="lab-card" data-cat="web" data-tilt>
         <div class="lab-card__top">
@@ -1087,23 +1148,68 @@
     <div class="contact__inner">
       <span class="section-head__index">06</span>
       <h2 class="contact__title">
-        <a href="/cdn-cgi/l/email-protection#b988c0d8cad18bcfdccbd4d88af9ded4d8d0d597dad6d4" class="contact__title-link" data-cursor="text" data-cursor-text="COPY">
+        <a href="/cdn-cgi/l/email-protection#6c5d150d1f045e1a091e010d5f2c0b010d0500420f0301" class="contact__title-link" data-cursor="text" data-cursor-text="COPY">
           Let&rsquo;s&nbsp;build<br>something&nbsp;weird.
         </a>
       </h2>
-      <a href="/cdn-cgi/l/email-protection#1c2d657d6f742e6a796e717d2f5c7b717d7570327f7371" class="contact__email" id="contactEmail"><span class="__cf_email__" data-cfemail="d5e4acb4a6bde7a3b0a7b8b4e695b2b8b4bcb9fbb6bab8">[email&#160;protected]</span></a>
+      <a href="/cdn-cgi/l/email-protection#d5e4acb4a6bde7a3b0a7b8b4e695b2b8b4bcb9fbb6bab8" class="contact__email" id="contactEmail"><span class="__cf_email__" data-cfemail="6c5d150d1f045e1a091e010d5f2c0b010d0500420f0301">[email&#160;protected]</span></a>
 
-      <div class="contact__links">
-        <a href="https://github.com/MeYashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">GitHub</a>
-        <a href="https://instagram.com/yashardcore" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Instagram</a>
-        <a href="https://twitter.com/me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Twitter</a>
-        <a href="https://www.youtube.com/@me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">YouTube</a>
-        <a href="https://twitch.tv/me_yashvema" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Twitch</a>
-        <a href="https://codepen.io/Me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">CodePen</a>
-        <a href="https://open.spotify.com/user/31xz5ux4pziergil5hsla5pzss4y" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Spotify</a>
-        <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Discord</a>
-        <a href="https://beacons.ai/me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Beacons</a>
-      </div>
+      <ul class="contact__socials" aria-label="Social links">
+        <li>
+          <a class="social-icon" href="https://github.com/MeYashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="GITHUB" style="--brand:#f0f6fc">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .296a12 12 0 00-3.79 23.386c.6.11.82-.26.82-.577v-2.234c-3.338.727-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.744.083-.729.083-.729 1.205.084 1.84 1.237 1.84 1.237 1.07 1.833 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.303-5.467-1.332-5.467-5.93 0-1.31.467-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.5 11.5 0 016 0c2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.435.375.81 1.096.81 2.22v3.293c0 .32.21.694.825.577A12 12 0 0012 .296z"/></svg>
+            <span>GitHub</span>
+          </a>
+        </li>
+        <li>
+          <a class="social-icon" href="https://instagram.com/yashardcore" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="INSTA" style="--brand:#e1306c">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12s.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98C23.986 15.668 24 15.259 24 12s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            <span>Instagram</span>
+          </a>
+        </li>
+        <li>
+          <a class="social-icon" href="https://twitter.com/me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="TWITTER" style="--brand:#ffffff">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <span>Twitter / X</span>
+          </a>
+        </li>
+        <li>
+          <a class="social-icon" href="https://www.youtube.com/@me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="YOUTUBE" style="--brand:#ff0000">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span>YouTube</span>
+          </a>
+        </li>
+        <li>
+          <a class="social-icon" href="https://twitch.tv/me_yashvema" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="TWITCH" style="--brand:#9146ff">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+            <span>Twitch</span>
+          </a>
+        </li>
+        <li>
+          <a class="social-icon" href="https://codepen.io/Me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="CODEPEN" style="--brand:#ffffff">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.06 8.129l-.005-.019-.006-.024-.008-.02-.008-.023-.011-.02c-.005-.008-.008-.015-.013-.021l-.011-.02-.014-.02-.014-.017-.017-.02c-.005-.006-.01-.011-.014-.017l-.02-.017-.017-.014-.02-.017c-.008-.005-.013-.008-.02-.014L12.348.132a.63.63 0 00-.696 0L1.588 6.86l-.02.014-.017.017-.02.017c-.005.006-.01.011-.017.017l-.017.02c-.005.005-.01.01-.014.017l-.014.02-.014.017-.014.02-.011.02-.014.021-.008.02-.011.024-.006.02-.008.023-.006.024-.005.02-.006.024L1.28 8.185v7.63c0 .086.008.17.023.253l.006.02.005.024.006.02.008.023.006.024.011.02.014.021.011.02.014.017.014.02.014.017.014.02.017.017.017.017.02.014.017.017.017.014.02.017c.008.005.013.008.02.014l10.06 6.726a.622.622 0 00.694 0l10.061-6.726c.008-.005.014-.008.02-.014l.02-.017.017-.014.017-.017.02-.014.017-.017.017-.017.014-.02.014-.017.014-.02.014-.017.011-.02.014-.021.011-.02.008-.023.006-.024.008-.02.006-.024.005-.02.006-.024a1.06 1.06 0 00.023-.253v-7.63c0-.086-.008-.17-.023-.254l-.006-.02zM12 2.4l7.409 5.16-3.31 2.212L12 7.16 7.9 9.772 4.591 7.56 12 2.4zM3.888 8.767l2.36 1.577-2.36 1.578zM4.591 16.44l3.31-2.212L12 16.84l4.098-2.612 3.31 2.212L12 21.6zm7.98-5.107L15.24 9.55 12 7.393 8.76 9.549l2.669 1.784L8.76 13.117 12 15.28l3.24-2.163zM17.752 12l2.36-1.578v3.156z"/></svg>
+            <span>CodePen</span>
+          </a>
+        </li>
+        <li>
+          <a class="social-icon" href="https://open.spotify.com/user/31xz5ux4pziergil5hsla5pzss4y" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="SPOTIFY" style="--brand:#1ed760">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            <span>Spotify</span>
+          </a>
+        </li>
+        <li>
+          <a class="social-icon" href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="DISCORD" style="--brand:#5865f2">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+            <span>Discord</span>
+          </a>
+        </li>
+        <li>
+          <a class="social-icon" href="https://beacons.ai/me_yashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="BEACONS" style="--brand:#d9ff3f">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 22h10.4a2 2 0 002-2v-9.6c0-1.35-.65-2.61-1.75-3.4L13.75 3.6a3 3 0 00-3.5 0L5.55 7a4.2 4.2 0 00-1.75 3.4V20a2 2 0 002 2z"/><path d="M12 22V15"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>Beacons</span>
+          </a>
+        </li>
+      </ul>
     </div>
 
     <footer class="footer">
@@ -1152,5 +1258,5 @@
 <script src="assets/js/background.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/live.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19ec7d4ae240bb8',t:'MTc4Mzg0NjAxOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19efc1dfb667f8d',t:'MTc4Mzg0ODE2MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

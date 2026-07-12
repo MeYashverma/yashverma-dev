@@ -210,6 +210,91 @@
 
     if (activityTextEl) activityTextEl.textContent = line;
     if (activityIconEl) activityIconEl.innerHTML = iconKey ? ICONS[iconKey] : '';
+
+    // ---- Custom status (with optional emoji) -----------------
+    var csWrap  = document.getElementById('liveDiscordCustomStatus');
+    var csText  = document.getElementById('liveDiscordCustomText');
+    var csEmoji = document.getElementById('liveDiscordCustomEmoji');
+    if (csWrap && csText) {
+      if (custom && (custom.state || (custom.emoji && custom.emoji.name))) {
+        csWrap.hidden = false;
+        csText.textContent = custom.state || '';
+        if (csEmoji) {
+          if (custom.emoji && custom.emoji.id) {
+            var ext2 = custom.emoji.animated ? 'gif' : 'png';
+            csEmoji.innerHTML = '<img src="https://cdn.discordapp.com/emojis/' + custom.emoji.id + '.' + ext2 + '?size=32" alt="">';
+          } else if (custom.emoji && custom.emoji.name) {
+            csEmoji.textContent = custom.emoji.name;
+          } else {
+            csEmoji.textContent = '';
+          }
+        }
+      } else {
+        csWrap.hidden = true;
+      }
+    }
+
+    // ---- Active-on chip (comma-separated platform list) -----
+    var activeChips = [];
+    if (data.active_on_discord_desktop)  activeChips.push('Desktop');
+    if (data.active_on_discord_mobile)   activeChips.push('Mobile');
+    if (data.active_on_discord_web)      activeChips.push('Web');
+    if (data.active_on_discord_embedded) activeChips.push('Console');
+    var actCountEl = document.getElementById('liveDiscordActivityCount');
+    if (actCountEl) actCountEl.textContent = activeChips.length ? activeChips.join(' · ') : '\u2014';
+
+    // ---- Rich activity readout (game / app / stream art) -----
+    var richWrap   = document.getElementById('liveDiscordActivityRich');
+    var richArt    = document.getElementById('liveDiscordActivityArt');
+    var richArtSm  = document.getElementById('liveDiscordActivityArtSmall');
+    var richName   = document.getElementById('liveDiscordActivityName');
+    var richDet    = document.getElementById('liveDiscordActivityDetails');
+    var richState  = document.getElementById('liveDiscordActivityState');
+    var richTime   = document.getElementById('liveDiscordActivityTime');
+    var richItem   = game || stream || watching;
+    if (richWrap) {
+      if (richItem) {
+        richWrap.hidden = false;
+        if (richName)  richName.textContent  = richItem.name || '';
+        if (richDet)   richDet.textContent   = richItem.details || '';
+        if (richState) richState.textContent = richItem.state   || '';
+        if (richArt) {
+          var large = richItem.assets && richItem.assets.large_image;
+          if (large) {
+            var url = large.indexOf('mp:') === 0
+              ? 'https://media.discordapp.net/' + large.slice(3)
+              : 'https://cdn.discordapp.com/app-assets/' + richItem.application_id + '/' + large + '.png';
+            richArt.src = url; richArt.style.display = '';
+          } else {
+            richArt.style.display = 'none';
+          }
+        }
+        if (richArtSm) {
+          var small = richItem.assets && richItem.assets.small_image;
+          if (small && richItem.application_id) {
+            var url2 = small.indexOf('mp:') === 0
+              ? 'https://media.discordapp.net/' + small.slice(3)
+              : 'https://cdn.discordapp.com/app-assets/' + richItem.application_id + '/' + small + '.png';
+            richArtSm.src = url2; richArtSm.style.display = '';
+          } else {
+            richArtSm.style.display = 'none';
+          }
+        }
+        if (richTime) {
+          if (richItem.timestamps && richItem.timestamps.start) {
+            var startTs = Number(richItem.timestamps.start);
+            var elapsed = Math.max(0, Math.floor((Date.now() - startTs) / 1000));
+            var m = Math.floor(elapsed / 60), s = elapsed % 60;
+            var h = Math.floor(m / 60); m = m % 60;
+            richTime.textContent = (h ? h + ':' + String(m).padStart(2,'0') : m) + ':' + String(s).padStart(2,'0') + ' elapsed';
+          } else {
+            richTime.textContent = '';
+          }
+        }
+      } else {
+        richWrap.hidden = true;
+      }
+    }
   }
 
   function fetchDiscord() {
@@ -239,27 +324,27 @@
     var eq = document.getElementById('liveMusicEq');
     var track = document.getElementById('liveMusicTrack');
     var artist = document.getElementById('liveMusicArtist');
+    var album = document.getElementById('liveMusicAlbum');
     var link = document.getElementById('liveMusicLink');
+    var progress = document.getElementById('liveMusicProgress');
+    var progFill = document.getElementById('liveMusicProgressFill');
+    var progEl = document.getElementById('liveMusicElapsed');
+    var progDur = document.getElementById('liveMusicDuration');
 
     if (label) label.textContent = opts.label;
     if (dot) dot.classList.toggle('is-live', !!opts.isLive);
     if (eq) eq.classList.toggle('is-playing', !!opts.isLive);
     if (track) track.textContent = opts.track;
     if (artist) artist.textContent = opts.artist || '\u00A0';
+    if (album) album.textContent = opts.album || '\u00A0';
     if (art) {
       var artUrl = opts.art || FALLBACK_ART;
       art.src = artUrl;
-      // Second safety net: if even the chosen art URL 404s / fails to load
-      // (dead CDN link, transient error, anything), fall back to the
-      // on-brand SVG rather than showing a browser broken-image icon.
       art.onerror = function () {
         art.onerror = null;
         art.src = FALLBACK_ART;
         if (backdrop) backdrop.classList.remove('is-visible');
       };
-      // The blurred ambient backdrop only makes sense for real album art —
-      // showing a blurred copy of the on-brand fallback glyph would look
-      // like a bug, not a feature, so it's only enabled for real artwork.
       if (backdrop) {
         var isFallback = artUrl === FALLBACK_ART;
         backdrop.classList.toggle('is-visible', !isFallback);
@@ -270,6 +355,44 @@
       link.href = opts.link;
       link.textContent = opts.linkText || 'View listening history \u2197';
     }
+    // Progress bar (Spotify presence only — Last.fm doesn't expose position)
+    if (progress) {
+      if (opts.startTs && opts.endTs) {
+        progress.hidden = false;
+        renderProgress(opts.startTs, opts.endTs);
+      } else {
+        progress.hidden = true;
+      }
+    }
+  }
+
+  // Progress bar tick — runs off a shared 1s timer so all cards using
+  // the same start/end pair advance together.
+  var _progressTimer = null;
+  function renderProgress(startTs, endTs) {
+    var progFill = document.getElementById('liveMusicProgressFill');
+    var progEl   = document.getElementById('liveMusicElapsed');
+    var progDur  = document.getElementById('liveMusicDuration');
+    function fmt(ms) {
+      var s = Math.max(0, Math.floor(ms / 1000));
+      var m = Math.floor(s / 60); s = s % 60;
+      return m + ':' + String(s).padStart(2, '0');
+    }
+    function tick() {
+      var now = Date.now();
+      var total = endTs - startTs;
+      var passed = Math.min(total, Math.max(0, now - startTs));
+      if (progFill) progFill.style.width = (total ? (passed / total * 100) : 0) + '%';
+      if (progEl)   progEl.textContent   = fmt(passed);
+      if (progDur)  progDur.textContent  = fmt(total);
+      if (passed >= total) {
+        clearInterval(_progressTimer);
+        _progressTimer = null;
+      }
+    }
+    if (_progressTimer) clearInterval(_progressTimer);
+    tick();
+    _progressTimer = setInterval(tick, 500);
   }
 
   // Persist the last successfully-rendered track so if every source goes
@@ -288,9 +411,12 @@
           isLive: true,
           track: sp.song,
           artist: sp.artist,
+          album: sp.album,
           art: finalArt || FALLBACK_ART,
           link: 'https://open.spotify.com/track/' + (sp.track_id || ''),
-          linkText: 'Open in Spotify \u2197'
+          linkText: 'Open in Spotify \u2197',
+          startTs: sp.timestamps && sp.timestamps.start,
+          endTs:   sp.timestamps && sp.timestamps.end
         };
         setMusicCard(payload);
         lastRenderedTrack = payload;
@@ -331,27 +457,33 @@
   }
 
   function fetchLastfmRecent() {
+    // Pull 6 tracks so we can render the little "Recently played" strip
+    // below the hero row. The first item is the current/most-recent track
+    // (same as before), the rest fill the history list.
     var url = 'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks'
       + '&user=' + encodeURIComponent(LASTFM_USER)
       + '&api_key=' + LASTFM_API_KEY
-      + '&format=json&limit=1';
+      + '&format=json&limit=6';
 
     return fetch(url, { cache: 'no-store' })
       .then(function (res) { if (!res.ok) throw new Error('lastfm http ' + res.status); return res.json(); })
       .then(function (json) {
         var tracks = json && json.recenttracks && json.recenttracks.track;
         var t = tracks && tracks[0];
+        renderRecentList(tracks || []);
 
         if (t && t['@attr'] && t['@attr']['nowplaying'] === 'true') {
           // Last.fm says something is actively scrobbling right now — highest
           // priority per requested order (Last.fm first, then Discord).
           var artistName = t.artist && t.artist['#text'];
+          var albumName  = t.album  && t.album['#text'];
           resolveArt(t.image, t.name, artistName).then(function (art) {
             var payload = {
               label: 'Now playing',
               isLive: true,
               track: t.name,
               artist: artistName,
+              album: albumName,
               art: art,
               link: t.url,
               linkText: 'Open track \u2197'
@@ -370,12 +502,14 @@
         // as "last played" rather than "now playing".
         if (t) {
           var artistName2 = t.artist && t.artist['#text'];
+          var albumName2  = t.album  && t.album['#text'];
           resolveArt(t.image, t.name, artistName2).then(function (art) {
             var payload = {
               label: 'Last played',
               isLive: false,
               track: t.name,
               artist: artistName2,
+              album: albumName2,
               art: art,
               link: t.url,
               linkText: 'Open track \u2197'
@@ -394,15 +528,69 @@
       });
   }
 
+  /* ------------------------------------------------------------ */
+  /* Recently played list — small history strip under the hero row */
+  /* ------------------------------------------------------------ */
+  function renderRecentList(tracks) {
+    var listEl = document.getElementById('liveMusicRecentList');
+    if (!listEl) return;
+    // Skip the currently-playing / most recent one because it's already
+    // shown in the hero row; take up to the next 4.
+    var items = tracks.slice(1, 5);
+    if (!items.length) { listEl.innerHTML = ''; return; }
+    var html = '';
+    for (var i = 0; i < items.length; i++) {
+      var t = items[i];
+      var artistName = t.artist && t.artist['#text'];
+      var art = pickArt(t.image);
+      var thumb = art
+        ? '<img src="' + art + '" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">'
+        : '<span class="live-card__recent-fallback"></span>';
+      var when = (t.date && t.date['#text']) ? relativeTime(new Date(t.date['#text'] + ' UTC')) : 'just now';
+      html += '<li class="live-card__recent-item">'
+           + '<a href="' + (t.url || '#') + '" target="_blank" rel="noopener">'
+           + '<span class="live-card__recent-thumb">' + thumb + '</span>'
+           + '<span class="live-card__recent-meta">'
+           + '<span class="live-card__recent-track">' + escapeHtml(t.name) + '</span>'
+           + '<span class="live-card__recent-artist">' + escapeHtml(artistName || '') + '</span>'
+           + '</span>'
+           + '<span class="live-card__recent-when">' + when + '</span>'
+           + '</a></li>';
+    }
+    listEl.innerHTML = html;
+  }
+
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+  function relativeTime(d) {
+    if (!(d instanceof Date) || isNaN(d)) return 'a while ago';
+    var s = Math.max(1, Math.round((Date.now() - d.getTime()) / 1000));
+    if (s < 60) return s + 's ago';
+    if (s < 3600) return Math.round(s / 60) + 'm ago';
+    if (s < 86400) return Math.round(s / 3600) + 'h ago';
+    return Math.round(s / 86400) + 'd ago';
+  }
+
   function fetchLastfmStats() {
-    var scrobblesEl = document.getElementById('liveMusicScrobbles');
-    var topArtistEl = document.getElementById('liveMusicTopArtist');
+    var scrobblesEl   = document.getElementById('liveMusicScrobbles');
+    var topArtistEl   = document.getElementById('liveMusicTopArtist');
+    var topAlbumEl    = document.getElementById('liveMusicTopAlbum');
+    var artistCountEl = document.getElementById('liveMusicArtistCount');
 
     var infoUrl = 'https://ws.audioscrobbler.com/2.0/?method=user.getinfo'
       + '&user=' + encodeURIComponent(LASTFM_USER) + '&api_key=' + LASTFM_API_KEY + '&format=json';
-    var topUrl = 'https://ws.audioscrobbler.com/2.0/?method=user.gettopartists'
+    var topArtistUrl = 'https://ws.audioscrobbler.com/2.0/?method=user.gettopartists'
       + '&user=' + encodeURIComponent(LASTFM_USER) + '&api_key=' + LASTFM_API_KEY
       + '&format=json&period=7day&limit=1';
+    var topAlbumUrl = 'https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums'
+      + '&user=' + encodeURIComponent(LASTFM_USER) + '&api_key=' + LASTFM_API_KEY
+      + '&format=json&period=7day&limit=1';
+    var artistCountUrl = 'https://ws.audioscrobbler.com/2.0/?method=user.gettopartists'
+      + '&user=' + encodeURIComponent(LASTFM_USER) + '&api_key=' + LASTFM_API_KEY
+      + '&format=json&period=overall&limit=1';
 
     fetch(infoUrl, { cache: 'no-store' })
       .then(function (res) { if (!res.ok) throw new Error('http ' + res.status); return res.json(); })
@@ -412,7 +600,7 @@
       })
       .catch(function () { if (scrobblesEl) scrobblesEl.textContent = '\u2014'; });
 
-    fetch(topUrl, { cache: 'no-store' })
+    fetch(topArtistUrl, { cache: 'no-store' })
       .then(function (res) { if (!res.ok) throw new Error('http ' + res.status); return res.json(); })
       .then(function (json) {
         var artists = json && json.topartists && json.topartists.artist;
@@ -420,6 +608,27 @@
         if (topArtistEl) topArtistEl.textContent = (top && top.name) || 'No plays this week';
       })
       .catch(function () { if (topArtistEl) topArtistEl.textContent = '\u2014'; });
+
+    fetch(topAlbumUrl, { cache: 'no-store' })
+      .then(function (res) { if (!res.ok) throw new Error('http ' + res.status); return res.json(); })
+      .then(function (json) {
+        var albums = json && json.topalbums && json.topalbums.album;
+        var top = Array.isArray(albums) ? albums[0] : albums;
+        if (topAlbumEl) topAlbumEl.textContent = (top && top.name) || 'No album plays';
+      })
+      .catch(function () { if (topAlbumEl) topAlbumEl.textContent = '\u2014'; });
+
+    // Unique artists count = Last.fm's overall top-artists list total, which
+    // is the same as "how many distinct artists you've scrobbled" — cheapest
+    // way to surface it without walking every page of history.
+    fetch(artistCountUrl, { cache: 'no-store' })
+      .then(function (res) { if (!res.ok) throw new Error('http ' + res.status); return res.json(); })
+      .then(function (json) {
+        var attr  = json && json.topartists && json.topartists['@attr'];
+        var total = attr && parseInt(attr.total, 10);
+        if (artistCountEl && !isNaN(total)) artistCountEl.textContent = formatCompactNumber(total);
+      })
+      .catch(function () { if (artistCountEl) artistCountEl.textContent = '\u2014'; });
   }
 
   /* ------------------------------------------------------------ */

@@ -685,6 +685,7 @@
     initHeroPortrait();
     initCommandPalette();
     initScrollSpy();
+    initArtsFocus();
 
     if (hasScrollTrigger) {
       setTimeout(function () { ScrollTrigger.refresh(); }, 300);
@@ -964,6 +965,7 @@
       { g: 'External',   t: 'Spotify',      d: 'The_Berlin',              h: 'https://open.spotify.com/user/31xz5ux4pziergil5hsla5pzss4y', ext: true, ico: '↗' },
       { g: 'External',   t: 'Last.fm',      d: 'The_Berlin',              h: 'https://www.last.fm/user/The_Berlin',                       ext: true, ico: '↗' },
       { g: 'External',   t: 'Discord',      d: 'yashylash',               h: 'https://discord.com/users/848100520509308989',              ext: true, ico: '↗' },
+      { g: 'External',   t: 'AetherOS',     d: 'Live demo · try the OS',  h: 'https://meyashverma.github.io/AetherOS-Prod/',                              ext: true, ico: '↗' },
       { g: 'External',   t: 'Google Cloud', d: 'Skills profile · Gold',   h: 'https://www.skills.google/public_profiles/a8a49bbd-9ef0-46d9-b3bd-ea25d115b90b', ext: true, ico: '↗' },
       { g: 'Actions',    t: 'Send email',   d: '1yash2verma3@gmail.com',  h: 'mailto:1yash2verma3@gmail.com',                              ico: '✉' },
       { g: 'Actions',    t: 'Copy email',   d: '1yash2verma3@gmail.com',  action: 'copy-email',                                            ico: '⎘' }
@@ -1138,6 +1140,31 @@
       document.dispatchEvent(e);
     });
     chip.style.cursor = 'pointer';
+  }
+
+  /* ----------------------------------------------------------
+     Arts focus mode — hovering any card dims all siblings and
+     brings the hovered one to full colour. Uses a class on the
+     grid so we can drive the dim state from CSS.
+     ---------------------------------------------------------- */
+  function initArtsFocus() {
+    var grid = document.getElementById('artsGrid');
+    if (!grid) return;
+    var cards = grid.querySelectorAll('.arts-card');
+    if (!cards.length) return;
+
+    grid.addEventListener('mouseenter', function () { grid.classList.add('is-focusing'); }, true);
+    grid.addEventListener('mouseleave', function () { grid.classList.remove('is-focusing'); });
+
+    cards.forEach(function (c) {
+      c.addEventListener('mouseenter', function () {
+        cards.forEach(function (x) { x.classList.remove('is-focused'); });
+        c.classList.add('is-focused');
+      });
+    });
+    grid.addEventListener('mouseleave', function () {
+      cards.forEach(function (x) { x.classList.remove('is-focused'); });
+    });
   }
 
   if (document.readyState === 'loading') {
