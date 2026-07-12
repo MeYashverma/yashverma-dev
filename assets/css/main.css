@@ -4112,3 +4112,88 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
   .game-shelf__item--duo .game-shelf__duo img { height: 177px !important; }
   .gta-countdown__timer strong { font-size: 17px; }
 }
+
+/* ============================================================
+   v12 — GTA VI split-flap countdown
+   ============================================================ */
+.gta-flip-clock { align-items: start; perspective: 900px; }
+.gta-flip-clock .gta-flip-unit {
+  display: grid; gap: 8px; min-width: 0;
+  padding: 0; border: 0; border-radius: 0; background: transparent;
+}
+.gta-flip-clock .gta-flip-card {
+  display: block; position: relative; min-width: 0; height: 72px;
+  padding: 0; overflow: visible; border: 0; border-radius: 10px;
+  background: #1b111f; perspective: 500px;
+  box-shadow: 0 14px 24px -16px rgba(0,0,0,.95), inset 0 0 0 1px rgba(255,255,255,.1);
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+}
+.gta-flip-card::before {
+  content: ''; position: absolute; z-index: 7; left: 0; right: 0; top: 50%;
+  height: 1px; background: rgba(0,0,0,.72); box-shadow: 0 -1px rgba(255,255,255,.055);
+}
+.gta-flip-card::after {
+  content: ''; position: absolute; z-index: 8; top: calc(50% - 3px); left: 5px;
+  width: calc(100% - 10px); height: 6px; border-radius: 1px;
+  background: linear-gradient(90deg,#080609 0 4px,transparent 4px calc(100% - 4px),#080609 calc(100% - 4px));
+}
+.gta-countdown__timer .gta-flip-half {
+  display: block; position: absolute; left: 0; right: 0; height: 50%;
+  margin: 0; padding: 0; overflow: hidden; color: #fff;
+  background: linear-gradient(180deg,#2b1a2e,#211424);
+  font-family: var(--font-mono); transform-style: preserve-3d;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.gta-countdown__timer .gta-flip-half--top {
+  top: 0; border-radius: 10px 10px 0 0; transform-origin: 50% 100%;
+}
+.gta-countdown__timer .gta-flip-half--bottom {
+  bottom: 0; border-radius: 0 0 10px 10px; transform-origin: 50% 0;
+  background: linear-gradient(180deg,#1a101d,#221426);
+}
+.gta-flip-half b {
+  display: flex; position: absolute; left: 0; right: 0; height: 72px;
+  align-items: center; justify-content: center;
+  font-size: clamp(22px,2.7vw,34px); font-weight: 500; line-height: 72px;
+  letter-spacing: -.035em; text-shadow: 0 2px 0 rgba(0,0,0,.4);
+}
+.gta-flip-half--top b { top: 0; }
+.gta-flip-half--bottom b { bottom: 0; }
+.gta-flip-static { z-index: 1; }
+.gta-flip-fold-top { z-index: 5; transform: rotateX(0deg); }
+.gta-flip-fold-bottom { z-index: 4; transform: rotateX(90deg); }
+.gta-flip-card.is-flipping .gta-flip-fold-top {
+  animation: gtaFlipTop .3s cubic-bezier(.55,.06,.68,.19) forwards;
+}
+.gta-flip-card.is-flipping .gta-flip-fold-bottom {
+  animation: gtaFlipBottom .34s .3s cubic-bezier(.22,.61,.36,1) forwards;
+}
+.gta-flip-unit__label {
+  display: block !important; margin: 0 !important; color: rgba(255,255,255,.36) !important;
+  font-family: var(--font-mono); font-size: 7px !important;
+  letter-spacing: .14em; text-align: center; text-transform: uppercase;
+}
+@keyframes gtaFlipTop {
+  0% { transform: rotateX(0deg); filter: brightness(1); }
+  100% { transform: rotateX(-90deg); filter: brightness(.55); }
+}
+@keyframes gtaFlipBottom {
+  0% { transform: rotateX(90deg); filter: brightness(.55); }
+  100% { transform: rotateX(0deg); filter: brightness(1); }
+}
+@media (max-width: 760px) {
+  .gta-flip-clock .gta-flip-card { height: 58px; border-radius: 8px; }
+  .gta-flip-half b { height: 58px; line-height: 58px; font-size: 21px; }
+  .gta-countdown__timer .gta-flip-half--top { border-radius: 8px 8px 0 0; }
+  .gta-countdown__timer .gta-flip-half--bottom { border-radius: 0 0 8px 8px; }
+}
+@media (max-width: 390px) {
+  .gta-flip-clock { gap: 3px; }
+  .gta-flip-clock .gta-flip-card { height: 52px; }
+  .gta-flip-half b { height: 52px; line-height: 52px; font-size: 17px; }
+  .gta-flip-unit__label { font-size: 6px !important; letter-spacing: .08em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gta-flip-card.is-flipping .gta-flip-fold-top,
+  .gta-flip-card.is-flipping .gta-flip-fold-bottom { animation: none; }
+}

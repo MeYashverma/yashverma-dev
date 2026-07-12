@@ -918,6 +918,39 @@
 
     var target = Date.UTC(2026, 10, 19, 0, 0, 0);
     function pad(value, width) { return String(value).padStart(width || 2, '0'); }
+
+    function half(className, value) {
+      return '<span class="gta-flip-half ' + className + '"><b>' + value + '</b></span>';
+    }
+
+    function settle(card, value) {
+      card.classList.remove('is-flipping');
+      card.innerHTML = half('gta-flip-half--top gta-flip-static', value) +
+        half('gta-flip-half--bottom gta-flip-static', value);
+      card.dataset.value = value;
+      card.setAttribute('aria-label', value);
+    }
+
+    function flipTo(card, value) {
+      var previous = card.dataset.value;
+      if (!previous || previous === value || reducedMotion) {
+        settle(card, value);
+        return;
+      }
+      if (card._flipTimer) clearTimeout(card._flipTimer);
+      card.innerHTML =
+        half('gta-flip-half--top gta-flip-static', value) +
+        half('gta-flip-half--bottom gta-flip-static', previous) +
+        half('gta-flip-half--top gta-flip-fold-top', previous) +
+        half('gta-flip-half--bottom gta-flip-fold-bottom', value);
+      card.dataset.value = value;
+      card.setAttribute('aria-label', value);
+      // Force a style flush so the two 3D halves always start at frame zero.
+      card.offsetWidth;
+      card.classList.add('is-flipping');
+      card._flipTimer = setTimeout(function () { settle(card, value); }, 680);
+    }
+
     function update() {
       var remaining = target - Date.now();
       if (remaining <= 0) {
@@ -929,10 +962,10 @@
       var hours = Math.floor((totalSeconds % 86400) / 3600);
       var minutes = Math.floor((totalSeconds % 3600) / 60);
       var seconds = totalSeconds % 60;
-      daysEl.textContent = pad(days, 3);
-      hoursEl.textContent = pad(hours);
-      minutesEl.textContent = pad(minutes);
-      secondsEl.textContent = pad(seconds);
+      flipTo(daysEl, pad(days, 3));
+      flipTo(hoursEl, pad(hours));
+      flipTo(minutesEl, pad(minutes));
+      flipTo(secondsEl, pad(seconds));
       root.setAttribute('aria-label', days + ' days, ' + hours + ' hours, ' + minutes + ' minutes and ' + seconds + ' seconds until Grand Theft Auto VI on 19 November 2026');
     }
     update();
