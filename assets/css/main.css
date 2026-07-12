@@ -3255,3 +3255,166 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
   .shipped-card--loading span { animation: none; }
   .preloader__log-line { opacity: 1; transform: none; animation: none; }
 }
+
+/* ============================================================
+   v8 — detailed life timeline + public zero-cost lab track
+   ============================================================ */
+
+/* Wider date rail for real ranges such as 2023—Present. */
+.journey__timeline::before { left: 139px; }
+.journey-item { grid-template-columns: 115px minmax(0,1fr); }
+.journey-item__rail time { white-space: nowrap; }
+.journey-item__rail i { right: -29px; }
+
+.journey__summary-signal {
+  display: flex; position: relative; z-index: 1;
+  align-items: center; gap: 8px; margin-top: 17px;
+  padding-top: 14px; border-top: 1px solid var(--line-soft);
+  color: var(--text-dim); font-family: var(--font-mono);
+  font-size: 8.5px; line-height: 1.4; letter-spacing: .04em;
+}
+.journey__summary-signal i {
+  width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 9px var(--accent-glow);
+}
+.journey-item__logo--school svg {
+  fill: none; stroke: currentColor; stroke-width: 1.65;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.journey-item__milestone {
+  display: grid; grid-template-columns: auto auto 1fr;
+  align-items: baseline; gap: 10px; margin-top: 16px; padding: 11px 12px;
+  border: 1px solid rgba(217,255,63,.13); border-radius: 10px;
+  background: rgba(217,255,63,.035); font-family: var(--font-mono);
+}
+.journey-item__milestone span,
+.journey-item__milestone small {
+  color: var(--text-faint); font-size: 8px; letter-spacing: .11em; text-transform: uppercase;
+}
+.journey-item__milestone strong { color: var(--accent); font-size: 19px; font-weight: 500; }
+.journey-item__transition {
+  display: flex; align-items: center; gap: 10px; margin-top: 16px;
+  color: var(--text-dim); font-family: var(--font-mono); font-size: 10px;
+}
+.journey-item__transition i {
+  position: relative; width: 54px; height: 1px; background: var(--line-strong);
+}
+.journey-item__transition i::after {
+  content: ''; position: absolute; top: -3px; right: 0;
+  width: 7px; height: 7px; border-top: 1px solid var(--accent); border-right: 1px solid var(--accent);
+  transform: rotate(45deg);
+}
+.journey-results {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 17px;
+}
+.journey-results div {
+  display: grid; grid-template-columns: 1fr auto; align-items: baseline;
+  padding: 12px; border: 1px solid var(--line); border-radius: 10px;
+  background: rgba(255,255,255,.018);
+}
+.journey-results span {
+  color: var(--text-faint); font-family: var(--font-mono); font-size: 8px;
+}
+.journey-results strong {
+  color: var(--accent); font-family: var(--font-mono); font-size: 22px; font-weight: 500;
+}
+.journey-results small {
+  grid-column: 1/-1; margin-top: 4px;
+  color: var(--text-dim); font-family: var(--font-mono); font-size: 8.5px;
+}
+.journey-item__source {
+  display: inline-flex; align-items: center; min-height: 32px;
+  margin-top: 14px; color: var(--text-faint);
+  font-family: var(--font-mono); font-size: 9px;
+  transition: color .25s;
+}
+.journey-item__source:hover { color: var(--accent); }
+
+/* The experimental track is explicitly separated from formal credentials. */
+.journey-labs {
+  margin-top: clamp(70px,10vw,130px); padding-top: clamp(48px,7vw,78px);
+  border-top: 1px solid var(--line);
+}
+.journey-labs__head {
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(260px,.72fr);
+  align-items: end; gap: 40px; margin-bottom: 30px;
+}
+.journey-labs__head > div > span {
+  display: block; margin-bottom: 13px;
+  color: var(--accent); font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+}
+.journey-labs__head h3 {
+  font-family: var(--font-display); font-size: clamp(30px,5vw,56px);
+  font-weight: 550; line-height: 1; letter-spacing: -.035em;
+}
+.journey-labs__head > p {
+  color: var(--text-dim); font-size: 13px; line-height: 1.65;
+}
+.journey-labs__grid {
+  display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px;
+}
+.journey-lab {
+  display: flex; position: relative; min-width: 0; min-height: 230px;
+  flex-direction: column; padding: 21px; overflow: hidden;
+  border: 1px solid var(--line); border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgba(217,255,63,.028), transparent 58%),
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(255,255,255,.012) 27px 28px),
+    var(--panel);
+  transition: transform .35s var(--ease-out), border-color .3s, background-color .3s;
+}
+.journey-lab::after {
+  content: '↗'; position: absolute; top: 18px; right: 18px;
+  color: var(--text-faint); font-family: var(--font-mono); font-size: 14px;
+  transition: color .25s, transform .35s var(--ease-out);
+}
+.journey-lab:hover {
+  transform: translateY(-4px); border-color: rgba(217,255,63,.27); background-color: var(--panel-raised);
+}
+.journey-lab:hover::after { color: var(--accent); transform: translate(2px,-2px); }
+.journey-lab__id {
+  color: var(--accent); font-family: var(--font-mono);
+  font-size: 8px; letter-spacing: .14em;
+}
+.journey-lab > strong {
+  max-width: 82%; margin-top: 26px;
+  font-family: var(--font-display); font-size: 22px; font-weight: 550; line-height: 1.12;
+}
+.journey-lab > p {
+  max-width: 58ch; margin-top: 11px;
+  color: var(--text-dim); font-size: 12.5px; line-height: 1.6;
+}
+.journey-lab > div {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 18px;
+}
+.journey-lab > div span {
+  padding: 4px 7px; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--text-faint); font-family: var(--font-mono); font-size: 8px;
+}
+
+@media (max-width: 900px) {
+  .journey-labs__head { grid-template-columns: 1fr; gap: 17px; }
+}
+
+@media (max-width: 760px) {
+  .journey__timeline::before { left: 12px; }
+  .journey-item { grid-template-columns: 24px minmax(0,1fr); padding-top: 22px; }
+  .journey-item__card::before {
+    content: attr(data-period); display: block; margin-bottom: 10px;
+    color: var(--accent); font-family: var(--font-mono);
+    font-size: 8px; letter-spacing: .11em; text-transform: uppercase;
+  }
+  .journey-results { grid-template-columns: 1fr; }
+  .journey-item__milestone { grid-template-columns: auto auto; }
+  .journey-item__milestone small { grid-column: 1/-1; }
+  .journey-labs { margin-top: 70px; }
+  .journey-labs__grid {
+    display: flex; width: calc(100% + var(--gutter));
+    gap: 10px; overflow-x: auto; padding-right: var(--gutter);
+    scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .journey-labs__grid::-webkit-scrollbar { display: none; }
+  .journey-lab { flex: 0 0 min(85vw,340px); min-height: 250px; scroll-snap-align: start; }
+  .journey-lab:hover { transform: none; }
+}

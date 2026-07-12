@@ -418,7 +418,7 @@
       });
     });
 
-    gsap.utils.toArray('.shipped-card:not(.shipped-card--loading), .journey-item').forEach(function (el, i) {
+    gsap.utils.toArray('.shipped-card:not(.shipped-card--loading), .journey-item, .journey-lab').forEach(function (el, i) {
       gsap.fromTo(el, { opacity: 0, y: 22 }, {
         opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', delay: (i % 3) * 0.05,
         scrollTrigger: { trigger: el, start: 'top 94%' }
