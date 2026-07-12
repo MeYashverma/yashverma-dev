@@ -753,6 +753,93 @@
   }
 
   /* ------------------------------------------------------------ */
+  /* Curated game shelf viewer                                      */
+  /* ------------------------------------------------------------ */
+  function initGameViewer() {
+    var viewer = document.getElementById('gameViewer');
+    var image = document.getElementById('gameViewerImage');
+    var title = document.getElementById('gameViewerTitle');
+    var count = document.getElementById('gameViewerCount');
+    var closeBtn = document.getElementById('gameViewerClose');
+    var backdrop = document.getElementById('gameViewerBackdrop');
+    var prevBtn = document.getElementById('gameViewerPrev');
+    var nextBtn = document.getElementById('gameViewerNext');
+    var items = Array.prototype.slice.call(document.querySelectorAll('.game-shelf__item'));
+    if (!viewer || !image || !title || !items.length) return;
+
+    var current = 0;
+    var previousFocus = null;
+    var touchStartX = 0;
+
+    function itemTitle(item) {
+      var caption = item.querySelector('figcaption');
+      if (!caption) return 'Game artwork';
+      var clone = caption.cloneNode(true);
+      var number = clone.querySelector('span');
+      if (number) number.remove();
+      return clone.textContent.trim();
+    }
+
+    function render(index) {
+      current = (index + items.length) % items.length;
+      var item = items[current];
+      var source = item.querySelector('img');
+      if (!source) return;
+      image.src = source.currentSrc || source.src;
+      image.alt = source.alt || itemTitle(item);
+      title.textContent = itemTitle(item);
+      if (count) count.textContent = 'Shelf 01 · ' + String(current + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
+    }
+
+    function open(index) {
+      previousFocus = document.activeElement;
+      render(index);
+      viewer.classList.add('is-open');
+      viewer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function close() {
+      viewer.classList.remove('is-open');
+      viewer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      image.src = '';
+      if (previousFocus && previousFocus.focus) previousFocus.focus();
+    }
+
+    items.forEach(function (item, index) {
+      item.setAttribute('aria-label', 'Open artwork for ' + itemTitle(item));
+      item.addEventListener('click', function () { open(index); });
+      item.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault(); open(index);
+        }
+      });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (backdrop) backdrop.addEventListener('click', close);
+    if (prevBtn) prevBtn.addEventListener('click', function () { render(current - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { render(current + 1); });
+
+    viewer.addEventListener('touchstart', function (event) {
+      touchStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    viewer.addEventListener('touchend', function (event) {
+      var delta = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(delta) > 55) render(current + (delta < 0 ? 1 : -1));
+    }, { passive: true });
+
+    document.addEventListener('keydown', function (event) {
+      if (!viewer.classList.contains('is-open')) return;
+      if (event.key === 'Escape') close();
+      if (event.key === 'ArrowLeft') render(current - 1);
+      if (event.key === 'ArrowRight') render(current + 1);
+    });
+  }
+
+  /* ------------------------------------------------------------ */
   /* Boot sequence                                                   */
   /* ------------------------------------------------------------ */
   function boot() {
@@ -765,6 +852,7 @@
     initCounters();
     initLabFilters();
     initLightbox();
+    initGameViewer();
     initArtsFilters();
     initEmailCopy();
     initBackToTop();
