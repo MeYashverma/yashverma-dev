@@ -102,6 +102,7 @@
   <!-- HERO                                                          -->
   <!-- ============================================================ -->
   <section class="hero" id="hero">
+    <div class="hero__grid">
     <div class="hero__content">
       <div class="hero__eyebrow reveal-line">
         <span class="dot-pulse"></span> AVAILABLE FOR INTERESTING PROBLEMS — BITS PILANI · HCLTECH
@@ -138,6 +139,12 @@
           <span>Get in touch</span>
         </a>
       </div>
+    </div>
+
+    <div class="hero__portrait" aria-hidden="true">
+      <canvas class="hero__portrait-canvas" id="heroPortraitCanvas"></canvas>
+      <img class="hero__portrait-src" id="heroPortraitSrc" src="assets/images/real/portrait-hero.jpg" alt="" crossorigin="anonymous">
+    </div>
     </div>
 
     <div class="hero__foot">
@@ -622,8 +629,17 @@
   <section class="about" id="about">
     <div class="about__grid">
       <div class="about__media">
-        <div class="about__img-frame">
-          <img src="assets/images/avatar.jpg" alt="Yash Verma" loading="lazy">
+        <div class="about__portrait" id="aboutPortrait" data-mode="dot">
+          <div class="about__portrait-frame">
+            <img class="about__portrait-img about__portrait-img--photo" src="assets/images/real/portrait-hero.jpg" alt="Yash Verma" loading="lazy">
+            <img class="about__portrait-img about__portrait-img--dot" src="assets/images/avatar-dotmatrix.png" alt="" loading="lazy" aria-hidden="true">
+            <img class="about__portrait-img about__portrait-img--ascii" src="assets/images/avatar-ascii.png" alt="" loading="lazy" aria-hidden="true">
+          </div>
+          <div class="about__portrait-controls" role="tablist" aria-label="Portrait render style">
+            <button class="about__portrait-tab is-active" data-mode="dot" type="button" role="tab">Halftone</button>
+            <button class="about__portrait-tab" data-mode="ascii" type="button" role="tab">ASCII</button>
+            <button class="about__portrait-tab" data-mode="photo" type="button" role="tab">Photo</button>
+          </div>
         </div>
         <div class="about__badge">
           <span class="dot-pulse"></span> Delhi, India — IST (UTC+5:30)
@@ -734,72 +750,231 @@
           </a>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- GOOGLE CLOUD SKILLS — real badges from skills.google profile  -->
+        <!-- ============================================================ -->
+        <div class="gcloud">
+          <div class="gcloud__head">
+            <div class="gcloud__title-wrap">
+              <svg class="gcloud__logo" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#4285F4" d="M12 11.5v3h4.4c-.2 1-.9 1.9-1.9 2.5l3 2.3c1.8-1.6 2.8-4 2.8-6.8 0-.6-.1-1.3-.2-1.9L12 10.5z"/>
+                <path fill="#34A853" d="M6.6 14.3l-.7.5-2.4 1.9C5 19.7 8.2 22 12 22c2.7 0 5-.9 6.6-2.4l-3-2.3c-.9.6-2 1-3.6 1-2.8 0-5.1-1.9-5.9-4.5z"/>
+                <path fill="#FBBC04" d="M3.5 7.3C2.6 9 2 10.9 2 13s.6 4 1.5 5.7l3.1-2.4c-.3-.7-.4-1.5-.4-2.3s.1-1.6.4-2.3z"/>
+                <path fill="#EA4335" d="M12 6c1.5 0 2.9.5 4 1.5l2.9-2.9C17 2.9 14.7 2 12 2 8.2 2 5 4.3 3.5 7.6l3.1 2.4C7.3 7.4 9.5 6 12 6z"/>
+              </svg>
+              <div>
+                <span class="gcloud__eyebrow">Google Cloud Skills</span>
+                <h4 class="gcloud__title">Gold League &middot; <span>5,463 pts</span></h4>
+              </div>
+            </div>
+            <div class="gcloud__stats">
+              <div class="gcloud__stat"><span>30+</span><label>Skill badges earned</label></div>
+              <div class="gcloud__stat"><span>2025&mdash;26</span><label>Active member</label></div>
+              <div class="gcloud__stat"><span>GenAI · MLOps · DevOps</span><label>Focus areas</label></div>
+            </div>
+          </div>
+
+          <div class="gcloud__marquee" aria-hidden="true">
+            <div class="gcloud__marquee-track">
+              <!-- Track A -->
+              <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/level3-genai.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/level2-cloud-ops.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/level1-scalable.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy">
+              <!-- Track B (duplicate for seamless loop) -->
+              <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/level3-genai.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/level2-cloud-ops.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/level1-scalable.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy">
+              <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy">
+            </div>
+          </div>
+
+          <a class="gcloud__link" href="https://www.skills.google/public_profiles/a8a49bbd-9ef0-46d9-b3bd-ea25d115b90b" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">
+            View full Google Cloud Skills profile ↗
+          </a>
+        </div>
+
         <div class="favorites">
-          <h4 class="favorites__heading">A few things I'm genuinely into</h4>
+          <div class="favorites__head">
+            <span class="favorites__eyebrow">04 · Personal Ops</span>
+            <h4 class="favorites__heading">A&nbsp;few things I'm <em>genuinely</em> into</h4>
+            <p class="favorites__intro">The unfiltered tab list — what's actually running in the background of my brain when I'm not shipping code.</p>
+          </div>
+
           <div class="favorites__grid">
 
-            <div class="favorite" data-tilt>
+            <article class="favorite favorite--tall" data-tilt data-cat="tv">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/ironman-marvel.jpg" alt="Iron Man mural artwork, representing Marvel universe fandom" loading="lazy">
+                <img src="assets/images/whatilike/money-heist.jpg" alt="La Casa de Papel / Money Heist promotional artwork, red jumpsuit and Dali mask" loading="lazy">
+                <span class="favorite__badge">Netflix · Series</span>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Money Heist</span>
+                <p class="favorite__quote">&ldquo;Bella ciao&hellip; bella ciao, bella ciao, ciao, ciao.&rdquo;</p>
+                <p class="favorite__desc">The Professor's plan-inside-a-plan energy is basically how I approach every side project — over-engineered, held together with tape, somehow still works.</p>
+              </div>
+            </article>
+
+            <article class="favorite favorite--tall" data-tilt data-cat="tv">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/breaking-bad.jpg" alt="Heisenberg / Walter White portrait from Breaking Bad" loading="lazy">
+                <span class="favorite__badge">AMC · Series</span>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Breaking Bad</span>
+                <p class="favorite__quote">&ldquo;I am the one who knocks.&rdquo; — Walter White</p>
+                <p class="favorite__desc">The slow, almost algorithmic descent — a nerd optimising his way into becoming the villain. Genuinely the best character arc ever written for TV.</p>
+              </div>
+            </article>
+
+            <article class="favorite favorite--tall" data-tilt data-cat="tv">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/loki.webp" alt="Loki TVA character key art from Marvel Disney+ series" loading="lazy">
+                <span class="favorite__badge">Disney+ · Marvel</span>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Loki</span>
+                <p class="favorite__quote">&ldquo;Glorious purpose.&rdquo; — Loki Laufeyson</p>
+                <p class="favorite__desc">Multiverse chaos, morally-flexible protagonists, an entire bureaucracy for time — genuinely my favourite thing Marvel has ever put on screen.</p>
+              </div>
+            </article>
+
+            <article class="favorite" data-tilt data-cat="film">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/marvel.png" alt="Iron Man in the Nano Gauntlet, Avengers Endgame" loading="lazy">
+                <span class="favorite__badge">MCU · Film</span>
               </div>
               <div class="favorite__body">
                 <span class="favorite__tag">Marvel Universe</span>
                 <p class="favorite__quote">&ldquo;I am Iron Man.&rdquo; — Tony Stark</p>
-                <p class="favorite__desc">Iron Man's genius-with-a-god-complex energy and Spider-Man's "I have no idea what I'm doing but I'll figure it out" optimism — that's basically my whole personality split in two.</p>
+                <p class="favorite__desc">Iron Man's genius-with-a-god-complex and Spider-Man's &ldquo;I have no idea what I'm doing but I'll figure it out&rdquo; energy — basically my personality split in two.</p>
               </div>
-            </div>
+            </article>
 
-            <div class="favorite" data-tilt>
+            <article class="favorite" data-tilt data-cat="film">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/nature-escape.jpg" alt="Fantasy landscape painting of a cherry blossom tree over lava and mountains, representing nature escapes" loading="lazy">
+                <img src="assets/images/whatilike/interstellar.webp" alt="Gargantua black hole from Interstellar movie" loading="lazy">
+                <span class="favorite__badge">Sci-fi · Film</span>
               </div>
               <div class="favorite__body">
-                <span class="favorite__tag">Nature Escapes</span>
-                <p class="favorite__quote">A secluded forest clearing — only rustling leaves and birdsong.</p>
-                <p class="favorite__desc">After enough hours staring at a terminal, the only thing that resets me is somewhere with zero signal and too many trees.</p>
+                <span class="favorite__tag">Interstellar</span>
+                <p class="favorite__quote">&ldquo;Do not go gentle into that good night.&rdquo;</p>
+                <p class="favorite__desc">Nolan + Zimmer + relativistic time dilation as a plot device — the film that made me care about physics more than any classroom did.</p>
               </div>
-            </div>
+            </article>
 
-            <div class="favorite" data-tilt>
+            <article class="favorite" data-tilt data-cat="anime">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/gtr-dreamcar.jpg" alt="White Nissan GT-R R34 modified car at night, representing dream car" loading="lazy">
-              </div>
-              <div class="favorite__body">
-                <span class="favorite__tag">Dream Car</span>
-                <p class="favorite__quote">Nissan GT-R R34 — style, performance, engineering excellence.</p>
-                <p class="favorite__desc">I will find a way to bring up the R34 in a conversation about literally anything. Ask my friends. Actually, don't.</p>
-              </div>
-            </div>
-
-            <div class="favorite favorite--icon" data-tilt>
-              <div class="favorite__media favorite__media--icon">
-                <svg viewBox="0 0 24 24" class="favorite__icon-svg"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
-              </div>
-              <div class="favorite__body">
-                <span class="favorite__tag">Prestige &amp; Heist TV</span>
-                <p class="favorite__quote">Meticulous plans, morally grey masterminds, one impossible job.</p>
-                <p class="favorite__desc">Money Heist's chaos-with-a-plan energy, Breaking Bad's slow "wait, am I the bad guy now?" descent, and Loki's chaotic-good multiverse nonsense — I'll rewatch all three before I finish a single side project.</p>
-              </div>
-            </div>
-
-            <div class="favorite favorite--icon" data-tilt>
-              <div class="favorite__media favorite__media--icon">
-                <svg viewBox="0 0 24 24" class="favorite__icon-svg"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
+                <img src="assets/images/whatilike/anime-aot.jpg" alt="Attack on Titan cinematic wallpaper" loading="lazy">
+                <span class="favorite__badge">MAPPA · Anime</span>
               </div>
               <div class="favorite__body">
                 <span class="favorite__tag">Anime &amp; Games</span>
-                <p class="favorite__quote">If it has a gacha banner or a battle pass, I've probably built an API around it.</p>
-                <p class="favorite__desc">Half my GitHub is AniList, Jikan and Genshin data wired into Discord — waifu-of-the-day bots, adventure-rank trackers, and a scroll-worthy backlog of anime I swear I'll finish.</p>
+                <p class="favorite__quote">If it has a gacha banner or a battle pass, I've built an API around it.</p>
+                <p class="favorite__desc">Half my GitHub is AniList / Jikan / Genshin data wired into Discord — waifu-of-the-day bots, adventure-rank trackers, and a backlog I swear I'll finish.</p>
               </div>
-            </div>
+            </article>
+
+            <article class="favorite" data-tilt data-cat="life">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/nature-escape.jpg" alt="Fantasy landscape painting representing nature escapes" loading="lazy">
+                <span class="favorite__badge">Off-grid</span>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Nature Escapes</span>
+                <p class="favorite__quote">A forest clearing — only rustling leaves and birdsong.</p>
+                <p class="favorite__desc">After enough hours staring at a terminal, the only thing that resets me is somewhere with zero signal and too many trees.</p>
+              </div>
+            </article>
+
+            <article class="favorite" data-tilt data-cat="life">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/gtr-dreamcar.jpg" alt="Nissan GT-R R34 at night" loading="lazy">
+                <span class="favorite__badge">Dream garage</span>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Nissan GT-R R34</span>
+                <p class="favorite__quote">Style, performance, engineering excellence — one car.</p>
+                <p class="favorite__desc">I will find a way to bring up the R34 in a conversation about literally anything. Ask my friends. Actually, don't.</p>
+              </div>
+            </article>
+
+            <article class="favorite" data-tilt data-cat="gear">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/keyboard.png" alt="Retro mechanical keyboard with RGB backlight" loading="lazy">
+                <span class="favorite__badge">Gear · Setup</span>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Mechanical Keyboards</span>
+                <p class="favorite__quote">The correct answer is always <em>one more keyboard</em>.</p>
+                <p class="favorite__desc">Retro caps, tactile switches, RGB nobody asked for — the closest thing I have to a physical hobby that isn't drawing.</p>
+              </div>
+            </article>
 
           </div>
 
-          <ul class="favorites__list">
-            <li><span>Favourite singer</span>Krishnakumar Kunnath &mdash; KK</li>
-            <li><span>Favourite song</span>Sunflower &mdash; Post Malone</li>
-            <li><span>Currently drawing in</span>Ibispaint&nbsp;X</li>
-          </ul>
+          <div class="favorites-featured">
+            <h5 class="favorites-featured__heading">On repeat right now</h5>
+
+            <a class="fav-card" href="https://open.spotify.com/artist/4fEkbug6kZzzJ8eYX6Kbbp" target="_blank" rel="noopener" data-tilt data-cursor="text" data-cursor-text="LISTEN">
+              <div class="fav-card__media fav-card__media--portrait">
+                <img src="assets/images/favs/kk-singer.jpg" alt="KK — Krishnakumar Kunnath performing live" loading="lazy">
+              </div>
+              <div class="fav-card__body">
+                <span class="fav-card__kicker">Favourite singer</span>
+                <h6 class="fav-card__title">Krishnakumar Kunnath <span>— KK</span></h6>
+                <p class="fav-card__meta">Yaaron · Pal · Aankhon Mein Teri · Tadap Tadap</p>
+                <span class="fav-card__link">Open on Spotify ↗</span>
+              </div>
+            </a>
+
+            <a class="fav-card" href="https://open.spotify.com/track/3KkXRkHbMCARz0aVfEt68P" target="_blank" rel="noopener" data-tilt data-cursor="text" data-cursor-text="PLAY">
+              <div class="fav-card__media fav-card__media--square">
+                <img src="assets/images/favs/sunflower.jpg" alt="Sunflower — Post Malone &amp; Swae Lee, Spider-Verse cover art" loading="lazy">
+                <span class="fav-card__vinyl" aria-hidden="true"></span>
+              </div>
+              <div class="fav-card__body">
+                <span class="fav-card__kicker">Favourite song</span>
+                <h6 class="fav-card__title">Sunflower <span>— Post Malone &amp; Swae Lee</span></h6>
+                <p class="fav-card__meta">Spider-Man: Into the Spider-Verse · 2018 · 2:38</p>
+                <span class="fav-card__link">Open in Spotify ↗</span>
+              </div>
+            </a>
+
+            <a class="fav-card" href="https://ibispaint.com/" target="_blank" rel="noopener" data-tilt data-cursor="text" data-cursor-text="OPEN">
+              <div class="fav-card__media fav-card__media--square">
+                <img src="assets/images/favs/ibispaint.webp" alt="ibisPaint X app screenshot" loading="lazy">
+              </div>
+              <div class="fav-card__body">
+                <span class="fav-card__kicker">Currently drawing in</span>
+                <h6 class="fav-card__title">ibisPaint <span>X</span></h6>
+                <p class="fav-card__meta">Mobile · Digital ink &amp; colour · See the Arts section for output</p>
+                <span class="fav-card__link">ibispaint.com ↗</span>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -817,45 +992,56 @@
       </div>
 
       <div class="gallery__masonry">
-        <figure class="gallery-photo gallery-photo--natural">
-          <img src="assets/images/gallery/portrait-1.jpg" alt="Yash on a hike in the mountains" loading="lazy">
-          <figcaption>Somewhere above the treeline</figcaption>
+
+        <figure class="gallery-photo gallery-photo--natural gallery-photo--wide gallery-photo--swap" data-swap="4200">
+          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/waterfall-1-thumbs.jpg" alt="Yash at a waterfall in Sikkim" loading="lazy"></div>
+          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-2-crossed.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-3-side.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-4-turn.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-5-armsopen.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-6-armsside.jpg" alt="" loading="lazy"></div>
         </figure>
-        <figure class="gallery-photo gallery-photo--mono">
-          <img src="assets/images/gallery/portrait-2.jpg" alt="Yash outdoors, monochrome treatment" loading="lazy">
-          <figcaption>Same trip, different light</figcaption>
+
+        <figure class="gallery-photo gallery-photo--warm gallery-photo--swap" data-swap="4800">
+          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/office-selfie-1.jpg" alt="Yash at HCLTech office" loading="lazy"></div>
+          <div class="gallery-photo__frame"><img src="assets/images/real/office-selfie-2.jpg" alt="" loading="lazy"></div>
         </figure>
+
+        <figure class="gallery-photo gallery-photo--mono gallery-photo--swap" data-swap="5200">
+          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/mirror-full.jpg" alt="Yash mirror shot" loading="lazy"></div>
+          <div class="gallery-photo__frame"><img src="assets/images/real/mirror-close.jpg" alt="" loading="lazy"></div>
+        </figure>
+
+        <figure class="gallery-photo gallery-photo--cool gallery-photo--swap" data-swap="5600">
+          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/night-1.jpg" alt="Yash on a night street" loading="lazy"></div>
+          <div class="gallery-photo__frame"><img src="assets/images/real/night-2.jpg" alt="" loading="lazy"></div>
+        </figure>
+
         <figure class="gallery-photo gallery-photo--duotone">
-          <img src="assets/images/gallery/portrait-3.jpg" alt="Yash portrait with duotone accent treatment" loading="lazy">
-          <figcaption>Between takes</figcaption>
+          <img src="assets/images/real/aesthetic-field.jpg" alt="Sunset field with silhouetted tree" loading="lazy">
         </figure>
-        <figure class="gallery-photo gallery-photo--warm">
-          <img src="assets/images/gallery/portrait-4.jpg" alt="Yash portrait with warm film treatment" loading="lazy">
-          <figcaption>Golden hour, mostly by accident</figcaption>
-        </figure>
-        <figure class="gallery-photo gallery-photo--cool">
-          <img src="assets/images/gallery/portrait-5.jpg" alt="Yash portrait with cool tone treatment" loading="lazy">
-          <figcaption>Fewer bugs to fix out here</figcaption>
-        </figure>
+
         <figure class="gallery-photo gallery-photo--contrast">
-          <img src="assets/images/gallery/portrait-6.jpg" alt="Yash portrait, high contrast treatment" loading="lazy">
-          <figcaption>An early one, for the archive</figcaption>
+          <img src="assets/images/real/me-alt-1.jpg" alt="Yash outdoor portrait" loading="lazy">
         </figure>
+
         <figure class="gallery-photo gallery-photo--natural gallery-photo--wide">
-          <img src="assets/images/gallery/setup.jpg" alt="Yash's desk and workstation setup" loading="lazy">
-          <figcaption>Where most of this site got built</figcaption>
+          <img src="assets/images/real/hcltech-office.jpg" alt="HCLTech campus at golden hour" loading="lazy">
         </figure>
+
       </div>
 
       <div class="gallery__split">
         <div class="gallery__skies">
           <h3 class="gallery__sub-heading">Sky, Unedited</h3>
           <div class="gallery__sky-stack">
-            <figure class="gallery-sky">
-              <img src="assets/images/gallery/sky-1.jpg" alt="Sunset sky with orange and purple clouds, shot on phone" loading="lazy">
+            <figure class="gallery-sky gallery-photo--swap" data-swap="6200">
+              <div class="gallery-photo__frame is-visible"><img src="assets/images/real/sky-1.jpg" alt="Sunset sky" loading="lazy"></div>
+              <div class="gallery-photo__frame"><img src="assets/images/real/sky-2.jpg" alt="" loading="lazy"></div>
             </figure>
-            <figure class="gallery-sky">
-              <img src="assets/images/gallery/sky-2.jpg" alt="Dusk sky panorama, shot on phone" loading="lazy">
+            <figure class="gallery-sky gallery-photo--swap" data-swap="6800">
+              <div class="gallery-photo__frame is-visible"><img src="assets/images/real/sky-moon-1.jpg" alt="Sky and moon" loading="lazy"></div>
+              <div class="gallery-photo__frame"><img src="assets/images/real/sky-moon-2.jpg" alt="" loading="lazy"></div>
             </figure>
           </div>
           <p class="gallery__caption-note">No filters — just whatever the sky was doing when I happened to look up.</p>
@@ -864,7 +1050,7 @@
         <div class="gallery__cert">
           <h3 class="gallery__sub-heading">On Paper</h3>
           <figure class="gallery-cert">
-            <img src="assets/images/gallery/certificate.png" alt="Certificate of Appreciation awarded to Yash Verma" loading="lazy">
+            <img src="assets/images/real/certificate.jpg" alt="Certificate of Appreciation awarded to Yash Verma" loading="lazy">
           </figure>
           <p class="gallery__caption-note">Proof that showing up and coordinating things occasionally gets noticed too.</p>
         </div>

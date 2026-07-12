@@ -680,10 +680,259 @@
     initMagnetic();
     initTextScramble();
     initTilt();
+    initAboutPortrait();
+    initGallerySwap();
+    initHeroPortrait();
 
     if (hasScrollTrigger) {
       setTimeout(function () { ScrollTrigger.refresh(); }, 300);
     }
+  }
+
+  /* ----------------------------------------------------------
+     About portrait — three static render modes (halftone,
+     ASCII, photo). No auto-cycle, no scan-lines, no HUD —
+     just three clickable tabs that fade between renders.
+     ---------------------------------------------------------- */
+  function initAboutPortrait() {
+    var wrap = document.getElementById('aboutPortrait');
+    if (!wrap) return;
+    var tabs = wrap.querySelectorAll('.about__portrait-tab');
+    if (!tabs.length) return;
+
+    function setMode(mode) {
+      wrap.dataset.mode = mode;
+      tabs.forEach(function (t) {
+        t.classList.toggle('is-active', t.dataset.mode === mode);
+      });
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { setMode(t.dataset.mode); });
+    });
+  }
+
+  /* ----------------------------------------------------------
+     Gallery photo swap — same-location pose pairs cross-fade
+     silently on a long cadence (4-6s per card, staggered so
+     they never flip in lockstep). Pauses on hover so people
+     can actually study a shot, and pauses when the card is
+     off-screen so we don't waste cycles / battery.
+     ---------------------------------------------------------- */
+  function initGallerySwap() {
+    var groups = document.querySelectorAll('[data-swap]');
+    if (!groups.length) return;
+
+    groups.forEach(function (g) {
+      var frames = g.querySelectorAll('.gallery-photo__frame');
+      if (frames.length < 2) return;
+
+      var i = 0;
+      var interval = parseInt(g.dataset.swap, 10) || 4500;
+      var offset = 400 + Math.round(Math.random() * 1800);
+      var timer = null;
+      var paused = false;
+      var visible = true;
+
+      function tick() {
+        if (paused || !visible) return;
+        frames[i].classList.remove('is-visible');
+        i = (i + 1) % frames.length;
+        frames[i].classList.add('is-visible');
+      }
+
+      function start() {
+        if (timer) return;
+        timer = setInterval(tick, interval);
+      }
+      function stop() {
+        if (!timer) return;
+        clearInterval(timer);
+        timer = null;
+      }
+
+      g.addEventListener('mouseenter', function () { paused = true; stop(); });
+      g.addEventListener('mouseleave', function () { paused = false; start(); });
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            visible = e.isIntersecting;
+            if (visible) start(); else stop();
+          });
+        }, { threshold: 0.15 });
+        io.observe(g);
+      }
+
+      setTimeout(start, offset);
+    });
+  }
+
+  /* ----------------------------------------------------------
+     Hero portrait — live canvas dot-matrix render of the real
+     photo. Reads pixel luminance from the source <img> and
+     paints a grid of lime dots (larger = darker), reacts to
+     the mouse pointer with a soft ripple, and gently breathes
+     when idle. No labels, no chrome — it's just an image,
+     rendered a different way.
+     ---------------------------------------------------------- */
+  function initHeroPortrait() {
+    var canvas = document.getElementById('heroPortraitCanvas');
+    var srcImg = document.getElementById('heroPortraitSrc');
+    if (!canvas || !srcImg) return;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var accent = '#d9ff3f';
+    var GRID = 10;              // spacing between dots in CSS px (dense but readable)
+    var DOT_MAX = 4.4;          // largest dot radius
+    var luminance = null;       // sampled Float32Array of grayscale (0..1) values
+
+    // Off-screen sampling canvas — small resolution so the luminance grid
+    // is fast to read and we don't get sub-pixel jitter as the layout
+    // resizes.
+    var sample = document.createElement('canvas');
+    var sctx = sample.getContext('2d');
+
+    var mouse = { x: -9999, y: -9999, hovering: false };
+    var t0 = performance.now();
+    var lastPaint = 0;
+    var cols = 0, rows = 0, w = 0, h = 0;
+
+    function resize() {
+      var rect = canvas.parentElement.getBoundingClientRect();
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = Math.max(160, Math.floor(rect.width));
+      h = Math.max(160, Math.floor(rect.height));
+      canvas.width  = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width  = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      cols = Math.floor(w / GRID);
+      rows = Math.floor(h / GRID);
+      sample.width  = cols;
+      sample.height = rows;
+
+      if (srcImg.complete && srcImg.naturalWidth) sampleImage();
+    }
+
+    // Cover-fit the source image into the sample canvas, then read pixels
+    // and store a Float32Array of luminance values (one per grid cell).
+    function sampleImage() {
+      if (!cols || !rows) return;
+      var iw = srcImg.naturalWidth;
+      var ih = srcImg.naturalHeight;
+      if (!iw || !ih) return;
+
+      var scale = Math.max(cols / iw, rows / ih);
+      var dw = iw * scale;
+      var dh = ih * scale;
+      var dx = (cols - dw) / 2;
+      var dy = (rows - dh) / 2;
+
+      sctx.clearRect(0, 0, cols, rows);
+      sctx.drawImage(srcImg, dx, dy, dw, dh);
+
+      try {
+        var data = sctx.getImageData(0, 0, cols, rows).data;
+        var lum = new Float32Array(cols * rows);
+        for (var i = 0, p = 0; i < lum.length; i++, p += 4) {
+          // Standard Rec. 709 luminance.
+          lum[i] = (0.2126 * data[p] + 0.7152 * data[p + 1] + 0.0722 * data[p + 2]) / 255;
+        }
+        luminance = lum;
+      } catch (e) {
+        // Cross-origin taint — unlikely because we host the image ourselves,
+        // but if it happens we'll just paint a soft placeholder pattern.
+        luminance = null;
+      }
+    }
+
+    function paint(now) {
+      if (!luminance) return requestAnimationFrame(paint);
+
+      var elapsed = (now - t0) / 1000;
+      // Global breathing scale (very subtle — no more than ±1.5%).
+      var breathe = reduced ? 1 : 1 + Math.sin(elapsed * 0.9) * 0.012;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = accent;
+
+      var cx = w / 2;
+      var cy = h / 2;
+      var mx = mouse.x, my = mouse.y;
+      var influence = mouse.hovering ? 130 : 0;
+
+      for (var r = 0; r < rows; r++) {
+        for (var c = 0; c < cols; c++) {
+          var l = luminance[r * cols + c];
+          if (l >= 0.985) continue;                      // pure white → skip
+          // Invert: dark pixels → big dots.
+          var base = (1 - l);
+          if (base < 0.05) continue;
+
+          var x = c * GRID + GRID / 2;
+          var y = r * GRID + GRID / 2;
+
+          // Radial breathing origin at the center for a very light pulse.
+          var breatheR = breathe;
+
+          // Mouse push — dots grow slightly and shift AWAY from the pointer
+          // (like a soft magnetic field). Effect fades with distance.
+          var mfx = 0, mfy = 0, mBoost = 0;
+          if (influence) {
+            var dx = x - mx, dy = y - my;
+            var d2 = dx * dx + dy * dy;
+            var r2 = influence * influence;
+            if (d2 < r2 * 4) {
+              var d = Math.sqrt(d2) || 1;
+              var pull = Math.max(0, 1 - d / (influence * 1.6));
+              mBoost = pull * 0.6;
+              mfx = (dx / d) * pull * 6;
+              mfy = (dy / d) * pull * 6;
+            }
+          }
+
+          var rad = Math.min(DOT_MAX, base * DOT_MAX * breatheR + mBoost);
+          if (rad < 0.35) continue;
+
+          ctx.globalAlpha = Math.min(1, 0.28 + base * 0.9);
+          ctx.beginPath();
+          ctx.arc(x + mfx, y + mfy, rad, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      requestAnimationFrame(paint);
+    }
+
+    // Wire up interaction
+    canvas.addEventListener('mousemove', function (e) {
+      var r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+      mouse.hovering = true;
+    });
+    canvas.addEventListener('mouseleave', function () {
+      mouse.hovering = false;
+      mouse.x = mouse.y = -9999;
+    });
+
+    // Sample once the source image is ready, then start paint loop
+    function ready() { sampleImage(); requestAnimationFrame(paint); }
+    if (srcImg.complete && srcImg.naturalWidth) ready();
+    else srcImg.addEventListener('load', ready);
+
+    resize();
+    window.addEventListener('resize', function () {
+      // Throttle resize sampling — expensive on rapid drags.
+      clearTimeout(resize._t);
+      resize._t = setTimeout(resize, 120);
+    });
   }
 
   if (document.readyState === 'loading') {

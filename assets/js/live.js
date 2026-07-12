@@ -46,9 +46,49 @@
   }
 
   function pickArt(images) {
-    if (!images || !images.length) return FALLBACK_ART;
+    if (!images || !images.length) return null;
     var url = images[images.length - 1]['#text'];
-    return isUsableArt(url) ? url : FALLBACK_ART;
+    return isUsableArt(url) ? url : null;
+  }
+
+  /* ------------------------------------------------------------ */
+  /* iTunes cover-art fallback (public, CORS-open, no key needed)   */
+  /* When Last.fm returns their blank grey placeholder — or nothing */
+  /* at all — search the iTunes Search API for the track and pull   */
+  /* the highest-res artwork available. Results cached in-memory to */
+  /* avoid hammering the endpoint on every poll for the same song.  */
+  /* ------------------------------------------------------------ */
+  var iTunesCache = Object.create(null);
+
+  function iTunesLookup(track, artist) {
+    var key = (artist || '') + '::' + (track || '');
+    if (iTunesCache[key]) return Promise.resolve(iTunesCache[key]);
+
+    var term = encodeURIComponent(((artist || '') + ' ' + (track || '')).trim());
+    if (!term) return Promise.resolve(null);
+
+    var url = 'https://itunes.apple.com/search?media=music&entity=song&limit=1&term=' + term;
+    return fetch(url, { cache: 'default' })
+      .then(function (res) { if (!res.ok) throw new Error('itunes http ' + res.status); return res.json(); })
+      .then(function (json) {
+        var art = json && json.results && json.results[0] && json.results[0].artworkUrl100;
+        // Ask iTunes for a much larger version by rewriting the URL — the
+        // CDN accepts arbitrary sizes up to ~600px reliably.
+        if (art) art = art.replace(/\/\d+x\d+bb\./, '/600x600bb.');
+        iTunesCache[key] = art || null;
+        return iTunesCache[key];
+      })
+      .catch(function () { iTunesCache[key] = null; return null; });
+  }
+
+  // Resolve album art with a fallback chain:
+  //   1. Last.fm image (if not the blank-hash placeholder)
+  //   2. iTunes Search API artwork (600x600)
+  //   3. On-brand SVG vinyl glyph
+  function resolveArt(lastfmImages, track, artist) {
+    var direct = pickArt(lastfmImages);
+    if (direct) return Promise.resolve(direct);
+    return iTunesLookup(track, artist).then(function (url) { return url || FALLBACK_ART; });
   }
 
   function formatCompactNumber(n) {
@@ -232,25 +272,53 @@
     }
   }
 
+  // Persist the last successfully-rendered track so if every source goes
+  // silent (nothing scrobbling, Spotify off, API blip) we keep the last
+  // played artwork on-screen instead of dropping back to the vinyl glyph.
+  var lastRenderedTrack = null;
+
   function tryLanyardSpotify() {
     var data = window.__lanyardData;
     if (data && data.listening_to_spotify && data.spotify) {
       var sp = data.spotify;
-      setMusicCard({
-        label: 'Now playing',
-        isLive: true,
-        track: sp.song,
-        artist: sp.artist,
-        art: isUsableArt(sp.album_art_url) ? sp.album_art_url : FALLBACK_ART,
-        link: 'https://open.spotify.com/track/' + (sp.track_id || ''),
-        linkText: 'Open in Spotify \u2197'
-      });
+      var art = isUsableArt(sp.album_art_url) ? sp.album_art_url : null;
+      var render = function (finalArt) {
+        var payload = {
+          label: 'Now playing',
+          isLive: true,
+          track: sp.song,
+          artist: sp.artist,
+          art: finalArt || FALLBACK_ART,
+          link: 'https://open.spotify.com/track/' + (sp.track_id || ''),
+          linkText: 'Open in Spotify \u2197'
+        };
+        setMusicCard(payload);
+        lastRenderedTrack = payload;
+      };
+      if (art) render(art);
+      else iTunesLookup(sp.song, sp.artist).then(render);
       return true;
     }
     return false;
   }
 
   function renderMusicFallback() {
+    // If we've previously shown a track this session (either now playing or
+    // last played), keep displaying it rather than blanking the card — feels
+    // less broken to a visitor and matches the Spotify / Apple Music pattern
+    // of &ldquo;keep the last cover art on screen when idle&rdquo;.
+    if (lastRenderedTrack) {
+      setMusicCard({
+        label: 'Last played',
+        isLive: false,
+        track: lastRenderedTrack.track,
+        artist: lastRenderedTrack.artist,
+        art: lastRenderedTrack.art,
+        link: lastRenderedTrack.link,
+        linkText: lastRenderedTrack.linkText
+      });
+      return;
+    }
     setMusicCard({
       label: 'Now playing',
       isLive: false,
@@ -277,14 +345,19 @@
         if (t && t['@attr'] && t['@attr']['nowplaying'] === 'true') {
           // Last.fm says something is actively scrobbling right now — highest
           // priority per requested order (Last.fm first, then Discord).
-          setMusicCard({
-            label: 'Now playing',
-            isLive: true,
-            track: t.name,
-            artist: t.artist && t.artist['#text'],
-            art: pickArt(t.image),
-            link: t.url,
-            linkText: 'Open track \u2197'
+          var artistName = t.artist && t.artist['#text'];
+          resolveArt(t.image, t.name, artistName).then(function (art) {
+            var payload = {
+              label: 'Now playing',
+              isLive: true,
+              track: t.name,
+              artist: artistName,
+              art: art,
+              link: t.url,
+              linkText: 'Open track \u2197'
+            };
+            setMusicCard(payload);
+            lastRenderedTrack = payload;
           });
           return;
         }
@@ -296,14 +369,19 @@
         // Neither is live — fall back to Last.fm's most recent play, framed
         // as "last played" rather than "now playing".
         if (t) {
-          setMusicCard({
-            label: 'Last played',
-            isLive: false,
-            track: t.name,
-            artist: t.artist && t.artist['#text'],
-            art: pickArt(t.image),
-            link: t.url,
-            linkText: 'Open track \u2197'
+          var artistName2 = t.artist && t.artist['#text'];
+          resolveArt(t.image, t.name, artistName2).then(function (art) {
+            var payload = {
+              label: 'Last played',
+              isLive: false,
+              track: t.name,
+              artist: artistName2,
+              art: art,
+              link: t.url,
+              linkText: 'Open track \u2197'
+            };
+            setMusicCard(payload);
+            lastRenderedTrack = payload;
           });
         } else {
           renderMusicFallback();
