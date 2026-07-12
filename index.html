@@ -105,7 +105,17 @@
     <div class="hero__grid">
     <div class="hero__content">
       <div class="hero__eyebrow reveal-line">
-        <span class="dot-pulse"></span> AVAILABLE FOR INTERESTING PROBLEMS — BITS PILANI · HCLTECH
+        <span class="dot-pulse" aria-hidden="true"></span>
+        <span class="hero__availability">Available for interesting problems</span>
+        <span class="hero__orgs" aria-label="BITS Pilani and HCLTech">
+          <span class="hero__org hero__org--bits">
+            <img src="assets/images/brand/bits-pilani.webp" alt="BITS Pilani" width="290" height="96">
+          </span>
+          <span class="hero__org-divider" aria-hidden="true">&middot;</span>
+          <span class="hero__org hero__org--hcl">
+            <img src="assets/images/brand/hcltech.svg" alt="HCLTech" width="153" height="28">
+          </span>
+        </span>
       </div>
 
       <h1 class="hero__title">
@@ -205,7 +215,7 @@
       <!-- ============================================================ -->
       <!-- DISCORD — rich Lanyard readout                                -->
       <!-- ============================================================ -->
-      <div class="live-card live-card--discord" id="liveDiscord" data-tilt>
+      <div class="live-card live-card--discord" id="liveDiscord">
         <div class="live-card__head">
           <svg viewBox="0 0 24 24" class="live-card__brand-icon"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
           <span class="live-card__dot" id="liveDiscordDot"></span>
@@ -215,11 +225,16 @@
         <div class="live-card__body">
           <div class="live-card__avatar-wrap">
             <img class="live-card__avatar" id="liveDiscordAvatar" src="assets/images/avatar.jpg" alt="Yash's Discord avatar" loading="lazy">
+            <img class="live-card__avatar-decoration" id="liveDiscordDecoration" src="" alt="" hidden aria-hidden="true">
             <span class="live-card__status-badge" id="liveDiscordStatusBadge"></span>
           </div>
           <div class="live-card__info">
             <div class="live-card__name" id="liveDiscordName">yashylash</div>
             <div class="live-card__handle" id="liveDiscordHandle">@yashylash</div>
+            <div class="live-card__identity">
+              <span class="live-card__identity-chip" id="liveDiscordGuildTag" hidden></span>
+              <span class="live-card__identity-chip" id="liveDiscordBadge" hidden></span>
+            </div>
             <div class="live-card__custom-status" id="liveDiscordCustomStatus" hidden>
               <span class="live-card__custom-status-emoji" id="liveDiscordCustomEmoji" aria-hidden="true"></span>
               <span id="liveDiscordCustomText"></span>
@@ -240,18 +255,31 @@
           </div>
         </div>
 
-        <div class="live-card__facts" id="liveDiscordFacts">
+        <div class="live-card__presence">
+          <div class="live-card__presence-head">
+            <span>Presence snapshot</span>
+            <span id="liveDiscordSync">Waiting for Lanyard&hellip;</span>
+          </div>
+          <ul class="live-card__presence-list" id="liveDiscordActivityList" aria-live="polite">
+            <li class="live-card__presence-empty">Loading active apps and status&hellip;</li>
+          </ul>
+        </div>
+
+        <div class="live-card__facts live-card__facts--discord" id="liveDiscordFacts">
           <div class="live-card__fact"><span id="liveDiscordStatusText">&mdash;</span><label>Status</label></div>
           <div class="live-card__fact"><span class="live-card__platform" id="liveDiscordPlatform"><span class="live-card__platform-icon" id="liveDiscordPlatformIcon" aria-hidden="true"></span><span id="liveDiscordPlatformText">&mdash;</span></span><label>Platform</label></div>
           <div class="live-card__fact"><span id="liveDiscordActivityCount">&mdash;</span><label>Active on</label></div>
+          <div class="live-card__fact"><span id="liveDiscordMemberSince">&mdash;</span><label>Member since</label></div>
+          <div class="live-card__fact"><span id="liveDiscordActivityTotal">&mdash;</span><label>Activities</label></div>
+          <div class="live-card__fact"><span id="liveDiscordBadgeText">&mdash;</span><label>Profile badge</label></div>
         </div>
-        <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener" class="live-card__link" data-cursor="text" data-cursor-text="↗">Add on Discord ↗</a>
+        <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener" class="live-card__link" data-cursor="text" data-cursor-text="↗">Open Discord profile ↗</a>
       </div>
 
       <!-- ============================================================ -->
       <!-- NOW PLAYING / LAST PLAYED — hero album art + rich Last.fm     -->
       <!-- ============================================================ -->
-      <div class="live-card live-card--music" id="liveMusic" data-tilt>
+      <div class="live-card live-card--music" id="liveMusic">
         <div class="live-card__head">
           <svg viewBox="0 0 24 24" class="live-card__brand-icon" aria-hidden="true"><path fill="currentColor" d="M10.584 17.21l-.88-2.392s-1.43 1.594-3.573 1.594c-1.897 0-3.244-1.649-3.244-4.288 0-3.382 1.704-4.591 3.381-4.591 2.42 0 3.189 1.567 3.849 3.574l.88 2.749c.88 2.666 2.529 4.81 7.285 4.81 3.409 0 5.718-1.044 5.718-3.793 0-2.227-1.265-3.381-3.63-3.931l-1.758-.385c-1.21-.275-1.567-.77-1.567-1.595 0-.934.742-1.484 1.952-1.484 1.32 0 2.034.495 2.144 1.677l2.749-.33c-.22-2.474-1.924-3.492-4.729-3.492-2.474 0-4.893.935-4.893 3.932 0 1.87.907 3.051 3.189 3.601l1.87.44c1.402.33 1.869.907 1.869 1.704 0 1.017-.99 1.43-2.86 1.43-2.776 0-3.93-1.457-4.59-3.464l-.907-2.75c-1.155-3.573-2.997-4.893-6.653-4.893C2.144 5.333 0 7.89 0 12.233c0 4.18 2.144 6.434 5.993 6.434 3.106 0 4.591-1.457 4.591-1.457z"/></svg>
           <span class="live-card__dot" id="liveMusicDot"></span>
@@ -709,6 +737,15 @@
         <div class="about__badge">
           <span class="dot-pulse"></span> Delhi, India — IST (UTC+5:30)
         </div>
+        <figure class="about__map">
+          <a class="about__map-link" href="https://www.openstreetmap.org/?mlat=28.6139&amp;mlon=77.2090#map=11/28.6139/77.2090" target="_blank" rel="noopener" aria-label="Open Delhi on OpenStreetMap">
+            <img src="assets/images/maps/delhi-monochrome.svg" alt="Monochrome street map centered on New Delhi" loading="lazy" width="760" height="420">
+          </a>
+          <figcaption>
+            <span>28.6139&deg; N &middot; 77.2090&deg; E</span>
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">&copy; OpenStreetMap contributors</a>
+          </figcaption>
+        </figure>
       </div>
 
       <div class="about__content">
@@ -874,7 +911,7 @@
               </div>
             </article>
 
-            <article class="favorite" data-tilt data-cat="film">
+            <article class="favorite favorite--tall" data-tilt data-cat="film">
               <div class="favorite__media">
                 <img src="assets/images/whatilike/marvel.png" alt="Iron Man in the Nano Gauntlet, Avengers Endgame" loading="lazy">
                 <span class="favorite__badge">MCU · Film</span>
@@ -886,7 +923,7 @@
               </div>
             </article>
 
-            <article class="favorite" data-tilt data-cat="film">
+            <article class="favorite favorite--tall" data-tilt data-cat="film">
               <div class="favorite__media">
                 <img src="assets/images/whatilike/interstellar.webp" alt="Gargantua black hole from Interstellar movie" loading="lazy">
                 <span class="favorite__badge">Sci-fi · Film</span>
@@ -1258,5 +1295,5 @@
 <script src="assets/js/background.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/live.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19efc1dfb667f8d',t:'MTc4Mzg0ODE2MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19efc1dfb667f8d',t:'MTc4Mzg0ODE2MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19f3bb27f1b9a7e',t:'MTc4Mzg1MDc2NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

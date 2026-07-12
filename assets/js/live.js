@@ -62,7 +62,12 @@
 
   function iTunesLookup(track, artist) {
     var key = (artist || '') + '::' + (track || '');
-    if (iTunesCache[key]) return Promise.resolve(iTunesCache[key]);
+    // Cache misses as well as hits. A truthy check would retry every failed
+    // lookup on every 30s poll, which is especially wasteful for the recent
+    // history thumbnails this fallback now also powers.
+    if (Object.prototype.hasOwnProperty.call(iTunesCache, key)) {
+      return Promise.resolve(iTunesCache[key]);
+    }
 
     var term = encodeURIComponent(((artist || '') + ' ' + (track || '')).trim());
     if (!term) return Promise.resolve(null);
@@ -110,6 +115,7 @@
   var ICONS = {
     monitor: '<svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>',
     smartphone: '<svg viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>',
+    vr: '<svg viewBox="0 0 24 24"><path d="M6 8h12a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2.5a2 2 0 0 1-1.6-.8L13.5 14h-3l-1.4 2.2a2 2 0 0 1-1.6.8H5a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3Z"/><path d="M8 11h.01M16 11h.01"/></svg>',
     globe: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>',
     appWindow: '<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg>',
     gamepad: '<svg viewBox="0 0 24 24"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
@@ -118,6 +124,96 @@
     music: '<svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
     message: '<svg viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg>'
   };
+
+  // Public user flags exposed by Lanyard. We surface the human-readable
+  // labels instead of a vague numeric count so the card contains useful
+  // profile information even when no game/app is currently running.
+  var DISCORD_FLAG_LABELS = [
+    [1, 'Discord Staff'],
+    [2, 'Partner'],
+    [4, 'HypeSquad Events'],
+    [8, 'Bug Hunter'],
+    [64, 'House Bravery'],
+    [128, 'House Brilliance'],
+    [256, 'House Balance'],
+    [512, 'Early Supporter'],
+    [16384, 'Bug Hunter Gold'],
+    [131072, 'Verified Developer'],
+    [4194304, 'Active Developer']
+  ];
+
+  function discordBadges(flags) {
+    flags = Number(flags) || 0;
+    return DISCORD_FLAG_LABELS.filter(function (entry) {
+      return (flags & entry[0]) === entry[0];
+    }).map(function (entry) { return entry[1]; });
+  }
+
+  // A Discord snowflake embeds its creation timestamp in the high bits.
+  // Deriving this locally gives us a real "member since" value without a
+  // second API or any private account data.
+  function discordCreatedAt(id) {
+    if (!id || typeof BigInt !== 'function') return null;
+    try {
+      var epoch = BigInt('1420070400000');
+      var millis = (BigInt(String(id)) >> BigInt(22)) + epoch;
+      return new Date(Number(millis));
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function activityView(activity) {
+    var type = Number(activity && activity.type);
+    var views = {
+      0: { label: 'Playing', icon: 'gamepad' },
+      1: { label: 'Streaming', icon: 'radio' },
+      2: { label: 'Listening', icon: 'music' },
+      3: { label: 'Watching', icon: 'eye' },
+      4: { label: 'Custom status', icon: 'message' },
+      5: { label: 'Competing', icon: 'gamepad' }
+    };
+    return views[type] || { label: 'Activity', icon: 'appWindow' };
+  }
+
+  function renderDiscordActivityList(activities) {
+    var list = document.getElementById('liveDiscordActivityList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    var visible = (activities || []).slice(0, 4);
+    if (!visible.length) {
+      var empty = document.createElement('li');
+      empty.className = 'live-card__presence-empty';
+      empty.textContent = 'No active app right now — presence is still live.';
+      list.appendChild(empty);
+      return;
+    }
+
+    visible.forEach(function (activity) {
+      var view = activityView(activity);
+      var item = document.createElement('li');
+      item.className = 'live-card__presence-item';
+
+      var icon = document.createElement('span');
+      icon.className = 'live-card__presence-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.innerHTML = ICONS[view.icon] || ICONS.appWindow;
+
+      var copy = document.createElement('span');
+      copy.className = 'live-card__presence-copy';
+      var title = document.createElement('strong');
+      var detail = document.createElement('small');
+      title.textContent = view.label + (activity.name && activity.name !== 'Custom Status' ? ' · ' + activity.name : '');
+      detail.textContent = activity.details || activity.state || (view.label === 'Custom status' ? 'Set, with no text' : 'Active now');
+      copy.appendChild(title);
+      copy.appendChild(detail);
+
+      item.appendChild(icon);
+      item.appendChild(copy);
+      list.appendChild(item);
+    });
+  }
 
   /* ------------------------------------------------------------ */
   /* Discord card (Lanyard)                                         */
@@ -130,6 +226,15 @@
     var statusText = document.getElementById('liveDiscordStatusText');
     var platformText = document.getElementById('liveDiscordPlatformText');
     var platformIcon = document.getElementById('liveDiscordPlatformIcon');
+    var decoration = document.getElementById('liveDiscordDecoration');
+    var guildTag = document.getElementById('liveDiscordGuildTag');
+    var badge = document.getElementById('liveDiscordBadge');
+    var memberSince = document.getElementById('liveDiscordMemberSince');
+    var activityTotal = document.getElementById('liveDiscordActivityTotal');
+    var badgeText = document.getElementById('liveDiscordBadgeText');
+    var sync = document.getElementById('liveDiscordSync');
+    var rich = document.getElementById('liveDiscordActivityRich');
+
     if (name) name.textContent = 'yashylash';
     if (activityText) activityText.textContent = 'Status unavailable right now';
     if (activityIcon) activityIcon.innerHTML = '';
@@ -137,6 +242,15 @@
     if (statusText) statusText.textContent = '\u2014';
     if (platformText) platformText.textContent = '\u2014';
     if (platformIcon) platformIcon.innerHTML = '';
+    if (decoration) decoration.hidden = true;
+    if (guildTag) guildTag.hidden = true;
+    if (badge) badge.hidden = true;
+    if (memberSince) memberSince.textContent = '\u2014';
+    if (activityTotal) activityTotal.textContent = '\u2014';
+    if (badgeText) badgeText.textContent = '\u2014';
+    if (sync) sync.textContent = 'Lanyard unavailable';
+    if (rich) rich.hidden = true;
+    renderDiscordActivityList([]);
   }
 
   function renderDiscord(data) {
@@ -153,13 +267,64 @@
     var statusTextEl = document.getElementById('liveDiscordStatusText');
     var platformTextEl = document.getElementById('liveDiscordPlatformText');
     var platformIconEl = document.getElementById('liveDiscordPlatformIcon');
+    var decorationEl = document.getElementById('liveDiscordDecoration');
+    var guildTagEl = document.getElementById('liveDiscordGuildTag');
+    var profileBadgeEl = document.getElementById('liveDiscordBadge');
+    var memberSinceEl = document.getElementById('liveDiscordMemberSince');
+    var activityTotalEl = document.getElementById('liveDiscordActivityTotal');
+    var badgeTextEl = document.getElementById('liveDiscordBadgeText');
+    var syncEl = document.getElementById('liveDiscordSync');
 
-    if (nameEl) nameEl.textContent = user.global_name || user.username || 'yashylash';
+    if (nameEl) nameEl.textContent = user.global_name || user.display_name || user.username || 'yashylash';
     if (handleEl) handleEl.textContent = '@' + (user.username || 'yashylash');
 
     if (avatarEl && user.id && user.avatar) {
       var ext = user.avatar.indexOf('a_') === 0 ? 'gif' : 'png';
       avatarEl.src = 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.' + ext + '?size=128';
+    }
+
+    // Nitro avatar decorations and primary-guild tags are both present in
+    // Lanyard's public user payload. Showing them makes this feel like a real
+    // profile snapshot rather than a large empty status tile.
+    var decoration = user.avatar_decoration_data && user.avatar_decoration_data.asset;
+    if (decorationEl) {
+      if (decoration) {
+        decorationEl.src = 'https://cdn.discordapp.com/avatar-decoration-presets/' + decoration + '.png?size=160&passthrough=true';
+        decorationEl.hidden = false;
+      } else {
+        decorationEl.hidden = true;
+      }
+    }
+
+    var guild = user.primary_guild;
+    if (guildTagEl) {
+      if (guild && guild.identity_enabled && guild.tag) {
+        guildTagEl.textContent = 'Guild · ' + guild.tag;
+        guildTagEl.hidden = false;
+      } else {
+        guildTagEl.hidden = true;
+      }
+    }
+
+    var badges = discordBadges(user.public_flags);
+    if (profileBadgeEl) {
+      if (badges.length) {
+        profileBadgeEl.textContent = badges[0];
+        profileBadgeEl.hidden = false;
+      } else {
+        profileBadgeEl.hidden = true;
+      }
+    }
+    if (badgeTextEl) badgeTextEl.textContent = badges[0] || 'None public';
+
+    var created = discordCreatedAt(user.id);
+    if (memberSinceEl) {
+      memberSinceEl.textContent = created
+        ? created.toLocaleDateString('en', { month: 'short', year: 'numeric' })
+        : '\u2014';
+    }
+    if (syncEl) {
+      syncEl.textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
     if (badgeEl) {
@@ -174,6 +339,7 @@
     if (data.active_on_discord_desktop) { platformLabel = 'Desktop'; platformIconKey = 'monitor'; }
     else if (data.active_on_discord_mobile) { platformLabel = 'Mobile'; platformIconKey = 'smartphone'; }
     else if (data.active_on_discord_web) { platformLabel = 'Web'; platformIconKey = 'globe'; }
+    else if (data.active_on_discord_vr) { platformLabel = 'VR'; platformIconKey = 'vr'; }
     else if (data.active_on_discord_embedded) { platformLabel = 'Embedded'; platformIconKey = 'appWindow'; }
     if (platformTextEl) platformTextEl.textContent = platformLabel;
     if (platformIconEl) platformIconEl.innerHTML = platformIconKey ? ICONS[platformIconKey] : '';
@@ -182,6 +348,9 @@
     // activity (game / streaming / app), then custom status, then just the
     // online-status label.
     var activities = data.activities || [];
+    if (activityTotalEl) activityTotalEl.textContent = String(activities.length);
+    renderDiscordActivityList(activities);
+
     var game = activities.find(function (a) { return a.type === 0; }); // Playing
     var stream = activities.find(function (a) { return a.type === 1; }); // Streaming
     var watching = activities.find(function (a) { return a.type === 3; }); // Watching
@@ -239,6 +408,7 @@
     if (data.active_on_discord_desktop)  activeChips.push('Desktop');
     if (data.active_on_discord_mobile)   activeChips.push('Mobile');
     if (data.active_on_discord_web)      activeChips.push('Web');
+    if (data.active_on_discord_vr)       activeChips.push('VR');
     if (data.active_on_discord_embedded) activeChips.push('Console');
     var actCountEl = document.getElementById('liveDiscordActivityCount');
     if (actCountEl) actCountEl.textContent = activeChips.length ? activeChips.join(' · ') : '\u2014';
@@ -531,40 +701,91 @@
   /* ------------------------------------------------------------ */
   /* Recently played list — small history strip under the hero row */
   /* ------------------------------------------------------------ */
+  var recentRenderToken = 0;
   function renderRecentList(tracks) {
     var listEl = document.getElementById('liveMusicRecentList');
     if (!listEl) return;
-    // Skip the currently-playing / most recent one because it's already
-    // shown in the hero row; take up to the next 4.
-    var items = tracks.slice(1, 5);
-    if (!items.length) { listEl.innerHTML = ''; return; }
-    var html = '';
-    for (var i = 0; i < items.length; i++) {
-      var t = items[i];
-      var artistName = t.artist && t.artist['#text'];
-      var art = pickArt(t.image);
-      var thumb = art
-        ? '<img src="' + art + '" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">'
-        : '<span class="live-card__recent-fallback"></span>';
-      var when = (t.date && t.date['#text']) ? relativeTime(new Date(t.date['#text'] + ' UTC')) : 'just now';
-      html += '<li class="live-card__recent-item">'
-           + '<a href="' + (t.url || '#') + '" target="_blank" rel="noopener">'
-           + '<span class="live-card__recent-thumb">' + thumb + '</span>'
-           + '<span class="live-card__recent-meta">'
-           + '<span class="live-card__recent-track">' + escapeHtml(t.name) + '</span>'
-           + '<span class="live-card__recent-artist">' + escapeHtml(artistName || '') + '</span>'
-           + '</span>'
-           + '<span class="live-card__recent-when">' + when + '</span>'
-           + '</a></li>';
-    }
-    listEl.innerHTML = html;
-  }
 
-  function escapeHtml(s) {
-    return String(s || '').replace(/[&<>"']/g, function (c) {
-      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    // Skip the currently-playing / most recent one because it is already in
+    // the hero row; take up to the next four history entries.
+    var items = tracks.slice(1, 5);
+    listEl.innerHTML = '';
+    if (!items.length) return;
+
+    var token = ++recentRenderToken;
+    items.forEach(function (t) {
+      var artistName = t.artist && t.artist['#text'];
+      var directArt = pickArt(t.image);
+      var when = (t.date && t.date['#text'])
+        ? relativeTime(new Date(t.date['#text'] + ' UTC'))
+        : 'just now';
+
+      var item = document.createElement('li');
+      item.className = 'live-card__recent-item';
+      var anchor = document.createElement('a');
+      anchor.href = t.url || ('https://www.last.fm/user/' + LASTFM_USER);
+      anchor.target = '_blank';
+      anchor.rel = 'noopener';
+
+      var thumb = document.createElement('span');
+      thumb.className = 'live-card__recent-thumb';
+      var image = document.createElement('img');
+      image.alt = '';
+      image.loading = 'lazy';
+      image.src = directArt || FALLBACK_ART;
+      thumb.appendChild(image);
+
+      var meta = document.createElement('span');
+      meta.className = 'live-card__recent-meta';
+      var trackName = document.createElement('span');
+      trackName.className = 'live-card__recent-track';
+      trackName.textContent = t.name || 'Unknown track';
+      var artistNameEl = document.createElement('span');
+      artistNameEl.className = 'live-card__recent-artist';
+      artistNameEl.textContent = artistName || '';
+      meta.appendChild(trackName);
+      meta.appendChild(artistNameEl);
+
+      var time = document.createElement('span');
+      time.className = 'live-card__recent-when';
+      time.textContent = when;
+
+      anchor.appendChild(thumb);
+      anchor.appendChild(meta);
+      anchor.appendChild(time);
+      item.appendChild(anchor);
+      listEl.appendChild(item);
+
+      var triedITunes = !directArt;
+      function applyITunesFallback() {
+        triedITunes = true;
+        iTunesLookup(t.name, artistName).then(function (itunesArt) {
+          // Ignore stale promises if the list was refreshed while this lookup
+          // was in flight. Otherwise update the actual thumbnail in place.
+          if (token !== recentRenderToken || !image.isConnected) return;
+          image.onerror = function () {
+            image.onerror = null;
+            image.src = FALLBACK_ART;
+          };
+          image.src = itunesArt || FALLBACK_ART;
+        });
+      }
+
+      image.onerror = function () {
+        if (!triedITunes) applyITunesFallback();
+        else {
+          image.onerror = null;
+          image.src = FALLBACK_ART;
+        }
+      };
+
+      // This is the missing piece from the previous implementation: recent
+      // tracks now use the same Last.fm -> iTunes -> local vinyl fallback
+      // chain as the large now-playing artwork.
+      if (!directArt) applyITunesFallback();
     });
   }
+
   function relativeTime(d) {
     if (!(d instanceof Date) || isNaN(d)) return 'a while ago';
     var s = Math.max(1, Math.round((Date.now() - d.getTime()) / 1000));
