@@ -176,6 +176,69 @@
     return views[type] || { label: 'Activity', icon: 'appWindow' };
   }
 
+  function renderDiscordFocus(data, status, activities) {
+    var kicker = document.getElementById('liveDiscordFocusKicker');
+    var title = document.getElementById('liveDiscordFocusTitle');
+    var detail = document.getElementById('liveDiscordFocusDetail');
+    var icon = document.getElementById('liveDiscordFocusIcon');
+    var clients = document.getElementById('liveDiscordFocusClients');
+    if (!title || !detail) return;
+
+    activities = activities || [];
+    var game = activities.find(function (a) { return a.type === 0; });
+    var stream = activities.find(function (a) { return a.type === 1; });
+    var listening = activities.find(function (a) { return a.type === 2; });
+    var watching = activities.find(function (a) { return a.type === 3; });
+    var custom = activities.find(function (a) { return a.type === 4; });
+    var chosen = stream || game || watching || listening;
+    var iconKey = 'message';
+
+    if (data && data.listening_to_spotify && data.spotify) {
+      var spotify = data.spotify;
+      if (kicker) kicker.textContent = 'Listening now';
+      title.textContent = spotify.song || 'Spotify';
+      detail.textContent = (spotify.artist || 'Unknown artist') + (spotify.album ? ' · ' + spotify.album : '');
+      iconKey = 'music';
+    } else if (chosen) {
+      var view = activityView(chosen);
+      if (kicker) kicker.textContent = view.label + ' now';
+      title.textContent = chosen.details || chosen.name || view.label;
+      detail.textContent = chosen.state || (chosen.details && chosen.name !== chosen.details ? chosen.name : 'Shared through Discord presence');
+      iconKey = view.icon;
+    } else if (custom && custom.state) {
+      if (kicker) kicker.textContent = 'Current status';
+      title.textContent = custom.state;
+      detail.textContent = 'No game or app activity is being shared right now.';
+      iconKey = 'message';
+    } else {
+      if (kicker) kicker.textContent = 'Public presence';
+      title.textContent = status === 'offline' ? 'Offline right now' : (STATUS_LABEL[status] || 'Discord is quiet');
+      detail.textContent = status === 'offline'
+        ? 'No public Discord session is active.'
+        : 'Connected, with no public game or media activity.';
+      iconKey = status === 'offline' ? 'message' : 'globe';
+    }
+
+    if (icon) icon.innerHTML = ICONS[iconKey] || ICONS.message;
+
+    if (clients) {
+      clients.innerHTML = '';
+      var active = [];
+      if (data && data.active_on_discord_desktop) active.push('Desktop');
+      if (data && data.active_on_discord_web) active.push('Web');
+      if (data && data.active_on_discord_mobile) active.push('Mobile');
+      if (data && data.active_on_discord_vr) active.push('VR');
+      if (data && data.active_on_discord_embedded) active.push('Console');
+      if (!active.length) active.push('No active client');
+      active.forEach(function (name) {
+        var chip = document.createElement('span');
+        chip.textContent = name;
+        if (name !== 'No active client') chip.className = 'is-active';
+        clients.appendChild(chip);
+      });
+    }
+  }
+
   function renderDiscordActivityList(activities) {
     var list = document.getElementById('liveDiscordActivityList');
     if (!list) return;
@@ -215,71 +278,6 @@
     });
   }
 
-  var DISCORD_CLIENTS = [
-    ['Desktop', 'active_on_discord_desktop'],
-    ['Web', 'active_on_discord_web'],
-    ['Mobile', 'active_on_discord_mobile'],
-    ['VR', 'active_on_discord_vr'],
-    ['Embedded', 'active_on_discord_embedded']
-  ];
-
-  function renderDiscordClients(data) {
-    DISCORD_CLIENTS.forEach(function (entry) {
-      var name = entry[0];
-      var active = !!(data && data[entry[1]]);
-      var tile = document.getElementById('liveDiscordClient' + name);
-      var state = document.getElementById('liveDiscordClient' + name + 'State');
-      if (tile) {
-        tile.classList.toggle('is-active', active);
-        tile.setAttribute('aria-label', name + ' client: ' + (active ? 'active now' : 'standby'));
-      }
-      if (state) state.textContent = active ? 'Active now' : 'Standby';
-    });
-  }
-
-  function humanizeCollectible(user) {
-    var nameplate = user && user.collectibles && user.collectibles.nameplate;
-    if (!nameplate) return 'None equipped';
-    var bits = String(nameplate.asset || '').split('/').filter(Boolean);
-    var raw = bits.length ? bits[bits.length - 1] : '';
-    var label = raw.replace(/[_-]+/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-    if (!label && nameplate.label) {
-      label = String(nameplate.label).replace(/^COLLECTIBLES_NAMEPLATES?_V?\d*_?/i, '')
-        .replace(/[_-]+/g, ' ').toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-    }
-    if (!label) label = 'Equipped';
-    return label + (nameplate.palette ? ' · ' + nameplate.palette : '');
-  }
-
-  function renderDiscordTelemetry(data, user) {
-    renderDiscordClients(data || {});
-
-    var guildDetail = document.getElementById('liveDiscordGuildDetail');
-    var guildIcon = document.getElementById('liveDiscordGuildIcon');
-    var nameplate = document.getElementById('liveDiscordNameplate');
-    var userId = document.getElementById('liveDiscordUserId');
-    var guild = user && user.primary_guild;
-
-    if (guildDetail) {
-      guildDetail.textContent = guild && guild.identity_enabled
-        ? ((guild.tag ? guild.tag + ' · ' : '') + 'Server identity')
-        : 'Not public';
-    }
-    if (guildIcon) {
-      if (guild && guild.identity_guild_id && guild.badge) {
-        guildIcon.src = 'https://cdn.discordapp.com/clan-badges/' + guild.identity_guild_id + '/' + guild.badge + '.png?size=32';
-        guildIcon.hidden = false;
-      } else {
-        guildIcon.hidden = true;
-      }
-    }
-    if (nameplate) nameplate.textContent = humanizeCollectible(user || {});
-    if (userId) {
-      userId.textContent = (user && user.id) || DISCORD_USER_ID;
-      userId.title = (user && user.id) || DISCORD_USER_ID;
-    }
-  }
-
   /* ------------------------------------------------------------ */
   /* Discord card (Lanyard)                                         */
   /* ------------------------------------------------------------ */
@@ -315,7 +313,7 @@
     if (badgeText) badgeText.textContent = '\u2014';
     if (sync) sync.textContent = 'Lanyard unavailable';
     if (rich) rich.hidden = true;
-    renderDiscordTelemetry({}, {});
+    renderDiscordFocus({}, 'offline', []);
     renderDiscordActivityList([]);
   }
 
@@ -392,7 +390,6 @@
     if (syncEl) {
       syncEl.textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
-    renderDiscordTelemetry(data, user);
 
     if (badgeEl) {
       badgeEl.className = 'live-card__status-badge status-' + status;
@@ -422,6 +419,7 @@
     var stream = activities.find(function (a) { return a.type === 1; }); // Streaming
     var watching = activities.find(function (a) { return a.type === 3; }); // Watching
     var custom = activities.find(function (a) { return a.type === 4; }); // Custom status
+    renderDiscordFocus(data, status, activities);
 
     var line = '';
     var iconKey = null;

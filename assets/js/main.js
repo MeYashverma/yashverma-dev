@@ -425,6 +425,13 @@
       });
     });
 
+    gsap.utils.toArray('.equipment-primary, .equipment-companion, .software-rack, .game-favorite').forEach(function (el) {
+      gsap.fromTo(el, { opacity: 0, y: 22 }, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 92%' }
+      });
+    });
+
     gsap.utils.toArray('.arts-card').forEach(function (el) {
       gsap.fromTo(el, { opacity: 0, y: 20, scale: 0.97 }, {
         opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out',
@@ -890,19 +897,19 @@
 
     var portrait = canvas.parentElement;
     var saveData = navigator.connection && navigator.connection.saveData;
-    var compactTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches && window.innerWidth < 760;
-    if (saveData || compactTouch) {
-      if (portrait) portrait.classList.add('is-static');
-      return;
-    }
+    var compactTouch = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches && window.innerWidth < 760) || !!saveData;
+    // The dot-matrix is the hero itself, so mobile and data-saver modes keep
+    // it. They simply render a coarser grid at a lower frame rate.
+    if (portrait) portrait.classList.remove('is-static');
 
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var accent = '#d9ff3f';
-    var GRID = 8;               // spacing between dots in CSS px (denser = crisper face)
-    var DOT_MAX = 4.0;          // largest dot radius
+    var GRID = saveData ? 12 : (compactTouch ? 10 : 8);
+    var DOT_MAX = compactTouch ? 4.5 : 4.0;
+    var FRAME_MS = 1000 / (saveData ? 16 : (compactTouch ? 24 : 36));
     var luminance = null;       // sampled Float32Array of grayscale (0..1) values
 
     // Off-screen sampling canvas — small resolution so the luminance grid
@@ -918,7 +925,9 @@
 
     function resize() {
       var rect = canvas.parentElement.getBoundingClientRect();
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var dpr = compactTouch
+        ? Math.min(window.devicePixelRatio || 1, 1.25)
+        : Math.min(window.devicePixelRatio || 1, 2);
       w = Math.max(160, Math.floor(rect.width));
       h = Math.max(160, Math.floor(rect.height));
       canvas.width  = Math.floor(w * dpr);
@@ -968,7 +977,10 @@
     }
 
     function paint(now) {
-      if (!luminance) return requestAnimationFrame(paint);
+      requestAnimationFrame(paint);
+      if (!luminance || document.hidden) return;
+      if (now - lastPaint < FRAME_MS) return;
+      lastPaint = now;
 
       var elapsed = (now - t0) / 1000;
       // Global breathing scale (very subtle — no more than ±1.5%).
@@ -1021,12 +1033,11 @@
         }
       }
       ctx.globalAlpha = 1;
-
-      requestAnimationFrame(paint);
     }
 
-    // Wire up interaction
-    canvas.addEventListener('mousemove', function (e) {
+    // Pointer ripple stays desktop-only; touch devices keep the animated
+    // luminance field without installing unnecessary move listeners.
+    if (!compactTouch) canvas.addEventListener('mousemove', function (e) {
       var r = canvas.getBoundingClientRect();
       mouse.x = e.clientX - r.left;
       mouse.y = e.clientY - r.top;
@@ -1070,6 +1081,8 @@
       { g: 'Sections',   t: 'Arts',             d: 'Digital art gallery',          h: '#arts',    k: '3' },
       { g: 'Sections',   t: 'Journey',          d: 'Experience and education',     h: '#journey', k: '4' },
       { g: 'Sections',   t: 'About',            d: 'Who I am',                     h: '#about',   k: '5' },
+      { g: 'Sections',   t: 'Equipment',        d: 'Hardware and working stack',   h: '#equipment', k: 'E' },
+      { g: 'Sections',   t: 'Game Worlds',      d: 'Curated games collection',     h: '#games',   k: 'G' },
       { g: 'Sections',   t: 'Gallery',          d: 'Off-screen photos',            h: '#gallery', k: '6' },
       { g: 'Sections',   t: 'Contact',          d: 'Get in touch',                 h: '#contact', k: '7' },
       { g: 'External',   t: 'GitHub',       d: '@MeYashverma',            h: 'https://github.com/MeYashverma',                            ext: true, ico: '↗' },
@@ -1214,9 +1227,11 @@
       { id: 'work',    name: 'work'    },
       { id: 'lab',     name: 'lab'     },
       { id: 'arts',    name: 'arts'    },
-      { id: 'journey', name: 'journey' },
-      { id: 'about',   name: 'about'   },
-      { id: 'gallery', name: 'gallery' },
+      { id: 'journey',   name: 'journey'   },
+      { id: 'about',     name: 'about'     },
+      { id: 'equipment', name: 'equipment' },
+      { id: 'games',     name: 'games'     },
+      { id: 'gallery',   name: 'gallery'   },
       { id: 'contact', name: 'contact' }
     ];
     var current = 'hero';
