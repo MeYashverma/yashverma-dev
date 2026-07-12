@@ -1,112 +1,275 @@
 # yashverma.dev
 
-Personal portfolio — plain HTML/CSS/JS, no build step, no framework, no
-external runtime dependencies (fonts and JS libraries are vendored locally
-so it works fully offline and loads fast).
+A single-page personal portfolio for Yash Verma, built with plain HTML, CSS,
+and JavaScript. There is no framework, package manager, bundler, CMS, or
+build command: the repository can be served directly by GitHub Pages or any
+static host.
 
-## Stack
+The site combines engineering work, live public data, education and career
+history, artwork, personal photography, equipment, music, and a curated games
+collection.
 
-- **Structure**: single `index.html`, semantic sections (`hero`, `stats`,
-  `work`, `lab`, `arts`, `about`, `contact`).
-- **Motion**: [GSAP](https://gsap.com) + ScrollTrigger for reveals/parallax,
-  [Lenis](https://github.com/darkroomengineering/lenis) for smooth scroll.
-  All vendored in `assets/js/vendor/` — no CDN calls at runtime.
-- **Background**: a hand-written WebGL fragment shader
-  (`assets/js/background.js`, raw [Three.js](https://threejs.org)) — a
-  slow-moving domain-warped noise field that reacts subtly to pointer
-  position and scroll depth only (kept deliberately calm/minimal, no click
-  reactions). Capped at ~30fps and paused entirely on hidden tabs to keep
-  it cheap. Falls back to a static CSS gradient if WebGL isn't available,
-  so the page is never broken by it.
-- **Interaction layer** (`assets/js/main.js`): a terminal-style boot-log
-  preloader (typed line by line, real stack/repo facts instead of generic
-  "Loading..."), magnetic buttons (`data-magnetic`) that pull toward the
-  cursor within their own bounds, a text-scramble hover effect
-  (`data-scramble`) used on card/work titles, and 3D pointer-reactive tilt
-  with a glare highlight (`data-tilt`) on work/lab/favourite/live cards.
-  All of it is hover/pointer-gated (`matchMedia('(hover: none)')`) so touch
-  devices get plain, fast, non-gimmicky interactions instead of a broken
-  imitation of the desktop effects.
-- **Type**: Space Grotesk (display), Inter (body), JetBrains Mono (labels/UI
-  chrome) — self-hosted `.woff` files in `assets/fonts/`.
-- **Live data**: a "right now" strip (`assets/js/live.js`) pulls real-time
-  Discord presence from the public [Lanyard](https://lanyard.rest) API and
-  "now playing" / "last played" from the [Last.fm](https://www.last.fm/api)
-  API — both public, read-only, CORS-enabled endpoints called directly from
-  the browser (no backend, no proxy). Priority order: Last.fm "now playing"
-  → Discord's own Spotify presence (via Lanyard) → Last.fm's most recent
-  scrobble labelled "last played" → a static "nothing playing" fallback if
-  both APIs are unreachable. Polls every 30s.
-- **No backend, no CMS.** Content lives directly in `index.html`.
+## Current feature set
 
-## Structure
+### Hero and navigation
 
+- Terminal-style boot sequence with a shorter path for touch devices and
+  repeat visits.
+- Interactive canvas dot-matrix portrait generated from a local source image.
+- Lower-resolution and lower-frame-rate portrait rendering on mobile rather
+  than replacing the effect with a normal photograph.
+- BITS Pilani and HCLTech affiliation marks.
+- Fixed navigation, full-screen mobile menu, command palette (`Cmd/Ctrl + K`),
+  and terminal-style scroll spy.
+
+### Live data
+
+- Discord presence through the public Lanyard API.
+- Minimal Discord card focused on useful data: status, custom status, current
+  game/media activity, active clients, public activity count, member-since
+  date, and rich application artwork when available.
+- Last.fm now-playing/last-played widget with Discord Spotify fallback.
+- Album-art fallback chain: Last.fm → iTunes Search API → local vinyl artwork.
+- Recently played history, total scrobbles, unique artists, weekly top artist,
+  and weekly top album.
+- Automatic “Recently Shipped” feed from public GitHub events and commit data,
+  cached in local storage for 30 minutes.
+- Persistent public page-view counter that increments only on production
+  hostnames; local previews remain read-only.
+
+### Work and experiments
+
+- Selected Work section with live screenshots and repository/demo links.
+- Filterable Lab section for widgets, cloud experiments, web projects, and
+  miscellaneous builds.
+- Real project metadata, technology tags, and live-state indicators.
+
+### Art, journey, and personal sections
+
+- Filterable digital-art gallery with keyboard-accessible lightbox.
+- Detailed Experience & Education timeline covering school, RBSE results,
+  HCLTech internship/FTE progression, and B.Sc. Design & Computing at BITS
+  Pilani.
+- Clearly separated zero-cost systems-lab track for self-directed experiments;
+  these are not presented as formal credentials.
+- Live age clock calculated from 8 January 2005 in the Asia/Kolkata timezone.
+- Interactive About portrait with Halftone, ASCII, and Photo modes.
+- Local monochrome Delhi map with OpenStreetMap attribution.
+- Google Cloud Skills strip with self-hosted badge artwork.
+- Personal interests and photography gallery.
+
+### Equipment, software, music, and games
+
+- Equipment specification section for the HP EliteBook 8 G1a, Infinix Note 30
+  5G, and Redmi Watch Move.
+- Working software rack for Windows, Visual Studio Code, Git/GitHub, Python,
+  Node.js, and IbisPaint X.
+- Playable 30-second Sunflower preview resolved through the iTunes Search API,
+  plus a link to the full track on Spotify. No song audio is stored in this
+  repository.
+- Curated game shelves for Games I Like, Games in Rotation, and Want to Play.
+- Every shelf cover opens in a full-screen viewer with keyboard, button, and
+  mobile-swipe navigation.
+- Grand Theft Auto VI countdown targeting the announced 19 November 2026
+  console release, using locally stored official artwork.
+
+## Technology
+
+- **Markup:** semantic `index.html`
+- **Styling:** `assets/css/main.css` with custom properties and responsive
+  breakpoints
+- **Interaction:** vanilla JavaScript
+- **Animation:** vendored GSAP and ScrollTrigger
+- **Smooth scrolling:** vendored Lenis on supported desktop environments;
+  touch browsers use native scrolling
+- **Background:** Three.js fragment shader, loaded conditionally on capable
+  desktop devices
+- **Typography:** self-hosted Space Grotesk, Inter, and JetBrains Mono
+- **Hosting:** static files only
+
+No third-party JavaScript or CSS is loaded from a CDN. Live widgets do make
+network requests to public data/audio services.
+
+## Page structure
+
+The major sections currently appear in this order:
+
+```text
+Hero
+Quick stats + real page views
+Live Discord and music
+Recently Shipped
+Selected Work
+The Lab
+Digital Arts
+Experience & Education
+About Me + live age + interests
+Google Cloud Skills
+Equipment & Working Stack
+Curated Game Worlds + GTA VI countdown
+Off Screen photography
+Contact
 ```
+
+## Repository structure
+
+```text
 index.html
 assets/
-  css/main.css        — all styling, one file, custom-property driven
+  css/
+    main.css                  # all site styles and responsive rules
+  fonts/                      # self-hosted WOFF font files
   js/
-    main.js            — cursor, nav, reveals, lab filters, misc UI wiring
-    background.js       — the WebGL shader background
-    live.js              — Discord presence + now-playing widgets (Lanyard + Last.fm)
-    vendor/             — gsap, ScrollTrigger, three.js, lenis (vendored)
-  fonts/                — self-hosted woff files + fonts-local.css
+    main.js                   # boot, navigation, reveals, lightboxes, age,
+                              # game viewer, Sunflower player, GTA countdown
+    live.js                   # Lanyard, Last.fm, Spotify, iTunes art fallback
+    activity.js               # GitHub feed and public page-view counter
+    performance.js            # conditional Three.js/background loader
+    background.js             # WebGL fragment shader
+    vendor/                   # GSAP, ScrollTrigger, Lenis, Three.js
   images/
-    avatar.jpg           — profile photo
-    logo.svg              — site mark, used as favicon + nav logo (add your own; falls back to a "YV" text mark if missing)
-    projects/            — legacy project preview screenshots
-    widgets/              — real screenshots of the 5 live Discord widgets shown in Selected Work
-    arts/                — digital art gallery pieces (11 real pieces)
-    whatilike/           — "favourites" imagery used in the About section
+    arts/                     # digital artwork
+    brand/                    # BITS Pilani and HCLTech marks
+    equipment/                # laptop, phone, and watch product imagery
+    favs/                     # favourite singer/song/software artwork
+    games/                    # locally stored game identification artwork
+    gcp-badges/               # Google Cloud Skills artwork
+    maps/                     # Delhi map assets
+    real/                     # personal photography
+      mobile/                 # reduced-size responsive WebP variants
+    software/                 # software/tool logos
+    whatilike/                # film, series, game, nature, and gear imagery
+    widgets/                  # real project screenshots
 ```
+
+## Live-data configuration
+
+### Discord and music
+
+Edit the constants near the top of `assets/js/live.js`:
+
+```js
+var DISCORD_USER_ID = '848100520509308989';
+var LASTFM_USER = 'The_Berlin';
+var LASTFM_API_KEY = 'c928f4b7b51bd314bc09ec438eaf85ec';
+```
+
+Lanyard reports presence only for users registered with the Lanyard service.
+The Last.fm key is public client-side configuration; do not place private
+credentials in this repository.
+
+### Recently Shipped and visitor counter
+
+Edit `assets/js/activity.js`:
+
+```js
+var GITHUB_USER = 'MeYashverma';
+var VISITOR_KEY = 'yashverma_dev_portfolio_pageviews_v1';
+```
+
+The visitor counter currently increments only when the hostname is one of:
+
+```text
+yashverma.dev
+www.yashverma.dev
+meyashverma.github.io
+```
+
+Update the production-host check in `loadVisitorCounter()` if deployment moves
+to another domain.
 
 ## Editing content
 
-Everything is hand-authored in `index.html` — no templating. To add a
-project to **Selected Work**, copy a `.work-item` block; to add something to
-**The Lab**, copy a `.lab-card` block and set its `data-cat` to one of
-`widget` / `cloud` / `web` / `misc` so the filter buttons pick it up. To add
-an art piece, copy an `.arts-card` figure block inside `#artsGrid` (add
-`arts-card--tall` or `arts-card--wide` modifiers for grid variety) — the
-lightbox click-to-zoom wiring in `main.js` picks up any `.arts-card`
-automatically, no extra JS needed.
+The site is hand-authored; there is no data layer or template compiler.
 
-To point the **Live** strip at different accounts, edit the constants at the
-top of `assets/js/live.js`:
-
-```js
-var DISCORD_USER_ID = '848100520509308989'; // Lanyard needs this
-var LASTFM_USER = 'The_Berlin';
-var LASTFM_API_KEY = 'c928f4b7b51bd314bc09ec438eaf85ec'; // free, get one at last.fm/api/account/create
-```
-
-Note: Lanyard only reports presence for Discord users who have joined the
-[Lanyard Discord server](https://discord.gg/lanyard) — without that, the
-Discord card will always show as unavailable/offline regardless of the code.
+- Add work by copying a `.work-card` in `#workList`.
+- Add a lab item by copying `.lab-card` and setting `data-cat`.
+- Add artwork by copying `.arts-card` inside `#artsGrid`.
+- Update journey entries in the `#journey` section.
+- Update equipment in `#equipment`.
+- Update game shelves in `#games`; any `.game-shelf__item` is automatically
+  picked up by the game artwork viewer.
+- Update the GTA VI target in `initGtaCountdown()` if the official date changes.
 
 ## Local preview
 
-No build step needed — any static file server works:
+Use a static server rather than opening `index.html` directly:
 
 ```bash
 python3 -m http.server 8000
-# or
+# then open http://localhost:8000
+```
+
+or:
+
+```bash
 npx serve .
 ```
 
-## Deploying
+Local behavior differs slightly from production:
 
-Static files only — works as-is on GitHub Pages, Netlify, Vercel, or any
-static host. For GitHub Pages: enable Pages on this repo pointed at the
-`main` branch root.
+- The page-view counter stays in preview mode and does not increment.
+- GitHub, Last.fm, Lanyard, iTunes artwork, and the Sunflower preview require an
+  internet connection.
+- The in-app file preview used by some editors may block external API/audio
+  requests even though the deployed site works normally.
 
-## Performance / accessibility notes
+## Deployment
 
-- Respects `prefers-reduced-motion`: disables the shader's time-based motion
-  and Lenis smooth scroll when set.
-- Custom cursor and hover-follow previews are disabled entirely on
-  touch/no-hover devices — mobile gets normal native scrolling and tap
-  targets, not a crippled desktop experience.
-- All vendored JS/fonts mean zero third-party requests at runtime (no
-  Google Fonts CDN, no jsDelivr/cdnjs calls) — faster load, and nothing
-  breaks if a CDN has a bad day.
+For GitHub Pages, publish the repository root from the `main` branch. No build
+workflow is required.
+
+```bash
+git add .
+git commit -m "Update portfolio"
+git push
+```
+
+The same directory can also be deployed to Netlify, Vercel, Cloudflare Pages,
+or any basic static web server.
+
+## Mobile and performance behavior
+
+- Three.js and the full WebGL background are not downloaded on compact,
+  low-memory, or data-saver devices.
+- The hero dot-matrix portrait remains active on mobile with a coarser grid,
+  reduced pixel ratio, and reduced frame rate.
+- Lenis is desktop-only; touch browsers retain native scrolling.
+- Personal photography uses responsive mobile WebP variants.
+- Alternate gallery frames are deferred on constrained mobile sessions.
+- Game, equipment, badge, map, and portrait assets use compressed local
+  formats.
+- Images include intrinsic dimensions and asynchronous decoding to reduce
+  layout shifts.
+- Animations respect `prefers-reduced-motion` where applicable.
+- Cards and grids explicitly collapse to a single visible column on mobile;
+  horizontal scrolling is limited to intentional shelves/marquees.
+
+## Accessibility
+
+- Semantic sections and headings.
+- Keyboard-accessible command palette, art lightbox, and game artwork viewer.
+- Escape/arrow-key support for overlays.
+- Visible focus styles on interactive game covers.
+- Touch targets and safe-area padding for mobile browsers.
+- Reduced-motion support and native touch scrolling.
+- Descriptive alternative text for meaningful images; decorative imagery is
+  hidden from assistive technology.
+
+## External data and artwork
+
+- Discord presence: Lanyard
+- Music history: Last.fm
+- Artwork/song previews: Apple iTunes Search API
+- Shipping activity: GitHub public API
+- Page views: public Count API endpoint
+- Map data: OpenStreetMap contributors
+- Game artwork remains the property of the respective publishers and is stored
+  only to identify titles in a personal collection.
+
+## License and reuse
+
+The code can be studied or adapted, but personal photographs, artwork, logos,
+profile data, and third-party game/media artwork retain their respective
+rights. Replace personal and branded assets before reusing the site as another
+portfolio.
