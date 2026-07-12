@@ -54,16 +54,17 @@
 <!-- ============================================================ -->
 <header class="nav" id="siteNav">
   <a href="#top" class="nav__mark" data-cursor="text" data-cursor-text="TOP">
-    <img src="assets/images/logo.svg" alt="Yash Verma" class="nav__mark-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'">
+    <img src="assets/images/logo.svg" alt="Yash Verma" class="nav__mark-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'" decoding="async">
     <span class="nav__mark-text">YV</span>
   </a>
   <nav class="nav__links">
     <a href="#work" data-cursor="text" data-cursor-text="VIEW"><span>01</span>Work</a>
     <a href="#lab" data-cursor="text" data-cursor-text="VIEW"><span>02</span>Lab</a>
     <a href="#arts" data-cursor="text" data-cursor-text="VIEW"><span>03</span>Arts</a>
-    <a href="#about" data-cursor="text" data-cursor-text="VIEW"><span>04</span>About</a>
-    <a href="#gallery" data-cursor="text" data-cursor-text="VIEW"><span>05</span>Gallery</a>
-    <a href="#contact" data-cursor="text" data-cursor-text="VIEW"><span>06</span>Contact</a>
+    <a href="#journey" data-cursor="text" data-cursor-text="VIEW"><span>04</span>Journey</a>
+    <a href="#about" data-cursor="text" data-cursor-text="VIEW"><span>05</span>About</a>
+    <a href="#gallery" data-cursor="text" data-cursor-text="VIEW"><span>06</span>Gallery</a>
+    <a href="#contact" data-cursor="text" data-cursor-text="VIEW"><span>07</span>Contact</a>
   </nav>
   <button class="nav__menu-btn" id="menuBtn" aria-label="Toggle menu">
     <span></span><span></span>
@@ -77,12 +78,14 @@
 <div class="menu-overlay" id="menuOverlay">
   <div class="menu-overlay__links">
     <a href="#top" class="menu-link"><span class="menu-link__index">00</span><span class="menu-link__text">Top</span></a>
+    <a href="#shipped" class="menu-link"><span class="menu-link__index">↻</span><span class="menu-link__text">Recently Shipped</span></a>
     <a href="#work" class="menu-link"><span class="menu-link__index">01</span><span class="menu-link__text">Work</span></a>
     <a href="#lab" class="menu-link"><span class="menu-link__index">02</span><span class="menu-link__text">Lab</span></a>
     <a href="#arts" class="menu-link"><span class="menu-link__index">03</span><span class="menu-link__text">Arts</span></a>
-    <a href="#about" class="menu-link"><span class="menu-link__index">04</span><span class="menu-link__text">About</span></a>
-    <a href="#gallery" class="menu-link"><span class="menu-link__index">05</span><span class="menu-link__text">Gallery</span></a>
-    <a href="#contact" class="menu-link"><span class="menu-link__index">06</span><span class="menu-link__text">Contact</span></a>
+    <a href="#journey" class="menu-link"><span class="menu-link__index">04</span><span class="menu-link__text">Journey</span></a>
+    <a href="#about" class="menu-link"><span class="menu-link__index">05</span><span class="menu-link__text">About</span></a>
+    <a href="#gallery" class="menu-link"><span class="menu-link__index">06</span><span class="menu-link__text">Gallery</span></a>
+    <a href="#contact" class="menu-link"><span class="menu-link__index">07</span><span class="menu-link__text">Contact</span></a>
   </div>
   <div class="menu-overlay__footer">
     <div class="menu-overlay__socials">
@@ -90,7 +93,7 @@
       <a href="https://instagram.com/yashardcore" target="_blank" rel="noopener">Instagram</a>
       <a href="https://twitter.com/me_yashverma" target="_blank" rel="noopener">Twitter</a>
       <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener">Discord</a>
-      <a href="/cdn-cgi/l/email-protection#bb8ac2dac8d389cddec9d6da88fbdcd6dad2d795d8d4d6">Email</a>
+      <a href="/cdn-cgi/l/email-protection#56672f37253e642033243b376516313b373f3a7835393b">Email</a>
     </div>
     <div class="menu-overlay__meta">Delhi, India — IST</div>
   </div>
@@ -109,11 +112,11 @@
         <span class="hero__availability">Available for interesting problems</span>
         <span class="hero__orgs" aria-label="BITS Pilani and HCLTech">
           <span class="hero__org hero__org--bits">
-            <img src="assets/images/brand/bits-pilani.webp" alt="BITS Pilani" width="290" height="96">
+            <img src="assets/images/brand/bits-pilani.webp" alt="BITS Pilani" width="290" height="96" decoding="async">
           </span>
           <span class="hero__org-divider" aria-hidden="true">&middot;</span>
           <span class="hero__org hero__org--hcl">
-            <img src="assets/images/brand/hcltech.svg" alt="HCLTech" width="153" height="28">
+            <img src="assets/images/brand/hcltech.svg" alt="HCLTech" width="153" height="28" decoding="async">
           </span>
         </span>
       </div>
@@ -157,7 +160,7 @@
       <!-- Source image is a tightly-cropped, high-contrast render of the real
            face so the canvas dot-matrix always reads clearly. Hidden — the
            canvas samples pixels from it and paints them as lime dots. -->
-      <img class="hero__portrait-src" id="heroPortraitSrc" src="assets/images/portrait-source.jpg" alt="">
+      <img class="hero__portrait-src" id="heroPortraitSrc" src="assets/images/portrait-source.jpg" alt="" decoding="async" width="1195" height="896">
     </div>
     </div>
 
@@ -188,7 +191,7 @@
   <section class="stats" aria-label="Quick stats">
     <div class="stats__row">
       <div class="stat">
-        <div class="stat__num" data-count="29">0</div>
+        <div class="stat__num" data-count="30">0</div>
         <div class="stat__label">Public repos</div>
       </div>
       <div class="stat">
@@ -202,6 +205,13 @@
       <div class="stat">
         <div class="stat__num" data-count="24" data-suffix="/7">0</div>
         <div class="stat__label">Uptime target on free tiers</div>
+      </div>
+      <div class="stat stat--visitors">
+        <div class="stat__num stat__num--live" id="visitorCount" aria-live="polite">&mdash;</div>
+        <div class="stat__label">
+          <span class="stat__live-label"><i aria-hidden="true"></i> Website page views</span>
+          <small id="visitorCounterStatus">Connecting to public counter&hellip;</small>
+        </div>
       </div>
     </div>
   </section>
@@ -224,8 +234,8 @@
         </div>
         <div class="live-card__body">
           <div class="live-card__avatar-wrap">
-            <img class="live-card__avatar" id="liveDiscordAvatar" src="assets/images/avatar.jpg" alt="Yash's Discord avatar" loading="lazy">
-            <img class="live-card__avatar-decoration" id="liveDiscordDecoration" src="" alt="" hidden aria-hidden="true">
+            <img class="live-card__avatar" id="liveDiscordAvatar" src="assets/images/avatar.jpg" alt="Yash's Discord avatar" loading="lazy" decoding="async" width="800" height="800">
+            <img class="live-card__avatar-decoration" id="liveDiscordDecoration" src="" alt="" hidden aria-hidden="true" decoding="async">
             <span class="live-card__status-badge" id="liveDiscordStatusBadge"></span>
           </div>
           <div class="live-card__info">
@@ -245,8 +255,8 @@
 
         <!-- Rich activity readout: appears only when there IS an activity -->
         <div class="live-card__activity" id="liveDiscordActivityRich" hidden>
-          <img class="live-card__activity-art" id="liveDiscordActivityArt" src="" alt="">
-          <img class="live-card__activity-art-small" id="liveDiscordActivityArtSmall" src="" alt="">
+          <img class="live-card__activity-art" id="liveDiscordActivityArt" src="" alt="" decoding="async">
+          <img class="live-card__activity-art-small" id="liveDiscordActivityArtSmall" src="" alt="" decoding="async">
           <div class="live-card__activity-meta">
             <div class="live-card__activity-name" id="liveDiscordActivityName">—</div>
             <div class="live-card__activity-details" id="liveDiscordActivityDetails">—</div>
@@ -295,7 +305,7 @@
 
           <div class="live-card__telemetry">
             <div class="live-card__telemetry-item live-card__telemetry-item--guild">
-              <img id="liveDiscordGuildIcon" src="" alt="" hidden aria-hidden="true">
+              <img id="liveDiscordGuildIcon" src="" alt="" hidden aria-hidden="true" decoding="async">
               <span><label>Primary guild</label><strong id="liveDiscordGuildDetail">Not public</strong></span>
             </div>
             <div class="live-card__telemetry-item">
@@ -336,7 +346,7 @@
         <div class="live-card__body live-card__body--music">
           <div class="live-card__art-backdrop" id="liveMusicBackdrop" aria-hidden="true"></div>
           <div class="live-card__art-wrap">
-            <img class="live-card__art" id="liveMusicArt" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230d0d10'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%232a2a30' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%232a2a30' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='10' fill='none' stroke='%23d9ff3f' stroke-width='1.5' opacity='0.7'/%3E%3Ccircle cx='32' cy='32' r='3.2' fill='%23d9ff3f'/%3E%3C/svg%3E" alt="Album art" loading="lazy">
+            <img class="live-card__art" id="liveMusicArt" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230d0d10'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%232a2a30' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%232a2a30' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='10' fill='none' stroke='%23d9ff3f' stroke-width='1.5' opacity='0.7'/%3E%3Ccircle cx='32' cy='32' r='3.2' fill='%23d9ff3f'/%3E%3C/svg%3E" alt="Album art" loading="lazy" decoding="async">
             <span class="live-card__eq" id="liveMusicEq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           </div>
           <div class="live-card__info">
@@ -372,6 +382,29 @@
   </section>
 
   <!-- ============================================================ -->
+  <!-- RECENTLY SHIPPED — automatic public GitHub activity feed       -->
+  <!-- ============================================================ -->
+  <section class="shipped" id="shipped" aria-labelledby="shippedTitle">
+    <div class="shipped__head">
+      <div>
+        <span class="shipped__eyebrow"><i aria-hidden="true"></i> GitHub activity · automatic</span>
+        <h2 class="shipped__title" id="shippedTitle">Recently&nbsp;Shipped</h2>
+        <p class="shipped__desc">The latest public commits and releases across my repositories—pulled directly from GitHub, cached locally, and updated without editing this page.</p>
+      </div>
+      <div class="shipped__meta">
+        <span id="shippedStatus">Connecting to GitHub&hellip;</span>
+        <a href="https://github.com/MeYashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">All repositories ↗</a>
+      </div>
+    </div>
+
+    <ol class="shipped__feed" id="shippedFeed" aria-live="polite">
+      <li class="shipped-card shipped-card--loading"><span></span><span></span><span></span></li>
+      <li class="shipped-card shipped-card--loading"><span></span><span></span><span></span></li>
+      <li class="shipped-card shipped-card--loading"><span></span><span></span><span></span></li>
+    </ol>
+  </section>
+
+  <!-- ============================================================ -->
   <!-- WORK — flagship case studies                                  -->
   <!-- ============================================================ -->
   <section class="work" id="work">
@@ -390,8 +423,8 @@
       <!-- FEATURED — AetherOS spans the full row -->
       <article class="work-card work-card--featured" data-tilt>
         <a href="https://meyashverma.github.io/AetherOS-Prod/" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
-          <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/aetheros.png')"></div>
-          <img src="assets/images/widgets/aetheros.png" alt="AetherOS — browser-native desktop OS with dock, floating windows, live telemetry panel, and Aether Chat sidebar" loading="lazy">
+          <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/aetheros.webp')"></div>
+          <img src="assets/images/widgets/aetheros.webp" alt="AetherOS — browser-native desktop OS with dock, floating windows, live telemetry panel, and Aether Chat sidebar" loading="lazy" decoding="async" width="1400" height="757">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live · try it</span>
           <span class="work-card__featured-badge">Featured</span>
         </a>
@@ -416,7 +449,7 @@
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/Discord-Lyrically-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/lyrically.png')"></div>
-          <img src="assets/images/widgets/lyrically.png" alt="Lyrically Discord widget showing real-time synced lyrics for 'I Had Some Help' by Post Malone" loading="lazy">
+          <img src="assets/images/widgets/lyrically.png" alt="Lyrically Discord widget showing real-time synced lyrics for 'I Had Some Help' by Post Malone" loading="lazy" decoding="async" width="500" height="376">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
         <div class="work-card__body">
@@ -437,7 +470,7 @@
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/discord-vinyl-fm-widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/vinyl-fm.png')"></div>
-          <img src="assets/images/widgets/vinyl-fm.png" alt="Vinyl.fm Discord widget showing now-playing track plus 4-week and 6-month top artist/album/song stats" loading="lazy">
+          <img src="assets/images/widgets/vinyl-fm.png" alt="Vinyl.fm Discord widget showing now-playing track plus 4-week and 6-month top artist/album/song stats" loading="lazy" decoding="async" width="546" height="450">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
         <div class="work-card__body">
@@ -458,7 +491,7 @@
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/discord-waifu-widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/waifu-widget.png')"></div>
-          <img src="assets/images/widgets/waifu-widget.png" alt="Waifu of the Day Discord widget showing character Formidable from Azur Lane with simp count, vibe and rank stats" loading="lazy">
+          <img src="assets/images/widgets/waifu-widget.png" alt="Waifu of the Day Discord widget showing character Formidable from Azur Lane with simp count, vibe and rank stats" loading="lazy" decoding="async" width="562" height="431">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
         <div class="work-card__body">
@@ -479,7 +512,7 @@
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/Genshin-Stats" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/genshin-stats.png')"></div>
-          <img src="assets/images/widgets/genshin-stats.png" alt="Genshin Stats Discord widget showing character Tighnari at level 40 with adventure rank, achievements and Spiral Abyss progress" loading="lazy">
+          <img src="assets/images/widgets/genshin-stats.png" alt="Genshin Stats Discord widget showing character Tighnari at level 40 with adventure rank, achievements and Spiral Abyss progress" loading="lazy" decoding="async" width="566" height="433">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
         <div class="work-card__body">
@@ -500,7 +533,7 @@
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/Discord-LaunchPad-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/launchpad.png')"></div>
-          <img src="assets/images/widgets/launchpad.png" alt="LaunchPad Discord widget showing the next scheduled Falcon 9 launch, countdown, pad and mission details" loading="lazy">
+          <img src="assets/images/widgets/launchpad.png" alt="LaunchPad Discord widget showing the next scheduled Falcon 9 launch, countdown, pad and mission details" loading="lazy" decoding="async" width="493" height="475">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
         <div class="work-card__body">
@@ -686,57 +719,57 @@
     <div class="arts__grid" id="artsGrid">
 
       <figure class="arts-card" data-cursor="view" data-cat="fanart" data-index="01">
-        <img src="assets/images/arts/genshin-lineart.jpg" alt="Genshin Impact character lineart, uncolored ink drawing of a girl with a flag and clouds" loading="lazy">
+        <img src="assets/images/arts/genshin-lineart.jpg" alt="Genshin Impact character lineart, uncolored ink drawing of a girl with a flag and clouds" loading="lazy" decoding="async" width="1400" height="630">
         <figcaption><span class="arts-card__num">01</span><span class="arts-card__title">Genshin Impact — lineart study</span><span class="arts-card__meta">Ibispaint X &middot; Fanart</span></figcaption>
       </figure>
 
       <figure class="arts-card" data-cursor="view" data-cat="portrait" data-index="02">
-        <img src="assets/images/arts/birthday-portrait.jpg" alt="Digitally painted birthday portrait with balloons, commissioned piece" loading="lazy">
+        <img src="assets/images/arts/birthday-portrait.jpg" alt="Digitally painted birthday portrait with balloons, commissioned piece" loading="lazy" decoding="async" width="1050" height="1400">
         <figcaption><span class="arts-card__num">02</span><span class="arts-card__title">Birthday portrait</span><span class="arts-card__meta">Ibispaint X &middot; Digital painting</span></figcaption>
       </figure>
 
       <figure class="arts-card" data-cursor="view" data-cat="fanart" data-index="03">
-        <img src="assets/images/arts/spider-gwen.jpg" alt="Spider-Gwen fanart sitting on a rooftop with headphones" loading="lazy">
+        <img src="assets/images/arts/spider-gwen.jpg" alt="Spider-Gwen fanart sitting on a rooftop with headphones" loading="lazy" decoding="async" width="1080" height="881">
         <figcaption><span class="arts-card__num">03</span><span class="arts-card__title">Spider-Gwen</span><span class="arts-card__meta">Ibispaint X &middot; Fanart</span></figcaption>
       </figure>
 
       <figure class="arts-card arts-card--tall" data-cursor="view" data-cat="fanart" data-index="04">
-        <img src="assets/images/arts/zelda-link.jpg" alt="Zelda and Link falling through rain, half-inked half-colored fanart from Breath of the Wild" loading="lazy">
+        <img src="assets/images/arts/zelda-link.jpg" alt="Zelda and Link falling through rain, half-inked half-colored fanart from Breath of the Wild" loading="lazy" decoding="async" width="787" height="1400">
         <figcaption><span class="arts-card__num">04</span><span class="arts-card__title">Zelda &amp; Link — Breath of the Wild</span><span class="arts-card__meta">Ibispaint X &middot; Fanart, in progress</span></figcaption>
       </figure>
 
       <figure class="arts-card" data-cursor="view" data-cat="portrait" data-index="05">
-        <img src="assets/images/arts/pigeon-peanit.jpg" alt="Detailed lineart portrait of a woman taking a selfie in traditional dress" loading="lazy">
+        <img src="assets/images/arts/pigeon-peanit.jpg" alt="Detailed lineart portrait of a woman taking a selfie in traditional dress" loading="lazy" decoding="async" width="1050" height="1400">
         <figcaption><span class="arts-card__num">05</span><span class="arts-card__title">Portrait — detailed inkwork</span><span class="arts-card__meta">Ibispaint X &middot; Lineart</span></figcaption>
       </figure>
 
       <figure class="arts-card" data-cursor="view" data-cat="minimal" data-index="06">
-        <img src="assets/images/arts/bike-lineart.jpg" alt="Lineart illustration of a person sitting in a chair beside a bicycle" loading="lazy">
+        <img src="assets/images/arts/bike-lineart.jpg" alt="Lineart illustration of a person sitting in a chair beside a bicycle" loading="lazy" decoding="async" width="1286" height="720">
         <figcaption><span class="arts-card__num">06</span><span class="arts-card__title">Everyday scene</span><span class="arts-card__meta">Ibispaint X &middot; Lineart</span></figcaption>
       </figure>
 
       <figure class="arts-card arts-card--tall" data-cursor="view" data-cat="landscape" data-index="07">
-        <img src="assets/images/arts/swing-landscape.jpg" alt="Digital landscape painting of a swing under a tree at dusk with a pink sky" loading="lazy">
+        <img src="assets/images/arts/swing-landscape.jpg" alt="Digital landscape painting of a swing under a tree at dusk with a pink sky" loading="lazy" decoding="async" width="1050" height="1400">
         <figcaption><span class="arts-card__num">07</span><span class="arts-card__title">Swing at dusk</span><span class="arts-card__meta">Ibispaint X &middot; Landscape painting</span></figcaption>
       </figure>
 
       <figure class="arts-card" data-cursor="view" data-cat="minimal" data-index="08">
-        <img src="assets/images/arts/chilling-goose.jpg" alt="Minimal illustration of a goose lying down next to a cup of tea, captioned 'Chilling'" loading="lazy">
+        <img src="assets/images/arts/chilling-goose.jpg" alt="Minimal illustration of a goose lying down next to a cup of tea, captioned 'Chilling'" loading="lazy" decoding="async" width="1080" height="1080">
         <figcaption><span class="arts-card__num">08</span><span class="arts-card__title">&ldquo;Chilling&rdquo;</span><span class="arts-card__meta">Ibispaint X &middot; Minimal illustration</span></figcaption>
       </figure>
 
       <figure class="arts-card" data-cursor="view" data-cat="fanart" data-index="09">
-        <img src="assets/images/arts/twitch-2yr.jpg" alt="Chibi anime-style character celebrating a 2-year Twitch anniversary" loading="lazy">
+        <img src="assets/images/arts/twitch-2yr.jpg" alt="Chibi anime-style character celebrating a 2-year Twitch anniversary" loading="lazy" decoding="async" width="1024" height="1024">
         <figcaption><span class="arts-card__num">09</span><span class="arts-card__title">2-year Twitch anniversary</span><span class="arts-card__meta">Ibispaint X &middot; Chibi illustration</span></figcaption>
       </figure>
 
       <figure class="arts-card arts-card--tall" data-cursor="view" data-cat="portrait" data-index="10">
-        <img src="assets/images/arts/portrait-lineart.jpg" alt="Lineart self-portrait style illustration of a woman with long hair and cherry blossoms, signed Yash" loading="lazy">
+        <img src="assets/images/arts/portrait-lineart.jpg" alt="Lineart self-portrait style illustration of a woman with long hair and cherry blossoms, signed Yash" loading="lazy" decoding="async" width="720" height="1372">
         <figcaption><span class="arts-card__num">10</span><span class="arts-card__title">Signed lineart portrait</span><span class="arts-card__meta">Ibispaint X &middot; Lineart</span></figcaption>
       </figure>
 
       <figure class="arts-card arts-card--wide" data-cursor="view" data-cat="fanart" data-index="11">
-        <img src="assets/images/arts/minecraft-fanart.jpg" alt="Colorful Minecraft-themed fanart with the Ender Dragon, TNT and player characters" loading="lazy">
+        <img src="assets/images/arts/minecraft-fanart.jpg" alt="Colorful Minecraft-themed fanart with the Ender Dragon, TNT and player characters" loading="lazy" decoding="async" width="1388" height="1400">
         <figcaption><span class="arts-card__num">11</span><span class="arts-card__title">Minecraft fanart</span><span class="arts-card__meta">Ibispaint X &middot; Full colour, fanart</span></figcaption>
       </figure>
 
@@ -757,9 +790,87 @@
     <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
     <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous piece">&larr;</button>
     <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next piece">&rarr;</button>
-    <img class="lightbox__img" id="lightboxImg" src="" alt="">
+    <img class="lightbox__img" id="lightboxImg" src="" alt="" decoding="async">
     <div class="lightbox__caption" id="lightboxCaption"></div>
   </div>
+
+  <!-- ============================================================ -->
+  <!-- EXPERIENCE + EDUCATION                                        -->
+  <!-- ============================================================ -->
+  <section class="journey" id="journey" aria-labelledby="journeyTitle">
+    <div class="section-head">
+      <span class="section-head__index">04</span>
+      <h2 class="section-head__title" id="journeyTitle">Experience &amp;&nbsp;Education</h2>
+      <p class="section-head__desc">The two formal tracks and the independent work running beside them. Dates stay intentionally simple until there is a finished chapter to archive.</p>
+    </div>
+
+    <div class="journey__layout">
+      <aside class="journey__summary">
+        <span class="journey__summary-label">Current operating mode</span>
+        <strong>Work. Study.<br>Build after hours.</strong>
+        <p>Enterprise governance during the day, interdisciplinary study around it, and open-source systems whenever the queue is quiet.</p>
+        <div class="journey__summary-stats">
+          <div><span>02</span><label>Formal tracks</label></div>
+          <div><span>30</span><label>Public repos</label></div>
+          <div><span>∞</span><label>Things to learn</label></div>
+        </div>
+      </aside>
+
+      <ol class="journey__timeline">
+        <li class="journey-item journey-item--work">
+          <div class="journey-item__rail"><time>Present</time><i aria-hidden="true"></i></div>
+          <article class="journey-item__card">
+            <div class="journey-item__top">
+              <span class="journey-item__logo journey-item__logo--hcl"><img src="assets/images/brand/hcltech.svg" alt="HCLTech" width="153" height="28" decoding="async"></span>
+              <span class="journey-item__type">Experience</span>
+            </div>
+            <h3>GRC Analyst <span>@ HCLTech</span></h3>
+            <p>Working around governance, risk and compliance in an enterprise environment while staying close to cybersecurity, systems thinking and the operational reality behind policies.</p>
+            <ul class="journey-item__tags"><li>Governance</li><li>Risk</li><li>Compliance</li><li>Cybersecurity</li></ul>
+          </article>
+        </li>
+
+        <li class="journey-item journey-item--education">
+          <div class="journey-item__rail"><time>Present</time><i aria-hidden="true"></i></div>
+          <article class="journey-item__card">
+            <div class="journey-item__top">
+              <span class="journey-item__logo journey-item__logo--bits"><img src="assets/images/brand/bits-pilani.webp" alt="BITS Pilani" width="290" height="96" decoding="async"></span>
+              <span class="journey-item__type">Education</span>
+            </div>
+            <h3>Design &amp; Computing <span>@ BITS Pilani</span></h3>
+            <p>Pursuing an interdisciplinary degree while balancing full-time work and independent engineering projects—connecting computation, product thinking and intentional interface design.</p>
+            <ul class="journey-item__tags"><li>Computing</li><li>Design systems</li><li>Product thinking</li><li>Human interfaces</li></ul>
+          </article>
+        </li>
+
+        <li class="journey-item journey-item--building">
+          <div class="journey-item__rail"><time>Present</time><i aria-hidden="true"></i></div>
+          <article class="journey-item__card">
+            <div class="journey-item__top">
+              <span class="journey-item__logo journey-item__logo--github" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 .3a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18.76.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.44.38.81 1.1.81 2.22v3.3c0 .32.21.69.83.57A12 12 0 0 0 12 .3Z"/></svg></span>
+              <span class="journey-item__type">Independent work</span>
+            </div>
+            <h3>Open-source systems builder</h3>
+            <p>Designing browser-native tools, Discord widgets, automation daemons and API experiments—usually constrained to free infrastructure and expected to recover when something upstream breaks.</p>
+            <ul class="journey-item__tags"><li>GitHub Actions</li><li>Python</li><li>APIs</li><li>Automation</li></ul>
+          </article>
+        </li>
+
+        <li class="journey-item journey-item--learning">
+          <div class="journey-item__rail"><time>Present</time><i aria-hidden="true"></i></div>
+          <article class="journey-item__card">
+            <div class="journey-item__top">
+              <span class="journey-item__logo journey-item__logo--gcp" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M12.7 10.2v3.9h5.4a4.7 4.7 0 0 1-2 3.1l3.3 2.6c1.9-1.8 3-4.4 3-7.4 0-.8-.1-1.5-.2-2.2Z"/><path fill="#34A853" d="M12 22.5c2.7 0 5-.9 6.7-2.4l-3.3-2.6c-.9.6-2.1 1-3.4 1-2.6 0-4.8-1.8-5.6-4.2L3 16.9a10.5 10.5 0 0 0 9 5.6Z"/><path fill="#FBBC05" d="M6.4 14.3a6.3 6.3 0 0 1 0-4.1L3 7.6a10.5 10.5 0 0 0 0 9.3Z"/><path fill="#EA4335" d="M12 6.1c1.5 0 2.8.5 3.8 1.5l2.9-2.8A9.7 9.7 0 0 0 12 2.1 10.5 10.5 0 0 0 3 7.6l3.4 2.6C7.2 7.8 9.4 6.1 12 6.1Z"/></svg></span>
+              <span class="journey-item__type">Continuous learning</span>
+            </div>
+            <h3>Google Cloud Skills <span>· Gold League</span></h3>
+            <p>Continuing practical work across generative AI, MLOps, DevOps, event-driven systems and cloud data tooling through hands-on labs and skill badges.</p>
+            <ul class="journey-item__tags"><li>GenAI</li><li>MLOps</li><li>DevOps</li><li>Google Cloud</li></ul>
+          </article>
+        </li>
+      </ol>
+    </div>
+  </section>
 
   <!-- ============================================================ -->
   <!-- ABOUT                                                         -->
@@ -769,9 +880,9 @@
       <div class="about__media">
         <div class="about__portrait" id="aboutPortrait" data-mode="dot">
           <div class="about__portrait-frame">
-            <img class="about__portrait-img about__portrait-img--photo" src="assets/images/real/portrait-hero.jpg" alt="Yash Verma" loading="lazy">
-            <img class="about__portrait-img about__portrait-img--dot" src="assets/images/avatar-dotmatrix.png" alt="" loading="lazy" aria-hidden="true">
-            <img class="about__portrait-img about__portrait-img--ascii" src="assets/images/avatar-ascii.png" alt="" loading="lazy" aria-hidden="true">
+            <img class="about__portrait-img about__portrait-img--photo" src="assets/images/real/portrait-hero.jpg" alt="Yash Verma" loading="lazy" decoding="async" width="2048" height="1536" srcset="assets/images/real/mobile/portrait-hero.webp 900w, assets/images/real/portrait-hero.jpg 2048w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw">
+            <img class="about__portrait-img about__portrait-img--dot" src="assets/images/avatar-dotmatrix.webp" alt="" loading="lazy" aria-hidden="true" decoding="async" width="720" height="964">
+            <img class="about__portrait-img about__portrait-img--ascii" src="assets/images/avatar-ascii.webp" alt="" loading="lazy" aria-hidden="true" decoding="async" width="720" height="1073">
           </div>
           <div class="about__portrait-controls" role="tablist" aria-label="Portrait render style">
             <button class="about__portrait-tab is-active" data-mode="dot" type="button" role="tab">Halftone</button>
@@ -784,7 +895,7 @@
         </div>
         <figure class="about__map">
           <a class="about__map-link" href="https://www.openstreetmap.org/?mlat=28.6139&amp;mlon=77.2090#map=11/28.6139/77.2090" target="_blank" rel="noopener" aria-label="Open Delhi on OpenStreetMap">
-            <img src="assets/images/maps/delhi-monochrome.png" alt="Monochrome street map centered on New Delhi" loading="lazy" width="760" height="420">
+            <img src="assets/images/maps/delhi-monochrome.webp" alt="Monochrome street map centered on New Delhi" loading="lazy" width="900" height="600" decoding="async">
           </a>
           <figcaption>
             <span>28.6139&deg; N &middot; 77.2090&deg; E</span>
@@ -794,7 +905,7 @@
       </div>
 
       <div class="about__content">
-        <span class="section-head__index">04</span>
+        <span class="section-head__index">05</span>
         <h2 class="about__title">About&nbsp;me</h2>
         <p class="about__lead">
           Hi, I'm <strong>Yash Verma</strong>.
@@ -919,7 +1030,7 @@
 
         <div class="favorites">
           <div class="favorites__head">
-            <span class="favorites__eyebrow">04 · Personal Ops</span>
+            <span class="favorites__eyebrow">05.1 · Personal Ops</span>
             <h4 class="favorites__heading">A&nbsp;few things I'm <em>genuinely</em> into</h4>
             <p class="favorites__intro">The unfiltered tab list — what's actually running in the background of my brain when I'm not shipping code.</p>
           </div>
@@ -928,7 +1039,7 @@
 
             <article class="favorite favorite--tall" data-tilt data-cat="tv">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/money-heist.jpg" alt="La Casa de Papel / Money Heist promotional artwork, red jumpsuit and Dali mask" loading="lazy">
+                <img src="assets/images/whatilike/money-heist.jpg" alt="La Casa de Papel / Money Heist promotional artwork, red jumpsuit and Dali mask" loading="lazy" decoding="async" width="1080" height="1558">
                 <span class="favorite__badge">Netflix · Series</span>
               </div>
               <div class="favorite__body">
@@ -940,7 +1051,7 @@
 
             <article class="favorite favorite--tall" data-tilt data-cat="tv">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/breaking-bad.jpg" alt="Heisenberg / Walter White portrait from Breaking Bad" loading="lazy">
+                <img src="assets/images/whatilike/breaking-bad.jpg" alt="Heisenberg / Walter White portrait from Breaking Bad" loading="lazy" decoding="async" width="1920" height="1080">
                 <span class="favorite__badge">AMC · Series</span>
               </div>
               <div class="favorite__body">
@@ -952,7 +1063,7 @@
 
             <article class="favorite favorite--tall" data-tilt data-cat="tv">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/loki.webp" alt="Loki TVA character key art from Marvel Disney+ series" loading="lazy">
+                <img src="assets/images/whatilike/loki.webp" alt="Loki TVA character key art from Marvel Disney+ series" loading="lazy" decoding="async" width="3840" height="1280">
                 <span class="favorite__badge">Disney+ · Marvel</span>
               </div>
               <div class="favorite__body">
@@ -964,7 +1075,7 @@
 
             <article class="favorite favorite--tall" data-tilt data-cat="tv">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/stranger-things.jpg" alt="Stranger Things — Eleven / Millie Bobby Brown key art" loading="lazy">
+                <img src="assets/images/whatilike/stranger-things.jpg" alt="Stranger Things — Eleven / Millie Bobby Brown key art" loading="lazy" decoding="async" width="1185" height="1800">
                 <span class="favorite__badge">Netflix · Series</span>
               </div>
               <div class="favorite__body">
@@ -976,7 +1087,7 @@
 
             <article class="favorite favorite--tall" data-tilt data-cat="film">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/marvel.png" alt="Iron Man in the Nano Gauntlet, Avengers Endgame" loading="lazy">
+                <img src="assets/images/whatilike/marvel.webp" alt="Iron Man in the Nano Gauntlet, Avengers Endgame" loading="lazy" decoding="async" width="800" height="1185">
                 <span class="favorite__badge">MCU · Film</span>
               </div>
               <div class="favorite__body">
@@ -988,7 +1099,7 @@
 
             <article class="favorite favorite--tall" data-tilt data-cat="film">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/interstellar.webp" alt="Gargantua black hole from Interstellar movie" loading="lazy">
+                <img src="assets/images/whatilike/interstellar.webp" alt="Gargantua black hole from Interstellar movie" loading="lazy" decoding="async" width="640" height="400">
                 <span class="favorite__badge">Sci-fi · Film</span>
               </div>
               <div class="favorite__body">
@@ -1000,7 +1111,7 @@
 
             <article class="favorite" data-tilt data-cat="anime">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/anime-aot.jpg" alt="Attack on Titan cinematic wallpaper" loading="lazy">
+                <img src="assets/images/whatilike/anime-aot.jpg" alt="Attack on Titan cinematic wallpaper" loading="lazy" decoding="async" width="1919" height="1023">
                 <span class="favorite__badge">MAPPA · Anime</span>
               </div>
               <div class="favorite__body">
@@ -1012,7 +1123,7 @@
 
             <article class="favorite" data-tilt data-cat="life">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/nature-escape.jpg" alt="Fantasy landscape painting representing nature escapes" loading="lazy">
+                <img src="assets/images/whatilike/nature-escape.jpg" alt="Fantasy landscape painting representing nature escapes" loading="lazy" decoding="async" width="1400" height="787">
                 <span class="favorite__badge">Off-grid</span>
               </div>
               <div class="favorite__body">
@@ -1024,7 +1135,7 @@
 
             <article class="favorite" data-tilt data-cat="life">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/gtr-dreamcar.jpg" alt="Nissan GT-R R34 at night" loading="lazy">
+                <img src="assets/images/whatilike/gtr-dreamcar.jpg" alt="Nissan GT-R R34 at night" loading="lazy" decoding="async" width="1400" height="955">
                 <span class="favorite__badge">Dream garage</span>
               </div>
               <div class="favorite__body">
@@ -1036,7 +1147,7 @@
 
             <article class="favorite" data-tilt data-cat="gear">
               <div class="favorite__media">
-                <img src="assets/images/whatilike/keyboard.png" alt="Retro mechanical keyboard with RGB backlight" loading="lazy">
+                <img src="assets/images/whatilike/keyboard.png" alt="Retro mechanical keyboard with RGB backlight" loading="lazy" decoding="async" width="640" height="410">
                 <span class="favorite__badge">Gear · Setup</span>
               </div>
               <div class="favorite__body">
@@ -1053,7 +1164,7 @@
 
             <a class="fav-card" href="https://open.spotify.com/artist/4fEkbug6kZzzJ8eYX6Kbbp" target="_blank" rel="noopener" data-tilt data-cursor="text" data-cursor-text="LISTEN">
               <div class="fav-card__media fav-card__media--portrait">
-                <img src="assets/images/favs/kk-singer.jpg" alt="KK — Krishnakumar Kunnath performing live" loading="lazy">
+                <img src="assets/images/favs/kk-singer.jpg" alt="KK — Krishnakumar Kunnath performing live" loading="lazy" decoding="async" width="1200" height="675">
               </div>
               <div class="fav-card__body">
                 <span class="fav-card__kicker">Favourite singer</span>
@@ -1065,7 +1176,7 @@
 
             <a class="fav-card" href="https://open.spotify.com/track/3KkXRkHbMCARz0aVfEt68P" target="_blank" rel="noopener" data-tilt data-cursor="text" data-cursor-text="PLAY">
               <div class="fav-card__media fav-card__media--square">
-                <img src="assets/images/favs/sunflower.jpg" alt="Sunflower — Post Malone &amp; Swae Lee, Spider-Verse cover art" loading="lazy">
+                <img src="assets/images/favs/sunflower.jpg" alt="Sunflower — Post Malone &amp; Swae Lee, Spider-Verse cover art" loading="lazy" decoding="async" width="300" height="300">
                 <span class="fav-card__vinyl" aria-hidden="true"></span>
               </div>
               <div class="fav-card__body">
@@ -1078,7 +1189,7 @@
 
             <a class="fav-card" href="https://ibispaint.com/" target="_blank" rel="noopener" data-tilt data-cursor="text" data-cursor-text="OPEN">
               <div class="fav-card__media fav-card__media--square">
-                <img src="assets/images/favs/ibispaint.webp" alt="ibisPaint X app screenshot" loading="lazy">
+                <img src="assets/images/favs/ibispaint.webp" alt="ibisPaint X app screenshot" loading="lazy" decoding="async" width="640" height="853">
               </div>
               <div class="fav-card__body">
                 <span class="fav-card__kicker">Currently drawing in</span>
@@ -1123,37 +1234,37 @@
 
       <div class="gcloud__marquee" aria-hidden="true">
         <div class="gcloud__marquee-track">
-          <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/level3-genai.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/level2-cloud-ops.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/level1-scalable.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy" decoding="async" width="1000" height="908">
+          <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/level3-genai.webp" alt="" loading="lazy" decoding="async" width="420" height="420">
+          <img src="assets/images/gcp-badges/level2-cloud-ops.webp" alt="" loading="lazy" decoding="async" width="420" height="420">
+          <img src="assets/images/gcp-badges/level1-scalable.webp" alt="" loading="lazy" decoding="async" width="420" height="420">
+          <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy" decoding="async" width="1000" height="666">
+          <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
           <!-- duplicate for seamless loop -->
-          <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/level3-genai.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/level2-cloud-ops.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/level1-scalable.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy">
-          <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy" decoding="async" width="1000" height="908">
+          <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/level3-genai.webp" alt="" loading="lazy" decoding="async" width="420" height="420">
+          <img src="assets/images/gcp-badges/level2-cloud-ops.webp" alt="" loading="lazy" decoding="async" width="420" height="420">
+          <img src="assets/images/gcp-badges/level1-scalable.webp" alt="" loading="lazy" decoding="async" width="420" height="420">
+          <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy" decoding="async" width="1000" height="666">
+          <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
+          <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy" decoding="async" width="1000" height="667">
         </div>
       </div>
 
@@ -1169,7 +1280,7 @@
   <section class="gallery" id="gallery">
     <div class="gallery__inner">
       <div class="section-head">
-        <span class="section-head__index">05</span>
+        <span class="section-head__index">06</span>
         <h2 class="section-head__title">Off Screen</h2>
         <p class="section-head__desc">The parts of life that don't compile — some trips, one certificate I'm mildly proud of, and skies I stopped to photograph on the way somewhere else.</p>
       </div>
@@ -1177,39 +1288,39 @@
       <div class="gallery__masonry">
 
         <figure class="gallery-photo gallery-photo--natural gallery-photo--wide gallery-photo--swap" data-swap="4200">
-          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/waterfall-1-thumbs.jpg" alt="Yash at a waterfall in Sikkim" loading="lazy"></div>
-          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-2-crossed.jpg" alt="" loading="lazy"></div>
-          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-3-side.jpg" alt="" loading="lazy"></div>
-          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-4-turn.jpg" alt="" loading="lazy"></div>
-          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-5-armsopen.jpg" alt="" loading="lazy"></div>
-          <div class="gallery-photo__frame"><img src="assets/images/real/waterfall-6-armsside.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/waterfall-1-thumbs.jpg" alt="Yash at a waterfall in Sikkim" loading="lazy" decoding="async" width="1536" height="2046" srcset="assets/images/real/mobile/waterfall-1-thumbs.webp 900w, assets/images/real/waterfall-1-thumbs.jpg 1536w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+          <div class="gallery-photo__frame"><img data-src="assets/images/real/waterfall-2-crossed.jpg" alt="" loading="lazy" decoding="async" width="1536" height="2046" data-srcset="assets/images/real/mobile/waterfall-2-crossed.webp 900w, assets/images/real/waterfall-2-crossed.jpg 1536w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+          <div class="gallery-photo__frame"><img data-src="assets/images/real/waterfall-3-side.jpg" alt="" loading="lazy" decoding="async" width="1536" height="2046" data-srcset="assets/images/real/mobile/waterfall-3-side.webp 900w, assets/images/real/waterfall-3-side.jpg 1536w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+          <div class="gallery-photo__frame"><img data-src="assets/images/real/waterfall-4-turn.jpg" alt="" loading="lazy" decoding="async" width="1536" height="2046" data-srcset="assets/images/real/mobile/waterfall-4-turn.webp 900w, assets/images/real/waterfall-4-turn.jpg 1536w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+          <div class="gallery-photo__frame"><img data-src="assets/images/real/waterfall-5-armsopen.jpg" alt="" loading="lazy" decoding="async" width="1536" height="2046" data-srcset="assets/images/real/mobile/waterfall-5-armsopen.webp 900w, assets/images/real/waterfall-5-armsopen.jpg 1536w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+          <div class="gallery-photo__frame"><img data-src="assets/images/real/waterfall-6-armsside.jpg" alt="" loading="lazy" decoding="async" width="1536" height="2046" data-srcset="assets/images/real/mobile/waterfall-6-armsside.webp 900w, assets/images/real/waterfall-6-armsside.jpg 1536w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
         </figure>
 
         <figure class="gallery-photo gallery-photo--warm gallery-photo--swap" data-swap="4800">
-          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/office-selfie-1.jpg" alt="Yash at HCLTech office" loading="lazy"></div>
-          <div class="gallery-photo__frame"><img src="assets/images/real/office-selfie-2.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/office-selfie-1.jpg" alt="Yash at HCLTech office" loading="lazy" decoding="async" width="1536" height="2048" srcset="assets/images/real/mobile/office-selfie-1.webp 900w, assets/images/real/office-selfie-1.jpg 1536w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+          <div class="gallery-photo__frame"><img data-src="assets/images/real/office-selfie-2.jpg" alt="" loading="lazy" decoding="async" width="2048" height="1536" data-srcset="assets/images/real/mobile/office-selfie-2.webp 900w, assets/images/real/office-selfie-2.jpg 2048w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
         </figure>
 
         <figure class="gallery-photo gallery-photo--mono gallery-photo--swap" data-swap="5200">
-          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/mirror-full.jpg" alt="Yash mirror shot" loading="lazy"></div>
-          <div class="gallery-photo__frame"><img src="assets/images/real/mirror-close.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/mirror-full.jpg" alt="Yash mirror shot" loading="lazy" decoding="async" width="1776" height="1776" srcset="assets/images/real/mobile/mirror-full.webp 900w, assets/images/real/mirror-full.jpg 1776w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+          <div class="gallery-photo__frame"><img data-src="assets/images/real/mirror-close.jpg" alt="" loading="lazy" decoding="async" width="1776" height="1776" data-srcset="assets/images/real/mobile/mirror-close.webp 900w, assets/images/real/mirror-close.jpg 1776w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
         </figure>
 
         <figure class="gallery-photo gallery-photo--cool gallery-photo--swap" data-swap="5600">
-          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/night-1.jpg" alt="Yash on a night street" loading="lazy"></div>
-          <div class="gallery-photo__frame"><img src="assets/images/real/night-2.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-photo__frame is-visible"><img src="assets/images/real/night-1.jpg" alt="Yash on a night street" loading="lazy" decoding="async" width="4160" height="3119" srcset="assets/images/real/mobile/night-1.webp 900w, assets/images/real/night-1.jpg 4160w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+          <div class="gallery-photo__frame"><img data-src="assets/images/real/night-2.jpg" alt="" loading="lazy" decoding="async" width="4160" height="3119" data-srcset="assets/images/real/mobile/night-2.webp 900w, assets/images/real/night-2.jpg 4160w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
         </figure>
 
         <figure class="gallery-photo gallery-photo--duotone">
-          <img src="assets/images/real/aesthetic-field.jpg" alt="Sunset field with silhouetted tree" loading="lazy">
+          <img src="assets/images/real/aesthetic-field.jpg" alt="Sunset field with silhouetted tree" loading="lazy" decoding="async" width="2592" height="5184" srcset="assets/images/real/mobile/aesthetic-field.webp 900w, assets/images/real/aesthetic-field.jpg 2592w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw">
         </figure>
 
         <figure class="gallery-photo gallery-photo--contrast">
-          <img src="assets/images/real/me-alt-1.jpg" alt="Yash outdoor portrait" loading="lazy">
+          <img src="assets/images/real/me-alt-1.jpg" alt="Yash outdoor portrait" loading="lazy" decoding="async" width="2976" height="3968" srcset="assets/images/real/mobile/me-alt-1.webp 900w, assets/images/real/me-alt-1.jpg 2976w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw">
         </figure>
 
         <figure class="gallery-photo gallery-photo--natural gallery-photo--wide">
-          <img src="assets/images/real/hcltech-office.jpg" alt="HCLTech campus at golden hour" loading="lazy">
+          <img src="assets/images/real/hcltech-office.jpg" alt="HCLTech campus at golden hour" loading="lazy" decoding="async" width="4618" height="3464" srcset="assets/images/real/mobile/hcltech-office.webp 900w, assets/images/real/hcltech-office.jpg 4618w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw">
         </figure>
 
       </div>
@@ -1219,12 +1330,12 @@
           <h3 class="gallery__sub-heading">Sky, Unedited</h3>
           <div class="gallery__sky-stack">
             <figure class="gallery-sky gallery-photo--swap" data-swap="6200">
-              <div class="gallery-photo__frame is-visible"><img src="assets/images/real/sky-1.jpg" alt="Sunset sky" loading="lazy"></div>
-              <div class="gallery-photo__frame"><img src="assets/images/real/sky-2.jpg" alt="" loading="lazy"></div>
+              <div class="gallery-photo__frame is-visible"><img src="assets/images/real/sky-1.jpg" alt="Sunset sky" loading="lazy" decoding="async" width="3968" height="2976" srcset="assets/images/real/mobile/sky-1.webp 900w, assets/images/real/sky-1.jpg 3968w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+              <div class="gallery-photo__frame"><img data-src="assets/images/real/sky-2.jpg" alt="" loading="lazy" decoding="async" width="2976" height="3968" data-srcset="assets/images/real/mobile/sky-2.webp 900w, assets/images/real/sky-2.jpg 2976w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
             </figure>
             <figure class="gallery-sky gallery-photo--swap" data-swap="6800">
-              <div class="gallery-photo__frame is-visible"><img src="assets/images/real/sky-moon-1.jpg" alt="Sky and moon" loading="lazy"></div>
-              <div class="gallery-photo__frame"><img src="assets/images/real/sky-moon-2.jpg" alt="" loading="lazy"></div>
+              <div class="gallery-photo__frame is-visible"><img src="assets/images/real/sky-moon-1.jpg" alt="Sky and moon" loading="lazy" decoding="async" width="690" height="1227" srcset="assets/images/real/mobile/sky-moon-1.webp 690w, assets/images/real/sky-moon-1.jpg 690w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
+              <div class="gallery-photo__frame"><img data-src="assets/images/real/sky-moon-2.jpg" alt="" loading="lazy" decoding="async" width="675" height="1200" data-srcset="assets/images/real/mobile/sky-moon-2.webp 675w, assets/images/real/sky-moon-2.jpg 675w" data-sizes="(max-width: 760px) calc(100vw - 36px), 100vw"></div>
             </figure>
           </div>
           <p class="gallery__caption-note">No filters — just whatever the sky was doing when I happened to look up.</p>
@@ -1233,7 +1344,7 @@
         <div class="gallery__cert">
           <h3 class="gallery__sub-heading">On Paper</h3>
           <figure class="gallery-cert">
-            <img src="assets/images/real/certificate.jpg" alt="Certificate of Appreciation awarded to Yash Verma" loading="lazy">
+            <img src="assets/images/real/certificate.jpg" alt="Certificate of Appreciation awarded to Yash Verma" loading="lazy" decoding="async" width="2104" height="1493" srcset="assets/images/real/mobile/certificate.webp 900w, assets/images/real/certificate.jpg 2104w" sizes="(max-width: 760px) calc(100vw - 36px), 100vw">
           </figure>
           <p class="gallery__caption-note">Proof that showing up and coordinating things occasionally gets noticed too.</p>
         </div>
@@ -1246,13 +1357,13 @@
   <!-- ============================================================ -->
   <section class="contact" id="contact">
     <div class="contact__inner">
-      <span class="section-head__index">06</span>
+      <span class="section-head__index">07</span>
       <h2 class="contact__title">
-        <a href="/cdn-cgi/l/email-protection#6c5d150d1f045e1a091e010d5f2c0b010d0500420f0301" class="contact__title-link" data-cursor="text" data-cursor-text="COPY">
+        <a href="/cdn-cgi/l/email-protection#7f4e061e0c174d091a0d121e4c3f18121e1613511c1012" class="contact__title-link" data-cursor="text" data-cursor-text="EMAIL">
           Let&rsquo;s&nbsp;build<br>something&nbsp;weird.
         </a>
       </h2>
-      <a href="/cdn-cgi/l/email-protection#d5e4acb4a6bde7a3b0a7b8b4e695b2b8b4bcb9fbb6bab8" class="contact__email" id="contactEmail"><span class="__cf_email__" data-cfemail="6c5d150d1f045e1a091e010d5f2c0b010d0500420f0301">[email&#160;protected]</span></a>
+      <a href="/cdn-cgi/l/email-protection#3d0c445c4e550f4b584f505c0e7d5a505c5451135e5250" class="contact__email" id="contactEmail"><span class="__cf_email__" data-cfemail="013078607269337764736c603241666c60686d2f626e6c">[email&#160;protected]</span></a>
 
       <ul class="contact__socials" aria-label="Social links">
         <li>
@@ -1353,10 +1464,10 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/gsap.min.js"></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
-<script src="assets/js/vendor/three.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
-<script src="assets/js/background.js"></script>
+<script src="assets/js/performance.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/live.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19efc1dfb667f8d',t:'MTc4Mzg0ODE2MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19f3bb27f1b9a7e',t:'MTc4Mzg1MDc2NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19f60557ab2b33b',t:'MTc4Mzg1MjI2NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script src="assets/js/activity.js"></script>
+</body>
 </html>

@@ -11,6 +11,19 @@
   var canvas = document.getElementById('glCanvas');
   if (!canvas || typeof THREE === 'undefined') return;
 
+  var saveData = navigator.connection && navigator.connection.saveData;
+  var lowMemory = navigator.deviceMemory && navigator.deviceMemory <= 2;
+  var compactScreen = window.matchMedia && window.matchMedia('(max-width: 759px)').matches;
+  // Mobile Safari/Chrome pay a noticeable battery and scroll-compositing cost
+  // for a fixed WebGL canvas. Keep the visual tone with CSS, but skip the GPU
+  // renderer on compact, low-memory, or data-saver devices.
+  if (saveData || lowMemory || compactScreen) {
+    canvas.style.display = 'none';
+    document.body.classList.add('mobile-lite');
+    document.body.style.background = 'radial-gradient(ellipse at 30% 12%, #14151a 0%, #050506 58%)';
+    return;
+  }
+
   var supportsWebGL = (function () {
     try {
       var c = document.createElement('canvas');

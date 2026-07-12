@@ -29,6 +29,7 @@
     'spawning daemons: lyrically, vinyl.fm, waifu-widget  [ok]',
     'linking discord widget api ............... 200 OK',
     'linking lanyard + last.fm .................. live',
+    'linking github + pageview telemetry ........ live',
     'compiling shader: domain-warped fbm field  [ok]',
     'rendering portfolio ...................... ready'
   ];
@@ -40,11 +41,18 @@
     var el = document.getElementById('preloader');
     if (!el) { done(); return; }
 
+    var seenBoot = false;
+    try { seenBoot = sessionStorage.getItem('yv_boot_seen') === '1'; } catch (e) {}
+    var coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    var quickBoot = reducedMotion || coarsePointer || seenBoot;
+    var bootDuration = quickBoot ? 760 : 1700;
+    var lineDelay = quickBoot ? 55 : 150;
     var finished = false;
 
     function finish() {
       if (finished) return;
       finished = true;
+      try { sessionStorage.setItem('yv_boot_seen', '1'); } catch (e) {}
       // CSS-transition-driven dismiss (not a GSAP/rAF tween) so this can
       // never visually hang even if the main thread is under heavy load —
       // the compositor drives the transition independently of JS ticking.
@@ -83,7 +91,7 @@
           log.appendChild(line);
           // Keep only the last few lines visible (terminal scroll-off feel).
           while (log.children.length > 6) log.removeChild(log.firstChild);
-        }, i * 150);
+        }, i * lineDelay);
       });
     }
 
@@ -92,7 +100,7 @@
     // keep moving even if the JS thread is momentarily starved (heavy
     // shader compile, big layout pass, etc. on lower-end hardware).
     if (fill) {
-      fill.style.transition = 'width 1.7s cubic-bezier(.16,1,.3,1)';
+      fill.style.transition = 'width ' + (bootDuration / 1000) + 's cubic-bezier(.16,1,.3,1)';
       // Force a reflow so the transition reliably triggers from 0%.
       // eslint-disable-next-line no-unused-expressions
       fill.offsetWidth;
@@ -100,7 +108,7 @@
     }
     if (pct) {
       var pctStart = Date.now();
-      var pctDuration = 1700;
+      var pctDuration = bootDuration;
       var pctRaf = function () {
         var t = Math.min(1, (Date.now() - pctStart) / pctDuration);
         pct.textContent = Math.round(t * 100);
@@ -108,11 +116,11 @@
       };
       requestAnimationFrame(pctRaf);
     }
-    setTimeout(finish, 1750);
+    setTimeout(finish, bootDuration + 50);
 
     // Absolute safety net: never let the preloader block the page for more
-    // than 3.5s even if something above misbehaves.
-    setTimeout(finish, 3500);
+    // than 2.6s even if something above misbehaves.
+    setTimeout(finish, 2600);
   }
 
   /* ------------------------------------------------------------ */
@@ -120,7 +128,10 @@
   /* ------------------------------------------------------------ */
   var lenis = null;
   function initSmoothScroll() {
-    if (!hasLenis || reducedMotion) return;
+    var coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    // Native scrolling is faster and more reliable in iOS/Android browsers;
+    // Lenis remains a desktop enhancement rather than taking over touch input.
+    if (!hasLenis || reducedMotion || coarsePointer || window.innerWidth < 900) return;
     lenis = new Lenis({
       duration: 1.1,
       easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
@@ -384,7 +395,7 @@
   /* Generic scroll reveals for section heads / cards                */
   /* ------------------------------------------------------------ */
   function initScrollReveals() {
-    if (!hasGSAP || !hasScrollTrigger) return;
+    if (!hasGSAP || !hasScrollTrigger || reducedMotion) return;
 
     gsap.utils.toArray('.section-head').forEach(function (el) {
       gsap.fromTo(el.children, { opacity: 0, y: 30 }, {
@@ -404,6 +415,13 @@
       gsap.fromTo(el, { opacity: 0, y: 20 }, {
         opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 95%' }
+      });
+    });
+
+    gsap.utils.toArray('.shipped-card:not(.shipped-card--loading), .journey-item').forEach(function (el, i) {
+      gsap.fromTo(el, { opacity: 0, y: 22 }, {
+        opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', delay: (i % 3) * 0.05,
+        scrollTrigger: { trigger: el, start: 'top 94%' }
       });
     });
 
@@ -452,7 +470,9 @@
   /* Animated counters for the stats strip                          */
   /* ------------------------------------------------------------ */
   function initCounters() {
-    var nums = document.querySelectorAll('.stat__num');
+    // Dynamic values (such as the real visitor counter) do not carry
+    // data-count and must not be overwritten by the decorative count-up.
+    var nums = document.querySelectorAll('.stat__num[data-count]');
     if (!nums.length) return;
 
     function animateCount(el) {
@@ -792,8 +812,25 @@
   function initGallerySwap() {
     var groups = document.querySelectorAll('[data-swap]');
     if (!groups.length) return;
+    var saveData = navigator.connection && navigator.connection.saveData;
+    var compactTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches && window.innerWidth < 760;
+    // Keep the first frame static on constrained mobile connections: this
+    // avoids timers and prevents browsers from decoding every alternate shot.
+    if (saveData || compactTouch) return;
 
     groups.forEach(function (g) {
+      // Secondary frames keep their URLs in data-src so mobile browsers do
+      // not download a stack of invisible alternates they will never rotate.
+      g.querySelectorAll('img[data-src]').forEach(function (img) {
+        var deferredSet = img.getAttribute('data-srcset');
+        var deferredSizes = img.getAttribute('data-sizes');
+        if (deferredSet) img.srcset = deferredSet;
+        if (deferredSizes) img.sizes = deferredSizes;
+        img.src = img.getAttribute('data-src');
+        img.removeAttribute('data-src');
+        img.removeAttribute('data-srcset');
+        img.removeAttribute('data-sizes');
+      });
       var frames = g.querySelectorAll('.gallery-photo__frame');
       if (frames.length < 2) return;
 
@@ -850,6 +887,15 @@
     var canvas = document.getElementById('heroPortraitCanvas');
     var srcImg = document.getElementById('heroPortraitSrc');
     if (!canvas || !srcImg) return;
+
+    var portrait = canvas.parentElement;
+    var saveData = navigator.connection && navigator.connection.saveData;
+    var compactTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches && window.innerWidth < 760;
+    if (saveData || compactTouch) {
+      if (portrait) portrait.classList.add('is-static');
+      return;
+    }
+
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -1017,13 +1063,15 @@
     if (!root || !input || !list) return;
 
     var MANIFEST = [
-      { g: 'Sections',   t: 'Hero',         d: 'Top of the page',         h: '#top',     k: 'H' },
-      { g: 'Sections',   t: 'Work',         d: 'Selected daemon widgets', h: '#work',    k: '1' },
-      { g: 'Sections',   t: 'Lab',          d: 'Experiments & hobby',     h: '#lab',     k: '2' },
-      { g: 'Sections',   t: 'Arts',         d: 'Digital art gallery',     h: '#arts',    k: '3' },
-      { g: 'Sections',   t: 'About',        d: 'Who I am',                h: '#about',   k: '4' },
-      { g: 'Sections',   t: 'Gallery',      d: 'Off-screen photos',       h: '#gallery', k: '5' },
-      { g: 'Sections',   t: 'Contact',      d: 'Get in touch',            h: '#contact', k: '6' },
+      { g: 'Sections',   t: 'Hero',             d: 'Top of the page',              h: '#top',     k: 'H' },
+      { g: 'Sections',   t: 'Recently Shipped', d: 'Automatic public GitHub feed', h: '#shipped', k: '↻' },
+      { g: 'Sections',   t: 'Work',             d: 'Selected daemon widgets',      h: '#work',    k: '1' },
+      { g: 'Sections',   t: 'Lab',              d: 'Experiments & hobby',          h: '#lab',     k: '2' },
+      { g: 'Sections',   t: 'Arts',             d: 'Digital art gallery',          h: '#arts',    k: '3' },
+      { g: 'Sections',   t: 'Journey',          d: 'Experience and education',     h: '#journey', k: '4' },
+      { g: 'Sections',   t: 'About',            d: 'Who I am',                     h: '#about',   k: '5' },
+      { g: 'Sections',   t: 'Gallery',          d: 'Off-screen photos',            h: '#gallery', k: '6' },
+      { g: 'Sections',   t: 'Contact',          d: 'Get in touch',                 h: '#contact', k: '7' },
       { g: 'External',   t: 'GitHub',       d: '@MeYashverma',            h: 'https://github.com/MeYashverma',                            ext: true, ico: '↗' },
       { g: 'External',   t: 'Instagram',    d: '@yashardcore',            h: 'https://instagram.com/yashardcore',                         ext: true, ico: '↗' },
       { g: 'External',   t: 'Twitter / X',  d: '@me_yashverma',           h: 'https://twitter.com/me_yashverma',                          ext: true, ico: '↗' },
@@ -1162,9 +1210,11 @@
 
     var sections = [
       { id: 'hero',    name: 'hero'    },
+      { id: 'shipped', name: 'shipped' },
       { id: 'work',    name: 'work'    },
       { id: 'lab',     name: 'lab'     },
       { id: 'arts',    name: 'arts'    },
+      { id: 'journey', name: 'journey' },
       { id: 'about',   name: 'about'   },
       { id: 'gallery', name: 'gallery' },
       { id: 'contact', name: 'contact' }
