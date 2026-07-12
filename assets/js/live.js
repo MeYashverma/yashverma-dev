@@ -65,20 +65,38 @@
     offline: 'Offline'
   };
 
+  // Inline icon fragments (sourced from Lucide) so the Discord card can show
+  // a small glyph for platform + activity type without any extra requests.
+  var ICONS = {
+    monitor: '<svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>',
+    smartphone: '<svg viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>',
+    globe: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>',
+    appWindow: '<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg>',
+    gamepad: '<svg viewBox="0 0 24 24"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
+    radio: '<svg viewBox="0 0 24 24"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg>',
+    eye: '<svg viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>',
+    music: '<svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+    message: '<svg viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg>'
+  };
+
   /* ------------------------------------------------------------ */
   /* Discord card (Lanyard)                                         */
   /* ------------------------------------------------------------ */
   function renderDiscordFallback() {
     var name = document.getElementById('liveDiscordName');
-    var activity = document.getElementById('liveDiscordActivity');
+    var activityText = document.getElementById('liveDiscordActivityText');
+    var activityIcon = document.getElementById('liveDiscordActivityIcon');
     var dot = document.getElementById('liveDiscordDot');
     var statusText = document.getElementById('liveDiscordStatusText');
-    var platform = document.getElementById('liveDiscordPlatform');
+    var platformText = document.getElementById('liveDiscordPlatformText');
+    var platformIcon = document.getElementById('liveDiscordPlatformIcon');
     if (name) name.textContent = 'yashylash';
-    if (activity) activity.textContent = 'Status unavailable right now';
+    if (activityText) activityText.textContent = 'Status unavailable right now';
+    if (activityIcon) activityIcon.innerHTML = '';
     if (dot) dot.classList.remove('is-live');
     if (statusText) statusText.textContent = '\u2014';
-    if (platform) platform.textContent = '\u2014';
+    if (platformText) platformText.textContent = '\u2014';
+    if (platformIcon) platformIcon.innerHTML = '';
   }
 
   function renderDiscord(data) {
@@ -87,12 +105,14 @@
 
     var nameEl = document.getElementById('liveDiscordName');
     var handleEl = document.getElementById('liveDiscordHandle');
-    var activityEl = document.getElementById('liveDiscordActivity');
+    var activityTextEl = document.getElementById('liveDiscordActivityText');
+    var activityIconEl = document.getElementById('liveDiscordActivityIcon');
     var dotEl = document.getElementById('liveDiscordDot');
     var avatarEl = document.getElementById('liveDiscordAvatar');
     var badgeEl = document.getElementById('liveDiscordStatusBadge');
     var statusTextEl = document.getElementById('liveDiscordStatusText');
-    var platformEl = document.getElementById('liveDiscordPlatform');
+    var platformTextEl = document.getElementById('liveDiscordPlatformText');
+    var platformIconEl = document.getElementById('liveDiscordPlatformIcon');
 
     if (nameEl) nameEl.textContent = user.global_name || user.username || 'yashylash';
     if (handleEl) handleEl.textContent = '@' + (user.username || 'yashylash');
@@ -110,11 +130,13 @@
 
     // Which client surface is active — desktop / mobile / web / embedded.
     var platformLabel = '\u2014';
-    if (data.active_on_discord_desktop) platformLabel = 'Desktop';
-    else if (data.active_on_discord_mobile) platformLabel = 'Mobile';
-    else if (data.active_on_discord_web) platformLabel = 'Web';
-    else if (data.active_on_discord_embedded) platformLabel = 'Embedded';
-    if (platformEl) platformEl.textContent = platformLabel;
+    var platformIconKey = null;
+    if (data.active_on_discord_desktop) { platformLabel = 'Desktop'; platformIconKey = 'monitor'; }
+    else if (data.active_on_discord_mobile) { platformLabel = 'Mobile'; platformIconKey = 'smartphone'; }
+    else if (data.active_on_discord_web) { platformLabel = 'Web'; platformIconKey = 'globe'; }
+    else if (data.active_on_discord_embedded) { platformLabel = 'Embedded'; platformIconKey = 'appWindow'; }
+    if (platformTextEl) platformTextEl.textContent = platformLabel;
+    if (platformIconEl) platformIconEl.innerHTML = platformIconKey ? ICONS[platformIconKey] : '';
 
     // Pick a human activity line: prefer a non-custom-status, non-Spotify
     // activity (game / streaming / app), then custom status, then just the
@@ -126,21 +148,28 @@
     var custom = activities.find(function (a) { return a.type === 4; }); // Custom status
 
     var line = '';
+    var iconKey = null;
     if (stream) {
       line = 'Streaming — ' + (stream.details || stream.name);
+      iconKey = 'radio';
     } else if (game) {
       line = 'Playing ' + game.name;
+      iconKey = 'gamepad';
     } else if (watching) {
       line = 'Watching ' + watching.name;
+      iconKey = 'eye';
     } else if (data.listening_to_spotify && data.spotify) {
       line = 'Listening to Spotify';
+      iconKey = 'music';
     } else if (custom && custom.state) {
       line = custom.state;
+      iconKey = 'message';
     } else {
       line = STATUS_LABEL[status] || 'Offline';
     }
 
-    if (activityEl) activityEl.textContent = line;
+    if (activityTextEl) activityTextEl.textContent = line;
+    if (activityIconEl) activityIconEl.innerHTML = iconKey ? ICONS[iconKey] : '';
   }
 
   function fetchDiscord() {

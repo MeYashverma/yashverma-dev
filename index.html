@@ -6,8 +6,9 @@
 <title>Yash Verma — Systems, Widgets &amp; Weird Automation</title>
 <meta name="description" content="Yash Verma — Python/cloud engineer building GitHub-Actions-native Discord widgets, real-time data pipelines, and other things that shouldn't run on free infrastructure but do.">
 <meta name="color-scheme" content="dark">
-<link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-<link rel="icon" href="assets/images/avatar.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
 
 <link rel="stylesheet" href="assets/fonts/fonts-local.css">
 <link rel="stylesheet" href="assets/css/main.css">
@@ -61,7 +62,8 @@
     <a href="#lab" data-cursor="text" data-cursor-text="VIEW"><span>02</span>Lab</a>
     <a href="#arts" data-cursor="text" data-cursor-text="VIEW"><span>03</span>Arts</a>
     <a href="#about" data-cursor="text" data-cursor-text="VIEW"><span>04</span>About</a>
-    <a href="#contact" data-cursor="text" data-cursor-text="VIEW"><span>05</span>Contact</a>
+    <a href="#gallery" data-cursor="text" data-cursor-text="VIEW"><span>05</span>Gallery</a>
+    <a href="#contact" data-cursor="text" data-cursor-text="VIEW"><span>06</span>Contact</a>
   </nav>
   <button class="nav__menu-btn" id="menuBtn" aria-label="Toggle menu">
     <span></span><span></span>
@@ -79,7 +81,8 @@
     <a href="#lab" class="menu-link"><span class="menu-link__index">02</span><span class="menu-link__text">Lab</span></a>
     <a href="#arts" class="menu-link"><span class="menu-link__index">03</span><span class="menu-link__text">Arts</span></a>
     <a href="#about" class="menu-link"><span class="menu-link__index">04</span><span class="menu-link__text">About</span></a>
-    <a href="#contact" class="menu-link"><span class="menu-link__index">05</span><span class="menu-link__text">Contact</span></a>
+    <a href="#gallery" class="menu-link"><span class="menu-link__index">05</span><span class="menu-link__text">Gallery</span></a>
+    <a href="#contact" class="menu-link"><span class="menu-link__index">06</span><span class="menu-link__text">Contact</span></a>
   </div>
   <div class="menu-overlay__footer">
     <div class="menu-overlay__socials">
@@ -190,6 +193,7 @@
 
       <div class="live-card live-card--discord" id="liveDiscord" data-tilt>
         <div class="live-card__head">
+          <svg viewBox="0 0 24 24" class="live-card__brand-icon"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
           <span class="live-card__dot" id="liveDiscordDot"></span>
           <span class="live-card__label">Discord — right now</span>
         </div>
@@ -201,15 +205,16 @@
           <div class="live-card__info">
             <div class="live-card__name" id="liveDiscordName">yashylash</div>
             <div class="live-card__handle" id="liveDiscordHandle">@yashylash</div>
-            <div class="live-card__sub" id="liveDiscordActivity">Loading live status&hellip;</div>
+            <div class="live-card__sub" id="liveDiscordActivity"><span class="live-card__activity-icon" id="liveDiscordActivityIcon" aria-hidden="true"></span><span id="liveDiscordActivityText">Loading live status&hellip;</span></div>
           </div>
         </div>
         <div class="live-card__facts" id="liveDiscordFacts">
           <div class="live-card__fact"><span id="liveDiscordStatusText">&mdash;</span><label>Status</label></div>
-          <div class="live-card__fact"><span id="liveDiscordPlatform">&mdash;</span><label>Platform</label></div>
+          <div class="live-card__fact"><span class="live-card__platform" id="liveDiscordPlatform"><span class="live-card__platform-icon" id="liveDiscordPlatformIcon" aria-hidden="true"></span><span id="liveDiscordPlatformText">&mdash;</span></span><label>Platform</label></div>
         </div>
         <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener" class="live-card__link" data-cursor="text" data-cursor-text="↗">Add on Discord ↗</a>
       </div>
+
 
       <div class="live-card live-card--music" id="liveMusic" data-tilt>
         <div class="live-card__head">
@@ -255,6 +260,7 @@
 
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/Discord-Lyrically-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/lyrically.png')"></div>
           <img src="assets/images/widgets/lyrically.png" alt="Lyrically Discord widget showing real-time synced lyrics for 'I Had Some Help' by Post Malone" loading="lazy">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
@@ -275,6 +281,7 @@
 
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/discord-vinyl-fm-widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/vinyl-fm.png')"></div>
           <img src="assets/images/widgets/vinyl-fm.png" alt="Vinyl.fm Discord widget showing now-playing track plus 4-week and 6-month top artist/album/song stats" loading="lazy">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
@@ -295,6 +302,7 @@
 
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/discord-waifu-widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/waifu-widget.png')"></div>
           <img src="assets/images/widgets/waifu-widget.png" alt="Waifu of the Day Discord widget showing character Formidable from Azur Lane with simp count, vibe and rank stats" loading="lazy">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
@@ -315,6 +323,7 @@
 
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/Genshin-Stats" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/genshin-stats.png')"></div>
           <img src="assets/images/widgets/genshin-stats.png" alt="Genshin Stats Discord widget showing character Tighnari at level 40 with adventure rank, achievements and Spiral Abyss progress" loading="lazy">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
@@ -335,6 +344,7 @@
 
       <article class="work-card" data-tilt>
         <a href="https://github.com/MeYashverma/Discord-LaunchPad-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
+          <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/launchpad.png')"></div>
           <img src="assets/images/widgets/launchpad.png" alt="LaunchPad Discord widget showing the next scheduled Falcon 9 launch, countdown, pad and mission details" loading="lazy">
           <span class="work-card__live-badge"><span class="dot-pulse"></span> Live in prod</span>
         </a>
@@ -674,26 +684,48 @@
         <div class="about__now">
           <h4 class="about__now-heading">Right now, I'm&hellip;</h4>
           <ul class="about__now-list">
-            <li><span class="about__now-dot"></span>Keeping ~6 Discord daemons alive on infrastructure that was never meant to host them</li>
-            <li><span class="about__now-dot"></span>Slowly redrawing an old sketch I'm not happy with (again)</li>
-            <li><span class="about__now-dot"></span>Falling down a rabbit hole about some space mission or obscure API</li>
-            <li><span class="about__now-dot"></span>Trying to make a browser tab behave like an operating system</li>
+            <li><span class="about__now-dot"></span>Slowly redrawing an old sketch I'm still not happy with (again)</li>
+            <li><span class="about__now-dot"></span>Falling down a rabbit hole about some obscure space mission or API</li>
+            <li><span class="about__now-dot"></span>Trying to make a browser tab behave like a full operating system</li>
+            <li><span class="about__now-dot"></span>Teaching a small LLM to live in a sidebar and pretending that's a normal thing to build</li>
           </ul>
         </div>
 
         <div class="about__skills">
           <div class="about__skills-col">
-            <h4>Languages</h4>
-            <ul><li>Python</li><li>JavaScript / TypeScript</li><li>Node.js</li><li>Kotlin (contrib.)</li></ul>
-          </div>
-          <div class="about__skills-col">
-            <h4>Infra &amp; Cloud</h4>
-            <ul><li>GitHub Actions</li><li>Google Cloud</li><li>Windows Administration</li><li>Linux / Git</li></ul>
-          </div>
-          <div class="about__skills-col">
-            <h4>APIs &amp; Integrations</h4>
-            <ul><li>Discord Widget API</li><li>Spotify / Last.fm</li><li>AniList / Jikan / Kitsu</li><li>Sharp / Image Pipelines</li></ul>
-          </div>
+  <h4>Languages</h4>
+  <ul class="skill-chips">
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#3776AB"><path fill="currentColor" d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/></svg><span>Python</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#F7DF1E"><path fill="currentColor" d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"/></svg><span>JavaScript</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#3178C6"><path fill="currentColor" d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/></svg><span>TypeScript</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#5FA04E"><path fill="currentColor" d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/></svg><span>Node.js</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#7F52FF"><path fill="currentColor" d="M24 24H0V0h24L12 12Z"/></svg><span>Kotlin <em>(contrib.)</em></span></li>
+  </ul>
+</div>
+
+<div class="about__skills-col">
+  <h4>Infra &amp; Cloud</h4>
+  <ul class="skill-chips">
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#2088FF"><path fill="currentColor" d="M10.984 13.836a.5.5 0 0 1-.353-.146l-.745-.743a.5.5 0 1 1 .706-.708l.392.391 1.181-1.18a.5.5 0 0 1 .708.707l-1.535 1.533a.504.504 0 0 1-.354.146zm9.353-.147l1.534-1.532a.5.5 0 0 0-.707-.707l-1.181 1.18-.392-.391a.5.5 0 1 0-.706.708l.746.743a.497.497 0 0 0 .706-.001zM4.527 7.452l2.557-1.585A1 1 0 0 0 7.09 4.17L4.533 2.56A1 1 0 0 0 3 3.406v3.196a1.001 1.001 0 0 0 1.527.85zm2.03-2.436L4 6.602V3.406l2.557 1.61zM24 12.5c0 1.93-1.57 3.5-3.5 3.5a3.503 3.503 0 0 1-3.46-3h-2.08a3.503 3.503 0 0 1-3.46 3 3.502 3.502 0 0 1-3.46-3h-.558c-.972 0-1.85-.399-2.482-1.042V17c0 1.654 1.346 3 3 3h.04c.244-1.693 1.7-3 3.46-3 1.93 0 3.5 1.57 3.5 3.5S13.43 24 11.5 24a3.502 3.502 0 0 1-3.46-3H8c-2.206 0-4-1.794-4-4V9.899A5.008 5.008 0 0 1 0 5c0-2.757 2.243-5 5-5s5 2.243 5 5a5.005 5.005 0 0 1-4.952 4.998A2.482 2.482 0 0 0 7.482 12h.558c.244-1.693 1.7-3 3.46-3a3.502 3.502 0 0 1 3.46 3h2.08a3.503 3.503 0 0 1 3.46-3c1.93 0 3.5 1.57 3.5 3.5zm-15 8c0 1.378 1.122 2.5 2.5 2.5s2.5-1.122 2.5-2.5-1.122-2.5-2.5-2.5S9 19.122 9 20.5zM5 9c2.206 0 4-1.794 4-4S7.206 1 5 1 1 2.794 1 5s1.794 4 4 4zm9 3.5c0-1.378-1.122-2.5-2.5-2.5S9 11.122 9 12.5s1.122 2.5 2.5 2.5 2.5-1.122 2.5-2.5zm9 0c0-1.378-1.122-2.5-2.5-2.5S18 11.122 18 12.5s1.122 2.5 2.5 2.5 2.5-1.122 2.5-2.5zm-13 8a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0zm2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0zm12 0c0 1.93-1.57 3.5-3.5 3.5a3.503 3.503 0 0 1-3.46-3.002c-.007.001-.013.005-.021.005l-.506.017h-.017a.5.5 0 0 1-.016-.999l.506-.017c.018-.002.035.006.052.007A3.503 3.503 0 0 1 20.5 17c1.93 0 3.5 1.57 3.5 3.5zm-1 0c0-1.378-1.122-2.5-2.5-2.5S18 19.122 18 20.5s1.122 2.5 2.5 2.5 2.5-1.122 2.5-2.5z"/></svg><span>GitHub Actions</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#4285F4"><path fill="currentColor" d="M12.19 2.38a9.344 9.344 0 0 0-9.234 6.893c.053-.02-.055.013 0 0-3.875 2.551-3.922 8.11-.247 10.941l.006-.007-.007.03a6.717 6.717 0 0 0 4.077 1.356h5.173l.03.03h5.192c6.687.053 9.376-8.605 3.835-12.35a9.365 9.365 0 0 0-2.821-4.552l-.043.043.006-.05A9.344 9.344 0 0 0 12.19 2.38zm-.358 4.146c1.244-.04 2.518.368 3.486 1.15a5.186 5.186 0 0 1 1.862 4.078v.518c3.53-.07 3.53 5.262 0 5.193h-5.193l-.008.009v-.04H6.785a2.59 2.59 0 0 1-1.067-.23h.001a2.597 2.597 0 1 1 3.437-3.437l3.013-3.012A6.747 6.747 0 0 0 8.11 8.24c.018-.01.04-.026.054-.023a5.186 5.186 0 0 1 3.67-1.69z"/></svg><span>Google Cloud</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon skill-chip__icon--stroke" style="--chip:#00A4EF"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg><span>Windows Admin</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#FCC624"><path fill="currentColor" d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.71-.07-.268-.005-.47.193-.6.224-.135.38-.271.483-.336.104-.074.143-.102.176-.131h.002v-.003c.169-.202.436-.47.839-.601.139-.036.294-.065.466-.065zm2.8 2.142c.358 1.417 1.196 3.475 1.735 4.473.286.534.855 1.659 1.102 3.024.156-.005.33.018.513.064.646-1.671-.546-3.467-1.089-3.966-.22-.2-.232-.335-.123-.335.59.534 1.365 1.572 1.646 2.757.13.535.16 1.104.021 1.67.067.028.135.06.205.067 1.032.534 1.413.938 1.23 1.537v-.043c-.06-.003-.12 0-.18 0h-.016c.151-.467-.182-.825-1.065-1.224-.915-.4-1.646-.336-1.77.465-.008.043-.013.066-.018.135-.068.023-.139.053-.209.064-.43.268-.662.669-.793 1.187-.13.533-.17 1.156-.205 1.869v.003c-.02.334-.17.838-.319 1.35-1.5 1.072-3.58 1.538-5.348.334a2.645 2.645 0 00-.402-.533 1.45 1.45 0 00-.275-.333c.182 0 .338-.03.465-.067a.615.615 0 00.314-.334c.108-.267 0-.697-.345-1.163-.345-.467-.931-.995-1.788-1.521-.63-.4-.986-.87-1.15-1.396-.165-.534-.143-1.085-.015-1.645.245-1.07.873-2.11 1.274-2.763.107-.065.037.135-.408.974-.396.751-1.14 2.497-.122 3.854a8.123 8.123 0 01.647-2.876c.564-1.278 1.743-3.504 1.836-5.268.048.036.217.135.289.202.218.133.38.333.59.465.21.201.477.335.876.335.039.003.075.006.11.006.412 0 .73-.134.997-.268.29-.134.52-.334.74-.4h.005c.467-.135.835-.402 1.044-.7zm2.185 8.958c.037.6.343 1.245.882 1.377.588.134 1.434-.333 1.791-.765l.211-.01c.315-.007.577.01.847.268l.003.003c.208.199.305.53.391.876.085.4.154.78.409 1.066.486.527.645.906.636 1.14l.003-.007v.018l-.003-.012c-.015.262-.185.396-.498.595-.63.401-1.746.712-2.457 1.57-.618.737-1.37 1.14-2.036 1.191-.664.053-1.237-.2-1.574-.898l-.005-.003c-.21-.4-.12-1.025.056-1.69.176-.668.428-1.344.463-1.897.037-.714.076-1.335.195-1.814.12-.465.308-.797.641-.984l.045-.022zm-10.814.049h.01c.053 0 .105.005.157.014.376.055.706.333 1.023.752l.91 1.664.003.003c.243.533.754 1.064 1.189 1.637.434.598.77 1.131.729 1.57v.006c-.057.744-.48 1.148-1.125 1.294-.645.135-1.52.002-2.395-.464-.968-.536-2.118-.469-2.857-.602-.369-.066-.61-.2-.723-.4-.11-.2-.113-.602.123-1.23v-.004l.002-.003c.117-.334.03-.752-.027-1.118-.055-.401-.083-.71.043-.94.16-.334.396-.4.69-.533.294-.135.64-.202.915-.47h.002v-.002c.256-.268.445-.601.668-.838.19-.201.38-.336.663-.336zm7.159-9.074c-.435.201-.945.535-1.488.535-.542 0-.97-.267-1.28-.466-.154-.134-.28-.268-.373-.335-.164-.134-.144-.333-.074-.333.109.016.129.134.199.2.096.066.215.2.36.333.292.2.68.467 1.167.467.485 0 1.053-.267 1.398-.466.195-.135.445-.334.648-.467.156-.136.149-.267.279-.267.128.016.034.134-.147.332a8.097 8.097 0 01-.69.468zm-1.082-1.583V5.64c-.006-.02.013-.042.029-.05.074-.043.18-.027.26.004.063 0 .16.067.15.135-.006.049-.085.066-.135.066-.055 0-.092-.043-.141-.068-.052-.018-.146-.008-.163-.065zm-.551 0c-.02.058-.113.049-.166.066-.047.025-.086.068-.14.068-.05 0-.13-.02-.136-.068-.01-.066.088-.133.15-.133.08-.031.184-.047.259-.005.019.009.036.03.03.05v.02h.003z"/></svg><span>Linux</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#F03C2E"><path fill="currentColor" d="M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z"/></svg><span>Git</span></li>
+  </ul>
+</div>
+
+<div class="about__skills-col">
+  <h4>APIs &amp; Integrations</h4>
+  <ul class="skill-chips">
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#5865F2"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><span>Discord Widget API</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#1ED760"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg><span>Spotify</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#D51007"><path fill="currentColor" d="M10.584 17.21l-.88-2.392s-1.43 1.594-3.573 1.594c-1.897 0-3.244-1.649-3.244-4.288 0-3.382 1.704-4.591 3.381-4.591 2.42 0 3.189 1.567 3.849 3.574l.88 2.749c.88 2.666 2.529 4.81 7.285 4.81 3.409 0 5.718-1.044 5.718-3.793 0-2.227-1.265-3.381-3.63-3.931l-1.758-.385c-1.21-.275-1.567-.77-1.567-1.595 0-.934.742-1.484 1.952-1.484 1.32 0 2.034.495 2.144 1.677l2.749-.33c-.22-2.474-1.924-3.492-4.729-3.492-2.474 0-4.893.935-4.893 3.932 0 1.87.907 3.051 3.189 3.601l1.87.44c1.402.33 1.869.907 1.869 1.704 0 1.017-.99 1.43-2.86 1.43-2.776 0-3.93-1.457-4.59-3.464l-.907-2.75c-1.155-3.573-2.997-4.893-6.653-4.893C2.144 5.333 0 7.89 0 12.233c0 4.18 2.144 6.434 5.993 6.434 3.106 0 4.591-1.457 4.591-1.457z"/></svg><span>Last.fm</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#02A9FF"><path fill="currentColor" d="M24 17.53v2.421c0 .71-.391 1.101-1.1 1.101h-5l-.057-.165L11.84 3.736c.106-.502.46-.788 1.053-.788h2.422c.71 0 1.1.391 1.1 1.1v12.38H22.9c.71 0 1.1.392 1.1 1.101zM11.034 2.947l6.337 18.104h-4.918l-1.052-3.131H6.019l-1.077 3.131H0L6.361 2.948h4.673zm-.66 10.96-1.69-5.014-1.541 5.015h3.23z"/></svg><span>AniList</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#2E51A2"><path fill="currentColor" d="M14.921 6.479c-.82 0-3.683 0-4.947 3.156-.662 1.652-.986 4.812.876 7.886l1.934-1.41s-.767-1.095-1.083-3.191h2.897l.022 3.19h2.604V8.835h-2.581v2.043l-2.46-.023s.413-2.408 2.877-2.336h2.454l-.572-2.04ZM0 6.528v9.624h2.348v-5.84l2.031 2.664 2.047-2.652v5.828h2.336V6.528H6.437L4.368 9.474 2.31 6.528Zm18.447.022v9.583h5.022L24 14.09h-3.232V6.55Z"/></svg><span>Jikan <em>(MAL API)</em></span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon" style="--chip:#FD755C"><path fill="currentColor" d="M1.429 5.441a12.478 12.478 0 0 0 1.916 2.056c.011.011.022.011.022.022.452.387 1.313.947 1.937 1.173 0 0 3.886 1.496 4.091 1.582a1.4 1.4 0 0 0 .237.075.694.694 0 0 0 .808-.549c.011-.065.022-.172.022-.248V5.161c.011-.667-.205-1.679-.398-2.239 0-.011-.011-.022-.011-.032A11.979 11.979 0 0 0 8.824.36L8.781.285a.697.697 0 0 0-.958-.162c-.054.032-.086.075-.129.119L7.608.36a4.743 4.743 0 0 0-.786 3.412 8.212 8.212 0 0 0-.775.463c-.043.032-.42.291-.71.56A4.803 4.803 0 0 0 1.87 4.3c-.043.011-.097.021-.14.032-.054.022-.107.043-.151.076a.702.702 0 0 0-.193.958l.043.075zM8.222 1.07c.366.614.678 1.249.925 1.917-.495.086-.98.215-1.453.388a3.918 3.918 0 0 1 .528-2.305zM4.658 5.463a7.467 7.467 0 0 0-.893 1.216 11.68 11.68 0 0 1-1.453-1.55 3.825 3.825 0 0 1 2.346.334zm13.048-.302a7.673 7.673 0 0 0-2.347-.474 7.583 7.583 0 0 0-3.811.818l-.215.108v3.918c0 .054 0 .258-.032.431a1.535 1.535 0 0 1-.646.98 1.545 1.545 0 0 1-1.152.247 2.618 2.618 0 0 1-.409-.118 747.6 747.6 0 0 1-3.402-1.313 8.9 8.9 0 0 0-.323-.129 30.597 30.597 0 0 0-3.822 3.832l-.075.086a.698.698 0 0 0 .538 1.098.676.676 0 0 0 .42-.118c.011-.011.022-.022.043-.032 1.313-.947 2.756-1.712 4.284-2.325a.7.7 0 0 1 .818.13.704.704 0 0 1 .054.915l-.237.388a20.277 20.277 0 0 0-1.97 4.306l-.032.129a.646.646 0 0 0 .108.538.713.713 0 0 0 .549.301.657.657 0 0 0 .42-.118c.054-.043.108-.086.151-.14l.043-.065a18.95 18.95 0 0 1 1.765-2.153 20.156 20.156 0 0 1 10.797-6.018c.032-.011.065-.011.097-.011.237.011.42.215.409.452a.424.424 0 0 1-.344.398c-3.908.829-10.948 5.469-8.483 12.208.043.108.075.172.129.269a.71.71 0 0 0 .538.301.742.742 0 0 0 .657-.398c.398-.754 1.152-1.593 3.326-2.497 6.061-2.508 7.062-6.093 7.17-8.364v-.129a7.716 7.716 0 0 0-5.016-7.451zm-6.083 17.762c-.56-1.669-.506-3.283.151-4.823 1.26 2.035 3.456 2.207 3.456 2.207-2.25.937-3.133 1.863-3.607 2.616z"/></svg><span>Kitsu</span></li>
+    <li class="skill-chip"><svg viewBox="0 0 24 24" class="skill-chip__icon skill-chip__icon--stroke" style="--chip:#99CC00"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span>Sharp / Image Pipelines</span></li>
+  </ul>
+</div>
         </div>
 
         <div class="about__cta">
@@ -739,6 +771,28 @@
               </div>
             </div>
 
+            <div class="favorite favorite--icon" data-tilt>
+              <div class="favorite__media favorite__media--icon">
+                <svg viewBox="0 0 24 24" class="favorite__icon-svg"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Prestige &amp; Heist TV</span>
+                <p class="favorite__quote">Meticulous plans, morally grey masterminds, one impossible job.</p>
+                <p class="favorite__desc">Money Heist's chaos-with-a-plan energy, Breaking Bad's slow "wait, am I the bad guy now?" descent, and Loki's chaotic-good multiverse nonsense — I'll rewatch all three before I finish a single side project.</p>
+              </div>
+            </div>
+
+            <div class="favorite favorite--icon" data-tilt>
+              <div class="favorite__media favorite__media--icon">
+                <svg viewBox="0 0 24 24" class="favorite__icon-svg"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Anime &amp; Games</span>
+                <p class="favorite__quote">If it has a gacha banner or a battle pass, I've probably built an API around it.</p>
+                <p class="favorite__desc">Half my GitHub is AniList, Jikan and Genshin data wired into Discord — waifu-of-the-day bots, adventure-rank trackers, and a scroll-worthy backlog of anime I swear I'll finish.</p>
+              </div>
+            </div>
+
           </div>
 
           <ul class="favorites__list">
@@ -752,11 +806,78 @@
   </section>
 
   <!-- ============================================================ -->
+  <!-- GALLERY (personal photos, certificate, sky shots)             -->
+  <!-- ============================================================ -->
+  <section class="gallery" id="gallery">
+    <div class="gallery__inner">
+      <div class="section-head">
+        <span class="section-head__index">05</span>
+        <h2 class="section-head__title">Off Screen</h2>
+        <p class="section-head__desc">The parts of life that don't compile — some trips, one certificate I'm mildly proud of, and skies I stopped to photograph on the way somewhere else.</p>
+      </div>
+
+      <div class="gallery__masonry">
+        <figure class="gallery-photo gallery-photo--natural">
+          <img src="assets/images/gallery/portrait-1.jpg" alt="Yash on a hike in the mountains" loading="lazy">
+          <figcaption>Somewhere above the treeline</figcaption>
+        </figure>
+        <figure class="gallery-photo gallery-photo--mono">
+          <img src="assets/images/gallery/portrait-2.jpg" alt="Yash outdoors, monochrome treatment" loading="lazy">
+          <figcaption>Same trip, different light</figcaption>
+        </figure>
+        <figure class="gallery-photo gallery-photo--duotone">
+          <img src="assets/images/gallery/portrait-3.jpg" alt="Yash portrait with duotone accent treatment" loading="lazy">
+          <figcaption>Between takes</figcaption>
+        </figure>
+        <figure class="gallery-photo gallery-photo--warm">
+          <img src="assets/images/gallery/portrait-4.jpg" alt="Yash portrait with warm film treatment" loading="lazy">
+          <figcaption>Golden hour, mostly by accident</figcaption>
+        </figure>
+        <figure class="gallery-photo gallery-photo--cool">
+          <img src="assets/images/gallery/portrait-5.jpg" alt="Yash portrait with cool tone treatment" loading="lazy">
+          <figcaption>Fewer bugs to fix out here</figcaption>
+        </figure>
+        <figure class="gallery-photo gallery-photo--contrast">
+          <img src="assets/images/gallery/portrait-6.jpg" alt="Yash portrait, high contrast treatment" loading="lazy">
+          <figcaption>An early one, for the archive</figcaption>
+        </figure>
+        <figure class="gallery-photo gallery-photo--natural gallery-photo--wide">
+          <img src="assets/images/gallery/setup.jpg" alt="Yash's desk and workstation setup" loading="lazy">
+          <figcaption>Where most of this site got built</figcaption>
+        </figure>
+      </div>
+
+      <div class="gallery__split">
+        <div class="gallery__skies">
+          <h3 class="gallery__sub-heading">Sky, Unedited</h3>
+          <div class="gallery__sky-stack">
+            <figure class="gallery-sky">
+              <img src="assets/images/gallery/sky-1.jpg" alt="Sunset sky with orange and purple clouds, shot on phone" loading="lazy">
+            </figure>
+            <figure class="gallery-sky">
+              <img src="assets/images/gallery/sky-2.jpg" alt="Dusk sky panorama, shot on phone" loading="lazy">
+            </figure>
+          </div>
+          <p class="gallery__caption-note">No filters — just whatever the sky was doing when I happened to look up.</p>
+        </div>
+
+        <div class="gallery__cert">
+          <h3 class="gallery__sub-heading">On Paper</h3>
+          <figure class="gallery-cert">
+            <img src="assets/images/gallery/certificate.png" alt="Certificate of Appreciation awarded to Yash Verma" loading="lazy">
+          </figure>
+          <p class="gallery__caption-note">Proof that showing up and coordinating things occasionally gets noticed too.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
   <!-- CONTACT / OUTRO                                               -->
   <!-- ============================================================ -->
   <section class="contact" id="contact">
     <div class="contact__inner">
-      <span class="section-head__index">05</span>
+      <span class="section-head__index">06</span>
       <h2 class="contact__title">
         <a href="mailto:1yash2verma3@gmail.com" class="contact__title-link" data-cursor="text" data-cursor-text="COPY">
           Let&rsquo;s&nbsp;build<br>something&nbsp;weird.

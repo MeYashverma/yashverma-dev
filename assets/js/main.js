@@ -421,6 +421,20 @@
       });
     });
 
+    gsap.utils.toArray('.gallery-photo').forEach(function (el, i) {
+      gsap.fromTo(el, { opacity: 0, y: 24 }, {
+        opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', delay: (i % 4) * 0.05,
+        scrollTrigger: { trigger: el, start: 'top 95%' }
+      });
+    });
+
+    gsap.utils.toArray('.gallery-sky, .gallery-cert').forEach(function (el) {
+      gsap.fromTo(el, { opacity: 0, y: 20 }, {
+        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 95%' }
+      });
+    });
+
     gsap.utils.toArray('.stat').forEach(function (el) {
       gsap.fromTo(el, { opacity: 0, y: 20 }, {
         opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
