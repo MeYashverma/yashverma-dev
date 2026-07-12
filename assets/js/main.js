@@ -683,6 +683,8 @@
     initAboutPortrait();
     initGallerySwap();
     initHeroPortrait();
+    initCommandPalette();
+    initScrollSpy();
 
     if (hasScrollTrigger) {
       setTimeout(function () { ScrollTrigger.refresh(); }, 300);
@@ -785,8 +787,8 @@
 
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var accent = '#d9ff3f';
-    var GRID = 10;              // spacing between dots in CSS px (dense but readable)
-    var DOT_MAX = 4.4;          // largest dot radius
+    var GRID = 8;               // spacing between dots in CSS px (denser = crisper face)
+    var DOT_MAX = 4.0;          // largest dot radius
     var luminance = null;       // sampled Float32Array of grayscale (0..1) values
 
     // Off-screen sampling canvas — small resolution so the luminance grid
@@ -861,24 +863,23 @@
       ctx.clearRect(0, 0, w, h);
       ctx.fillStyle = accent;
 
-      var cx = w / 2;
-      var cy = h / 2;
       var mx = mouse.x, my = mouse.y;
-      var influence = mouse.hovering ? 130 : 0;
+      var influence = mouse.hovering ? 140 : 0;
 
+      // Source is bright-subject-on-black, so a HIGH luminance value =
+      // subject pixel → big lime dot. Very dark cells (background) get
+      // no dot at all, keeping the frame visually clean.
       for (var r = 0; r < rows; r++) {
         for (var c = 0; c < cols; c++) {
           var l = luminance[r * cols + c];
-          if (l >= 0.985) continue;                      // pure white → skip
-          // Invert: dark pixels → big dots.
-          var base = (1 - l);
-          if (base < 0.05) continue;
+          if (l < 0.08) continue;                       // pure black bg → skip
+
+          // Punchy contrast curve — pulls midtones toward the highlights
+          // so the face reads unmistakably even at small canvas sizes.
+          var base = Math.pow(l, 0.75);
 
           var x = c * GRID + GRID / 2;
           var y = r * GRID + GRID / 2;
-
-          // Radial breathing origin at the center for a very light pulse.
-          var breatheR = breathe;
 
           // Mouse push — dots grow slightly and shift AWAY from the pointer
           // (like a soft magnetic field). Effect fades with distance.
@@ -886,20 +887,20 @@
           if (influence) {
             var dx = x - mx, dy = y - my;
             var d2 = dx * dx + dy * dy;
-            var r2 = influence * influence;
-            if (d2 < r2 * 4) {
+            var infR = influence * 2;
+            if (d2 < infR * infR) {
               var d = Math.sqrt(d2) || 1;
-              var pull = Math.max(0, 1 - d / (influence * 1.6));
-              mBoost = pull * 0.6;
-              mfx = (dx / d) * pull * 6;
-              mfy = (dy / d) * pull * 6;
+              var pull = Math.max(0, 1 - d / infR);
+              mBoost = pull * 0.7;
+              mfx = (dx / d) * pull * 7;
+              mfy = (dy / d) * pull * 7;
             }
           }
 
-          var rad = Math.min(DOT_MAX, base * DOT_MAX * breatheR + mBoost);
-          if (rad < 0.35) continue;
+          var rad = Math.min(DOT_MAX, base * DOT_MAX * breathe + mBoost);
+          if (rad < 0.4) continue;
 
-          ctx.globalAlpha = Math.min(1, 0.28 + base * 0.9);
+          ctx.globalAlpha = Math.min(1, 0.35 + base * 0.75);
           ctx.beginPath();
           ctx.arc(x + mfx, y + mfy, rad, 0, Math.PI * 2);
           ctx.fill();
@@ -933,6 +934,210 @@
       clearTimeout(resize._t);
       resize._t = setTimeout(resize, 120);
     });
+  }
+
+  /* ----------------------------------------------------------
+     Command palette — ⌘K / ctrl+K anywhere on the page.
+     Fuzzy-filters through sections + external links, arrow-key
+     nav, Enter to open. All items are declared here in a small
+     manifest so it's easy to keep in sync with the site's IA.
+     ---------------------------------------------------------- */
+  function initCommandPalette() {
+    var root  = document.getElementById('cmdk');
+    var input = document.getElementById('cmdkInput');
+    var list  = document.getElementById('cmdkList');
+    if (!root || !input || !list) return;
+
+    var MANIFEST = [
+      { g: 'Sections',   t: 'Hero',         d: 'Top of the page',         h: '#top',     k: 'H' },
+      { g: 'Sections',   t: 'Work',         d: 'Selected daemon widgets', h: '#work',    k: '1' },
+      { g: 'Sections',   t: 'Lab',          d: 'Experiments & hobby',     h: '#lab',     k: '2' },
+      { g: 'Sections',   t: 'Arts',         d: 'Digital art gallery',     h: '#arts',    k: '3' },
+      { g: 'Sections',   t: 'About',        d: 'Who I am',                h: '#about',   k: '4' },
+      { g: 'Sections',   t: 'Gallery',      d: 'Off-screen photos',       h: '#gallery', k: '5' },
+      { g: 'Sections',   t: 'Contact',      d: 'Get in touch',            h: '#contact', k: '6' },
+      { g: 'External',   t: 'GitHub',       d: '@MeYashverma',            h: 'https://github.com/MeYashverma',                            ext: true, ico: '↗' },
+      { g: 'External',   t: 'Instagram',    d: '@yashardcore',            h: 'https://instagram.com/yashardcore',                         ext: true, ico: '↗' },
+      { g: 'External',   t: 'Twitter / X',  d: '@me_yashverma',           h: 'https://twitter.com/me_yashverma',                          ext: true, ico: '↗' },
+      { g: 'External',   t: 'YouTube',      d: '@me_yashverma',           h: 'https://www.youtube.com/@me_yashverma',                     ext: true, ico: '↗' },
+      { g: 'External',   t: 'Twitch',       d: '@me_yashvema',            h: 'https://twitch.tv/me_yashvema',                             ext: true, ico: '↗' },
+      { g: 'External',   t: 'Spotify',      d: 'The_Berlin',              h: 'https://open.spotify.com/user/31xz5ux4pziergil5hsla5pzss4y', ext: true, ico: '↗' },
+      { g: 'External',   t: 'Last.fm',      d: 'The_Berlin',              h: 'https://www.last.fm/user/The_Berlin',                       ext: true, ico: '↗' },
+      { g: 'External',   t: 'Discord',      d: 'yashylash',               h: 'https://discord.com/users/848100520509308989',              ext: true, ico: '↗' },
+      { g: 'External',   t: 'Google Cloud', d: 'Skills profile · Gold',   h: 'https://www.skills.google/public_profiles/a8a49bbd-9ef0-46d9-b3bd-ea25d115b90b', ext: true, ico: '↗' },
+      { g: 'Actions',    t: 'Send email',   d: '1yash2verma3@gmail.com',  h: 'mailto:1yash2verma3@gmail.com',                              ico: '✉' },
+      { g: 'Actions',    t: 'Copy email',   d: '1yash2verma3@gmail.com',  action: 'copy-email',                                            ico: '⎘' }
+    ];
+
+    var active = 0;
+    var filtered = MANIFEST.slice();
+
+    function iconFor(item) {
+      if (item.ico) return item.ico;
+      if (item.k)   return item.k;
+      return '·';
+    }
+
+    function render() {
+      list.innerHTML = '';
+      if (!filtered.length) {
+        list.innerHTML = '<li class="cmdk__empty">Nothing matches. Try another query.</li>';
+        return;
+      }
+      var lastGroup = null;
+      filtered.forEach(function (item, i) {
+        if (item.g !== lastGroup) {
+          var g = document.createElement('li');
+          g.className = 'cmdk__group-label';
+          g.textContent = item.g;
+          list.appendChild(g);
+          lastGroup = item.g;
+        }
+        var li = document.createElement('li');
+        li.className = 'cmdk__item' + (i === active ? ' is-active' : '');
+        li.setAttribute('role', 'option');
+        li.dataset.idx = i;
+        li.innerHTML =
+          '<span class="cmdk__item-icon">' + iconFor(item) + '</span>' +
+          '<span class="cmdk__item-body">' +
+          '<span class="cmdk__item-title">' + item.t + '</span>' +
+          '<span class="cmdk__item-desc">' + (item.d || '') + '</span>' +
+          '</span>' +
+          '<span class="cmdk__item-kbd">' + (item.ext ? '↗' : '↵') + '</span>';
+        li.addEventListener('click', function () { active = i; execute(); });
+        li.addEventListener('mousemove', function () {
+          if (active !== i) { active = i; render(); }
+        });
+        list.appendChild(li);
+      });
+      var el = list.querySelector('.cmdk__item.is-active');
+      if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
+    }
+
+    // Very small fuzzy: substring across title + desc + group.
+    function filter(q) {
+      q = (q || '').trim().toLowerCase();
+      if (!q) return MANIFEST.slice();
+      return MANIFEST.filter(function (it) {
+        var hay = (it.t + ' ' + (it.d || '') + ' ' + it.g).toLowerCase();
+        // Every space-separated token must be present.
+        return q.split(/\s+/).every(function (tok) { return hay.indexOf(tok) !== -1; });
+      });
+    }
+
+    function execute() {
+      var item = filtered[active];
+      if (!item) return;
+      close();
+      if (item.action === 'copy-email') {
+        var email = '1yash2verma3@gmail.com';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).catch(function () {});
+        }
+        // Poor-man's toast via scrollspy label so it's on-brand.
+        var sp = document.getElementById('scrollSpyLabel');
+        if (sp) { var old = sp.textContent; sp.textContent = 'copied → ' + email; setTimeout(function () { sp.textContent = old; }, 1400); }
+        return;
+      }
+      if (item.ext) window.open(item.h, '_blank', 'noopener');
+      else if (item.h) window.location.hash = item.h.replace(/^#/, '#');
+    }
+
+    function open() {
+      root.classList.add('is-open');
+      root.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      active = 0;
+      filtered = MANIFEST.slice();
+      input.value = '';
+      render();
+      setTimeout(function () { input.focus(); }, 20);
+    }
+    function close() {
+      root.classList.remove('is-open');
+      root.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function (e) {
+      var isK  = e.key && e.key.toLowerCase() === 'k';
+      var meta = e.metaKey || e.ctrlKey;
+      if (isK && meta) { e.preventDefault(); root.classList.contains('is-open') ? close() : open(); return; }
+      if (e.key === '/' && document.activeElement && document.activeElement.tagName !== 'INPUT' && !root.classList.contains('is-open')) {
+        e.preventDefault(); open(); return;
+      }
+      if (!root.classList.contains('is-open')) return;
+      if (e.key === 'Escape')     { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(filtered.length - 1, active + 1); render(); }
+      else if (e.key === 'ArrowUp')   { e.preventDefault(); active = Math.max(0, active - 1); render(); }
+      else if (e.key === 'Enter')     { e.preventDefault(); execute(); }
+    });
+
+    input.addEventListener('input', function () {
+      filtered = filter(input.value);
+      active = 0;
+      render();
+    });
+    root.querySelector('.cmdk__scrim').addEventListener('click', close);
+  }
+
+  /* ----------------------------------------------------------
+     Terminal-style scroll spy — a fixed bottom-left mono chip
+     that tracks which section you're currently viewing. Doubles
+     as a discoverability hint for the ⌘K palette.
+     ---------------------------------------------------------- */
+  function initScrollSpy() {
+    var chip  = document.getElementById('scrollSpy');
+    var label = document.getElementById('scrollSpyLabel');
+    if (!chip || !label) return;
+
+    var sections = [
+      { id: 'hero',    name: 'hero'    },
+      { id: 'work',    name: 'work'    },
+      { id: 'lab',     name: 'lab'     },
+      { id: 'arts',    name: 'arts'    },
+      { id: 'about',   name: 'about'   },
+      { id: 'gallery', name: 'gallery' },
+      { id: 'contact', name: 'contact' }
+    ];
+    var current = 'hero';
+
+    function update() {
+      // Show the chip only once you've scrolled past the fold, so it
+      // doesn't fight the hero for attention.
+      var scrolled = window.scrollY > (window.innerHeight * 0.6);
+      chip.classList.toggle('is-visible', scrolled);
+
+      // Find the section whose top-boundary is closest to (but before) the
+      // vertical viewport center.
+      var pivot = window.scrollY + window.innerHeight * 0.35;
+      var best = current;
+      for (var i = 0; i < sections.length; i++) {
+        var el = document.getElementById(sections[i].id);
+        if (!el) continue;
+        var top = el.getBoundingClientRect().top + window.scrollY;
+        if (top <= pivot) best = sections[i].name;
+      }
+      if (best !== current) {
+        current = best;
+        label.textContent = 'yv.sys/' + current;
+      }
+    }
+
+    var raf = null;
+    window.addEventListener('scroll', function () {
+      if (raf) return;
+      raf = requestAnimationFrame(function () { raf = null; update(); });
+    }, { passive: true });
+    update();
+
+    // Clicking the chip opens the palette — free discoverability.
+    chip.style.pointerEvents = 'auto';
+    chip.addEventListener('click', function () {
+      var e = new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true });
+      document.dispatchEvent(e);
+    });
+    chip.style.cursor = 'pointer';
   }
 
   if (document.readyState === 'loading') {

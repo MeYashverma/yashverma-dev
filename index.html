@@ -90,7 +90,7 @@
       <a href="https://instagram.com/yashardcore" target="_blank" rel="noopener">Instagram</a>
       <a href="https://twitter.com/me_yashverma" target="_blank" rel="noopener">Twitter</a>
       <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener">Discord</a>
-      <a href="mailto:1yash2verma3@gmail.com">Email</a>
+      <a href="/cdn-cgi/l/email-protection#4b7a322a3823793d2e39262a780b2c262a222765282426">Email</a>
     </div>
     <div class="menu-overlay__meta">Delhi, India — IST</div>
   </div>
@@ -143,7 +143,11 @@
 
     <div class="hero__portrait" aria-hidden="true">
       <canvas class="hero__portrait-canvas" id="heroPortraitCanvas"></canvas>
-      <img class="hero__portrait-src" id="heroPortraitSrc" src="assets/images/real/portrait-hero.jpg" alt="" crossorigin="anonymous">
+      <span class="hero__portrait-glow" aria-hidden="true"></span>
+      <!-- Source image is a tightly-cropped, high-contrast render of the real
+           face so the canvas dot-matrix always reads clearly. Hidden — the
+           canvas samples pixels from it and paints them as lime dots. -->
+      <img class="hero__portrait-src" id="heroPortraitSrc" src="assets/images/portrait-source.jpg" alt="">
     </div>
     </div>
 
@@ -750,71 +754,7 @@
           </a>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- GOOGLE CLOUD SKILLS — real badges from skills.google profile  -->
-        <!-- ============================================================ -->
-        <div class="gcloud">
-          <div class="gcloud__head">
-            <div class="gcloud__title-wrap">
-              <svg class="gcloud__logo" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="#4285F4" d="M12 11.5v3h4.4c-.2 1-.9 1.9-1.9 2.5l3 2.3c1.8-1.6 2.8-4 2.8-6.8 0-.6-.1-1.3-.2-1.9L12 10.5z"/>
-                <path fill="#34A853" d="M6.6 14.3l-.7.5-2.4 1.9C5 19.7 8.2 22 12 22c2.7 0 5-.9 6.6-2.4l-3-2.3c-.9.6-2 1-3.6 1-2.8 0-5.1-1.9-5.9-4.5z"/>
-                <path fill="#FBBC04" d="M3.5 7.3C2.6 9 2 10.9 2 13s.6 4 1.5 5.7l3.1-2.4c-.3-.7-.4-1.5-.4-2.3s.1-1.6.4-2.3z"/>
-                <path fill="#EA4335" d="M12 6c1.5 0 2.9.5 4 1.5l2.9-2.9C17 2.9 14.7 2 12 2 8.2 2 5 4.3 3.5 7.6l3.1 2.4C7.3 7.4 9.5 6 12 6z"/>
-              </svg>
-              <div>
-                <span class="gcloud__eyebrow">Google Cloud Skills</span>
-                <h4 class="gcloud__title">Gold League &middot; <span>5,463 pts</span></h4>
-              </div>
-            </div>
-            <div class="gcloud__stats">
-              <div class="gcloud__stat"><span>30+</span><label>Skill badges earned</label></div>
-              <div class="gcloud__stat"><span>2025&mdash;26</span><label>Active member</label></div>
-              <div class="gcloud__stat"><span>GenAI · MLOps · DevOps</span><label>Focus areas</label></div>
-            </div>
-          </div>
-
-          <div class="gcloud__marquee" aria-hidden="true">
-            <div class="gcloud__marquee-track">
-              <!-- Track A -->
-              <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/level3-genai.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/level2-cloud-ops.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/level1-scalable.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy">
-              <!-- Track B (duplicate for seamless loop) -->
-              <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/level3-genai.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/level2-cloud-ops.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/level1-scalable.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy">
-              <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy">
-            </div>
-          </div>
-
-          <a class="gcloud__link" href="https://www.skills.google/public_profiles/a8a49bbd-9ef0-46d9-b3bd-ea25d115b90b" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">
-            View full Google Cloud Skills profile ↗
-          </a>
-        </div>
+        <!-- Google Cloud Skills strip lives in its own full-width section below About. -->
 
         <div class="favorites">
           <div class="favorites__head">
@@ -858,6 +798,18 @@
                 <span class="favorite__tag">Loki</span>
                 <p class="favorite__quote">&ldquo;Glorious purpose.&rdquo; — Loki Laufeyson</p>
                 <p class="favorite__desc">Multiverse chaos, morally-flexible protagonists, an entire bureaucracy for time — genuinely my favourite thing Marvel has ever put on screen.</p>
+              </div>
+            </article>
+
+            <article class="favorite favorite--tall" data-tilt data-cat="tv">
+              <div class="favorite__media">
+                <img src="assets/images/whatilike/stranger-things.jpg" alt="Stranger Things — Eleven / Millie Bobby Brown key art" loading="lazy">
+                <span class="favorite__badge">Netflix · Series</span>
+              </div>
+              <div class="favorite__body">
+                <span class="favorite__tag">Stranger Things</span>
+                <p class="favorite__quote">&ldquo;Friends don&rsquo;t lie.&rdquo; — Eleven</p>
+                <p class="favorite__desc">Hawkins in the 80s, kids on bikes with walkie-talkies, the Upside Down, and a soundtrack that lives rent-free in my head. The <em>&ldquo;Running Up That Hill&rdquo;</em> season permanently rewired me.</p>
               </div>
             </article>
 
@@ -981,6 +933,76 @@
   </section>
 
   <!-- ============================================================ -->
+  <!-- GOOGLE CLOUD SKILLS — real badges from skills.google profile  -->
+  <!-- Full-width strip between About and Gallery                    -->
+  <!-- ============================================================ -->
+  <section class="gcloud-section" aria-label="Google Cloud Skills">
+    <div class="gcloud">
+      <div class="gcloud__head">
+        <div class="gcloud__title-wrap">
+          <span class="gcloud__logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M12 10.5v3h4.4c-.2 1-.9 1.9-1.9 2.5l3 2.3c1.8-1.6 2.8-4 2.8-6.8 0-.6-.1-1.3-.2-1.9L12 10.5z"/>
+              <path fill="#34A853" d="M6.6 14.3l-.7.5-2.4 1.9C5 19.7 8.2 22 12 22c2.7 0 5-.9 6.6-2.4l-3-2.3c-.9.6-2 1-3.6 1-2.8 0-5.1-1.9-5.9-4.5z"/>
+              <path fill="#FBBC04" d="M3.5 7.3C2.6 9 2 10.9 2 13s.6 4 1.5 5.7l3.1-2.4c-.3-.7-.4-1.5-.4-2.3s.1-1.6.4-2.3z"/>
+              <path fill="#EA4335" d="M12 6c1.5 0 2.9.5 4 1.5l2.9-2.9C17 2.9 14.7 2 12 2 8.2 2 5 4.3 3.5 7.6l3.1 2.4C7.3 7.4 9.5 6 12 6z"/>
+            </svg>
+          </span>
+          <div>
+            <span class="gcloud__eyebrow">Google Cloud Skills · Verified profile</span>
+            <h4 class="gcloud__title">Gold League <span>· 5,463 pts</span></h4>
+          </div>
+        </div>
+        <div class="gcloud__stats">
+          <div class="gcloud__stat"><span>30+</span><label>Skill badges earned</label></div>
+          <div class="gcloud__stat"><span>2025—26</span><label>Active member</label></div>
+          <div class="gcloud__stat"><span>GenAI · MLOps · DevOps</span><label>Focus areas</label></div>
+        </div>
+      </div>
+
+      <div class="gcloud__marquee" aria-hidden="true">
+        <div class="gcloud__marquee-track">
+          <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/level3-genai.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/level2-cloud-ops.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/level1-scalable.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy">
+          <!-- duplicate for seamless loop -->
+          <img src="assets/images/gcp-badges/gemini-enterprise.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/mlops-genai.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/bigquery-vector.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/eventarc.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/level3-genai.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/level2-cloud-ops.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/level1-scalable.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/devops.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/app-engine.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/knowledge-catalog.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/cloud-storage.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/data-console.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/speech-language.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/speech-analyze.png" alt="" loading="lazy">
+          <img src="assets/images/gcp-badges/cloud-collab.png" alt="" loading="lazy">
+        </div>
+      </div>
+
+      <a class="gcloud__link" href="https://www.skills.google/public_profiles/a8a49bbd-9ef0-46d9-b3bd-ea25d115b90b" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">
+        View full Google Cloud Skills profile ↗
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
   <!-- GALLERY (personal photos, certificate, sky shots)             -->
   <!-- ============================================================ -->
   <section class="gallery" id="gallery">
@@ -1065,11 +1087,11 @@
     <div class="contact__inner">
       <span class="section-head__index">06</span>
       <h2 class="contact__title">
-        <a href="mailto:1yash2verma3@gmail.com" class="contact__title-link" data-cursor="text" data-cursor-text="COPY">
+        <a href="/cdn-cgi/l/email-protection#b988c0d8cad18bcfdccbd4d88af9ded4d8d0d597dad6d4" class="contact__title-link" data-cursor="text" data-cursor-text="COPY">
           Let&rsquo;s&nbsp;build<br>something&nbsp;weird.
         </a>
       </h2>
-      <a href="mailto:1yash2verma3@gmail.com" class="contact__email" id="contactEmail">1yash2verma3@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#1c2d657d6f742e6a796e717d2f5c7b717d7570327f7371" class="contact__email" id="contactEmail"><span class="__cf_email__" data-cfemail="d5e4acb4a6bde7a3b0a7b8b4e695b2b8b4bcb9fbb6bab8">[email&#160;protected]</span></a>
 
       <div class="contact__links">
         <a href="https://github.com/MeYashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">GitHub</a>
@@ -1092,12 +1114,43 @@
 
 </main>
 
-<script src="assets/js/vendor/gsap.min.js"></script>
+<!-- ============================================================ -->
+<!-- Command palette — Cmd/Ctrl + K to open, arrows to move,     -->
+<!-- Enter to jump. Groups sections, external links, and actions. -->
+<!-- ============================================================ -->
+<div class="cmdk" id="cmdk" aria-hidden="true" role="dialog" aria-label="Command palette">
+  <div class="cmdk__scrim"></div>
+  <div class="cmdk__panel">
+    <div class="cmdk__inputWrap">
+      <span class="cmdk__prompt">&gt;</span>
+      <input type="text" class="cmdk__input" id="cmdkInput" placeholder="Jump anywhere — sections, socials, projects…" autocomplete="off" spellcheck="false">
+      <span class="cmdk__hint">esc</span>
+    </div>
+    <ul class="cmdk__list" id="cmdkList" role="listbox"></ul>
+    <div class="cmdk__foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>esc</kbd> close</span>
+      <span class="cmdk__foot-brand">YV / cmd-k</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Terminal-style scroll spy (fixed bottom-left, mono)          -->
+<!-- ============================================================ -->
+<div class="scrollspy" id="scrollSpy" aria-hidden="true">
+  <span class="scrollspy__prompt">&gt;</span>
+  <span class="scrollspy__label" id="scrollSpyLabel">yv.sys/hero</span>
+  <span class="scrollspy__hint"><kbd>⌘</kbd><kbd>K</kbd></span>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/gsap.min.js"></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/three.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
 <script src="assets/js/background.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/live.js"></script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19ec7d4ae240bb8',t:'MTc4Mzg0NjAxOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
