@@ -95,7 +95,7 @@
       <a href="https://instagram.com/yashardcore" target="_blank" rel="noopener">Instagram</a>
       <a href="https://twitter.com/me_yashverma" target="_blank" rel="noopener">Twitter</a>
       <a href="https://discord.com/users/848100520509308989" target="_blank" rel="noopener">Discord</a>
-      <a href="/cdn-cgi/l/email-protection#53622a32203b612536213e326013343e323a3f7d303c3e">Email</a>
+      <a href="/cdn-cgi/l/email-protection#4f7e362e3c277d392a3d222e7c0f28222e2623612c2022">Email</a>
     </div>
     <div class="menu-overlay__meta">Delhi, India — IST</div>
   </div>
@@ -1189,18 +1189,25 @@
               </div>
             </a>
 
-            <a class="fav-card" href="https://open.spotify.com/track/3KkXRkHbMCARz0aVfEt68P" target="_blank" rel="noopener" data-tilt data-cursor="text" data-cursor-text="PLAY">
+            <article class="fav-card fav-card--song">
               <div class="fav-card__media fav-card__media--square">
                 <img src="assets/images/favs/sunflower.jpg" alt="Sunflower — Post Malone &amp; Swae Lee, Spider-Verse cover art" loading="lazy" decoding="async" width="300" height="300">
-                <span class="fav-card__vinyl" aria-hidden="true"></span>
+                <span class="fav-card__vinyl" id="sunflowerVinyl" aria-hidden="true"></span>
               </div>
               <div class="fav-card__body">
-                <span class="fav-card__kicker">Favourite song</span>
+                <span class="fav-card__kicker">Favourite song · playable</span>
                 <h6 class="fav-card__title">Sunflower <span>— Post Malone &amp; Swae Lee</span></h6>
                 <p class="fav-card__meta">Spider-Man: Into the Spider-Verse · 2018 · 2:38</p>
-                <span class="fav-card__link">Open in Spotify ↗</span>
+                <button class="song-preview" id="sunflowerPlay" type="button" aria-label="Play a preview of Sunflower">
+                  <span class="song-preview__icon" aria-hidden="true"></span>
+                  <span class="song-preview__label" id="sunflowerPlayLabel">Play 30s preview</span>
+                  <span class="song-preview__time" id="sunflowerTime">0:00</span>
+                </button>
+                <span class="song-preview__bar"><i id="sunflowerProgress"></i></span>
+                <audio id="sunflowerAudio" preload="none"></audio>
+                <a class="fav-card__link" href="https://open.spotify.com/track/3KkXRkHbMCARz0aVfEt68P" target="_blank" rel="noopener">Open full song in Spotify ↗</a>
               </div>
-            </a>
+            </article>
 
             <a class="fav-card" href="https://ibispaint.com/" target="_blank" rel="noopener" data-tilt data-cursor="text" data-cursor-text="OPEN">
               <div class="fav-card__media fav-card__media--square">
@@ -1364,6 +1371,29 @@
       </div>
     </article>
 
+    <article class="gta-countdown" id="gtaCountdown" aria-labelledby="gtaCountdownTitle">
+      <div class="gta-countdown__visual">
+        <img class="gta-countdown__hero" src="assets/images/games/gta-6-hero.webp" alt="Grand Theft Auto VI official artwork featuring Vice City" loading="lazy" decoding="async" width="1400" height="788">
+        <img class="gta-countdown__cover" src="assets/images/games/gta-6-cover.webp" alt="Grand Theft Auto VI official cover art" loading="lazy" decoding="async" width="1000" height="1250">
+      </div>
+      <div class="gta-countdown__copy">
+        <span class="gta-countdown__eyebrow"><i aria-hidden="true"></i> Official launch countdown</span>
+        <h3 id="gtaCountdownTitle">Grand Theft Auto VI</h3>
+        <p>Vice City is getting closer. Counting down to the announced console release.</p>
+        <div class="gta-countdown__timer" aria-live="off">
+          <div><strong id="gtaDays">000</strong><span>Days</span></div>
+          <div><strong id="gtaHours">00</strong><span>Hours</span></div>
+          <div><strong id="gtaMinutes">00</strong><span>Minutes</span></div>
+          <div><strong id="gtaSeconds">00</strong><span>Seconds</span></div>
+        </div>
+        <div class="gta-countdown__foot">
+          <time datetime="2026-11-19">19 November 2026</time>
+          <span>PS5 · Xbox Series X|S</span>
+          <a href="https://www.rockstargames.com/VI" target="_blank" rel="noopener">Official site ↗</a>
+        </div>
+      </div>
+    </article>
+
     <div class="game-shelf-block">
       <div class="game-collection-label"><span>Shelf 01</span><strong>Games I Like</strong><small>12 worlds</small></div>
       <div class="game-shelf" aria-label="Games I Like">
@@ -1383,23 +1413,26 @@
     </div>
 
     <div class="game-rotation">
-      <div class="game-collection-label"><span>Now spinning</span><strong>Currently Playing / Games in Rotation</strong><small>05 active</small></div>
-      <ol>
-        <li class="rotation-entry"><span class="rotation-entry__index">A</span><img src="assets/images/games/where-winds-meet.webp" alt="Where Winds Meet official cover art" loading="lazy" decoding="async" width="600" height="900"><strong>Where Winds Meet</strong><span class="rotation-entry__state"><i></i>In rotation</span></li>
-        <li class="rotation-entry"><span class="rotation-entry__index">B</span><img src="assets/images/games/counter-strike-2.webp" alt="Counter-Strike 2 official cover art" loading="lazy" decoding="async" width="600" height="900"><strong>Counter-Strike 2</strong><span class="rotation-entry__state"><i></i>In rotation</span></li>
-        <li class="rotation-entry"><span class="rotation-entry__index">C</span><img src="assets/images/games/minecraft.webp" alt="Minecraft official key art" loading="lazy" decoding="async" width="648" height="648"><strong>Minecraft</strong><span class="rotation-entry__state"><i></i>In rotation</span></li>
-        <li class="rotation-entry"><span class="rotation-entry__index">D</span><img src="assets/images/games/genshin-impact.webp" alt="Genshin Impact official key art" loading="lazy" decoding="async" width="1000" height="563"><strong>Genshin Impact</strong><span class="rotation-entry__state"><i></i>In rotation</span></li>
-        <li class="rotation-entry"><span class="rotation-entry__index">E</span><img src="assets/images/games/forza-horizon-5.webp" alt="Forza Horizon 5 official cover art" loading="lazy" decoding="async" width="600" height="900"><strong>Forza Horizon 5</strong><span class="rotation-entry__state"><i></i>In rotation</span></li>
-      </ol>
+      <div class="game-collection-label"><span>Shelf 02</span><strong>Currently Playing / Games in Rotation</strong><small>05 active</small></div>
+      <div class="game-shelf game-shelf--rotation" aria-label="Currently Playing and Games in Rotation">
+        <figure class="game-shelf__item game-shelf__item--rotation" data-collection="In rotation" tabindex="0" role="button"><img src="assets/images/games/where-winds-meet.webp" alt="Where Winds Meet official cover art" loading="lazy" decoding="async" width="600" height="900"><figcaption><span>A</span><strong>Where Winds Meet</strong><i>In rotation</i></figcaption></figure>
+        <figure class="game-shelf__item game-shelf__item--rotation" data-collection="In rotation" tabindex="0" role="button"><img src="assets/images/games/counter-strike-2.webp" alt="Counter-Strike 2 official cover art" loading="lazy" decoding="async" width="600" height="900"><figcaption><span>B</span><strong>Counter-Strike 2</strong><i>In rotation</i></figcaption></figure>
+        <figure class="game-shelf__item game-shelf__item--rotation" data-collection="In rotation" tabindex="0" role="button"><img src="assets/images/games/minecraft.webp" alt="Minecraft official key art" loading="lazy" decoding="async" width="648" height="648"><figcaption><span>C</span><strong>Minecraft</strong><i>In rotation</i></figcaption></figure>
+        <figure class="game-shelf__item game-shelf__item--rotation" data-collection="In rotation" tabindex="0" role="button"><img src="assets/images/games/genshin-impact.webp" alt="Genshin Impact official key art" loading="lazy" decoding="async" width="1000" height="563"><figcaption><span>D</span><strong>Genshin Impact</strong><i>In rotation</i></figcaption></figure>
+        <figure class="game-shelf__item game-shelf__item--rotation" data-collection="In rotation" tabindex="0" role="button"><img src="assets/images/games/forza-horizon-5.webp" alt="Forza Horizon 5 official cover art" loading="lazy" decoding="async" width="600" height="900"><figcaption><span>E</span><strong>Forza Horizon 5</strong><i>In rotation</i></figcaption></figure>
+      </div>
     </div>
 
     <div class="game-wishlist">
-      <div class="game-collection-label"><span>Bookmarks</span><strong>Want to Play</strong><small>Next worlds</small></div>
-      <div class="game-wishlist__list">
-        <div class="wishlist-row wishlist-row--double"><span class="wishlist-row__num">01</span><span class="wishlist-row__art"><img src="assets/images/games/the-last-of-us-part-1.webp" alt="The Last of Us Part I official cover art" loading="lazy" decoding="async" width="600" height="900"><img src="assets/images/games/the-last-of-us-part-2.webp" alt="The Last of Us Part II official cover art" loading="lazy" decoding="async" width="600" height="900"></span><strong>The Last of Us Part I &amp; II</strong><span>Story bookmark</span></div>
-        <div class="wishlist-row"><span class="wishlist-row__num">02</span><span class="wishlist-row__art"><img src="assets/images/games/ready-or-not.webp" alt="Ready or Not official cover art" loading="lazy" decoding="async" width="600" height="900"></span><strong>Ready or Not</strong><span>Tactical bookmark</span></div>
-        <div class="wishlist-row"><span class="wishlist-row__num">03</span><span class="wishlist-row__art"><img src="assets/images/games/f1-25.webp" alt="F1 25 official cover art" loading="lazy" decoding="async" width="250" height="313"></span><strong>F1 25</strong><span>Racing bookmark</span></div>
-        <div class="wishlist-row"><span class="wishlist-row__num">04</span><span class="wishlist-row__art"><img src="assets/images/games/fallout-4.webp" alt="Fallout 4 official cover art" loading="lazy" decoding="async" width="600" height="900"></span><strong>Fallout 4</strong><span>Open-world bookmark</span></div>
+      <div class="game-collection-label"><span>Shelf 03</span><strong>Want to Play</strong><small>04 bookmarks</small></div>
+      <div class="game-shelf game-shelf--wishlist" aria-label="Want to Play">
+        <figure class="game-shelf__item game-shelf__item--wishlist game-shelf__item--duo" data-collection="Want to play" tabindex="0" role="button">
+          <span class="game-shelf__duo"><img src="assets/images/games/the-last-of-us-part-1.webp" alt="The Last of Us Part I official cover art" loading="lazy" decoding="async" width="600" height="900"><img src="assets/images/games/the-last-of-us-part-2.webp" alt="The Last of Us Part II official cover art" loading="lazy" decoding="async" width="600" height="900"></span>
+          <figcaption><span>01</span><strong>The Last of Us Part I &amp; II</strong><i>Story bookmark</i></figcaption>
+        </figure>
+        <figure class="game-shelf__item game-shelf__item--wishlist" data-collection="Want to play" tabindex="0" role="button"><img src="assets/images/games/ready-or-not.webp" alt="Ready or Not official cover art" loading="lazy" decoding="async" width="600" height="900"><figcaption><span>02</span><strong>Ready or Not</strong><i>Tactical bookmark</i></figcaption></figure>
+        <figure class="game-shelf__item game-shelf__item--wishlist" data-collection="Want to play" tabindex="0" role="button"><img src="assets/images/games/f1-25.webp" alt="F1 25 official cover art" loading="lazy" decoding="async" width="250" height="313"><figcaption><span>03</span><strong>F1 25</strong><i>Racing bookmark</i></figcaption></figure>
+        <figure class="game-shelf__item game-shelf__item--wishlist" data-collection="Want to play" tabindex="0" role="button"><img src="assets/images/games/fallout-4.webp" alt="Fallout 4 official cover art" loading="lazy" decoding="async" width="600" height="900"><figcaption><span>04</span><strong>Fallout 4</strong><i>Open-world bookmark</i></figcaption></figure>
       </div>
     </div>
 
@@ -1506,11 +1539,11 @@
     <div class="contact__inner">
       <span class="section-head__index">07</span>
       <h2 class="contact__title">
-        <a href="/cdn-cgi/l/email-protection#96a7eff7e5fea4e0f3e4fbf7a5d6f1fbf7fffab8f5f9fb" class="contact__title-link" data-cursor="text" data-cursor-text="EMAIL">
+        <a href="/cdn-cgi/l/email-protection#083971697b603a7e6d7a65693b486f65696164266b6765" class="contact__title-link" data-cursor="text" data-cursor-text="EMAIL">
           Let&rsquo;s&nbsp;build<br>something&nbsp;weird.
         </a>
       </h2>
-      <a href="/cdn-cgi/l/email-protection#211058405249135744534c401261464c40484d0f424e4c" class="contact__email" id="contactEmail"><span class="__cf_email__" data-cfemail="3f0e465e4c570d495a4d525e0c7f58525e5653115c5052">[email&#160;protected]</span></a>
+      <a href="/cdn-cgi/l/email-protection#64551d05170c56120116090557240309050d084a070b09" class="contact__email" id="contactEmail"><span class="__cf_email__" data-cfemail="ad9cd4ccdec59fdbc8dfc0cc9eedcac0ccc4c183cec2c0">[email&#160;protected]</span></a>
 
       <ul class="contact__socials" aria-label="Social links">
         <li>
@@ -1616,5 +1649,5 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/live.js"></script>
 <script src="assets/js/activity.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1a061aced2a47c9',t:'MTc4Mzg2MjgwNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1a087bc7de65909',t:'MTc4Mzg2NDM2NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

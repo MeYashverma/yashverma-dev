@@ -3970,3 +3970,145 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
   .game-viewer { grid-template-columns: 36px minmax(0,1fr) 36px; }
   .game-viewer__figure { width: 76vw; }
 }
+
+/* ============================================================
+   v11 — unified game shelves, playable Sunflower + GTA VI clock
+   ============================================================ */
+
+/* Rotation and wishlist now use the exact same physical-shelf language. */
+.game-shelf--rotation,
+.game-shelf--wishlist { align-items: flex-start; }
+.game-shelf__item figcaption strong {
+  display: block; min-width: 0; flex: 1;
+  color: var(--text-dim); font-size: 10px; font-weight: 400; line-height: 1.35;
+}
+.game-shelf__item figcaption i {
+  display: block; color: var(--text-faint); font-family: var(--font-mono);
+  font-size: 7px; font-style: normal; line-height: 1.4; text-transform: uppercase;
+}
+.game-shelf__item--rotation { position: relative; }
+.game-shelf__item--rotation::after {
+  content: ''; position: absolute; top: 9px; right: 9px;
+  width: 7px; height: 7px; border: 2px solid rgba(5,5,6,.82); border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 10px var(--accent-glow);
+}
+.game-shelf__item--wishlist img { filter: grayscale(.62) brightness(.72); }
+.game-shelf__item--wishlist:hover img,
+.game-shelf__item--wishlist:focus-visible img { filter: grayscale(0) brightness(1); }
+.game-shelf__duo {
+  display: flex; width: 170px; height: 255px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08); border-radius: 9px;
+  box-shadow: 0 18px 34px -18px rgba(0,0,0,.95);
+}
+.game-shelf__item--duo .game-shelf__duo img {
+  display: block; width: 50% !important; height: 255px !important;
+  object-fit: cover; border: 0; border-radius: 0; box-shadow: none;
+}
+.game-shelf__item--duo .game-shelf__duo img + img { border-left: 1px solid rgba(255,255,255,.16); }
+
+/* Sunflower custom player: compact enough to remain part of the collection. */
+.fav-card--song { color: var(--text); }
+.fav-card--song .fav-card__body { padding-right: 5px; }
+.song-preview {
+  display: grid; grid-template-columns: 30px minmax(0,1fr) auto;
+  align-items: center; gap: 9px; width: 100%; min-height: 40px;
+  margin-top: 8px; padding: 5px 10px 5px 5px;
+  border: 1px solid var(--line); border-radius: 999px;
+  color: var(--text-dim); background: rgba(255,255,255,.025);
+  transition: border-color .25s, color .25s, background .25s;
+}
+.song-preview:not(:disabled):hover { color: var(--text); border-color: rgba(217,255,63,.3); background: rgba(217,255,63,.045); }
+.song-preview:disabled { opacity: .58; cursor: wait; }
+.song-preview__icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 50%; background: var(--accent);
+}
+.song-preview__icon::before {
+  content: ''; width: 0; height: 0; margin-left: 2px;
+  border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #08080a;
+}
+.song-preview.is-playing .song-preview__icon::before {
+  width: 8px; height: 10px; margin: 0; border: 0;
+  background: linear-gradient(90deg,#08080a 0 3px,transparent 3px 5px,#08080a 5px 8px);
+}
+.song-preview__label { overflow: hidden; font-family: var(--font-mono); font-size: 8.5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+.song-preview__time { color: var(--text-faint); font-family: var(--font-mono); font-size: 8px; font-variant-numeric: tabular-nums; }
+.song-preview__bar { display: block; height: 2px; margin: -1px 12px 3px 40px; overflow: hidden; border-radius: 999px; background: var(--line); }
+.song-preview__bar i { display: block; width: 0; height: 100%; background: var(--accent); transition: width .15s linear; }
+.fav-card__vinyl.is-spinning { animation: sunflowerSpin 3.2s linear infinite; }
+@keyframes sunflowerSpin { to { transform: translateY(-50%) rotate(360deg); } }
+
+/* GTA VI: official art, official calendar date, live local countdown. */
+.gta-countdown {
+  display: grid; grid-template-columns: minmax(0,1.2fr) minmax(360px,.8fr);
+  min-height: 520px; margin-top: clamp(60px,8vw,100px); overflow: hidden;
+  border: 1px solid rgba(255,255,255,.12); border-radius: 20px; background: #100b14;
+  box-shadow: 0 40px 100px -65px rgba(245,86,166,.38);
+}
+.gta-countdown__visual { position: relative; min-height: 500px; overflow: hidden; }
+.gta-countdown__visual::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 44%, #100b14 98%), linear-gradient(0deg,rgba(16,11,20,.28),transparent 45%);
+}
+.gta-countdown__hero { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.05) contrast(1.03); }
+.gta-countdown__cover {
+  position: absolute; z-index: 2; left: 24px; bottom: 24px;
+  width: 128px; height: 160px; object-fit: cover; border: 1px solid rgba(255,255,255,.25); border-radius: 8px;
+  box-shadow: 0 22px 45px -18px rgba(0,0,0,.9); transform: rotate(-2deg);
+}
+.gta-countdown__copy {
+  display: flex; position: relative; z-index: 3; flex-direction: column; justify-content: center;
+  min-width: 0; padding: 38px 38px 34px; margin-left: -42px;
+}
+.gta-countdown__eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: #ff79b8; font-family: var(--font-mono); font-size: 8.5px; letter-spacing: .15em; text-transform: uppercase;
+}
+.gta-countdown__eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: #ff79b8; box-shadow: 0 0 12px rgba(255,121,184,.65); }
+.gta-countdown__copy h3 {
+  margin-top: 13px; font-family: var(--font-display); font-size: clamp(38px,5vw,64px);
+  font-weight: 650; line-height: .92; letter-spacing: -.045em;
+}
+.gta-countdown__copy > p { max-width: 44ch; margin-top: 16px; color: rgba(255,255,255,.58); font-size: 13px; line-height: 1.65; }
+.gta-countdown__timer {
+  display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 6px; margin-top: 26px;
+}
+.gta-countdown__timer div { padding: 12px 8px; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; background: rgba(255,255,255,.025); }
+.gta-countdown__timer strong,
+.gta-countdown__timer span { display: block; font-family: var(--font-mono); }
+.gta-countdown__timer strong { color: #fff; font-size: clamp(19px,2.6vw,31px); font-weight: 500; font-variant-numeric: tabular-nums; }
+.gta-countdown__timer span { margin-top: 3px; color: rgba(255,255,255,.35); font-size: 7px; letter-spacing: .12em; text-transform: uppercase; }
+.gta-countdown__foot {
+  display: flex; flex-wrap: wrap; gap: 7px 13px; margin-top: 20px;
+  color: rgba(255,255,255,.4); font-family: var(--font-mono); font-size: 8px;
+}
+.gta-countdown__foot a { margin-left: auto; color: #ff79b8; }
+.gta-countdown.is-released .gta-countdown__eyebrow { color: var(--accent); }
+
+@media (max-width: 900px) {
+  .gta-countdown { grid-template-columns: minmax(0,1fr); }
+  .gta-countdown__visual { min-height: 420px; }
+  .gta-countdown__visual::after { background: linear-gradient(180deg,transparent 40%,#100b14 96%); }
+  .gta-countdown__copy { margin: -85px 0 0; padding-top: 100px; }
+}
+@media (max-width: 760px) {
+  .game-shelf__duo { width: 132px; height: 198px; }
+  .game-shelf__item--duo .game-shelf__duo img { height: 198px !important; }
+  .game-shelf__item figcaption { display: grid; grid-template-columns: 14px minmax(0,1fr); }
+  .game-shelf__item figcaption i { grid-column: 2; }
+  .gta-countdown { min-height: 0; }
+  .gta-countdown__visual { min-height: 320px; }
+  .gta-countdown__cover { width: 92px; height: 115px; left: 16px; bottom: 34px; }
+  .gta-countdown__copy { margin-top: -70px; padding: 86px 18px 24px; }
+  .gta-countdown__copy h3 { font-size: 40px; }
+  .gta-countdown__timer { gap: 4px; }
+  .gta-countdown__timer div { padding: 10px 5px; }
+  .gta-countdown__timer strong { font-size: 20px; }
+  .gta-countdown__foot { flex-direction: column; }
+  .gta-countdown__foot a { margin-left: 0; }
+}
+@media (max-width: 390px) {
+  .game-shelf__duo { width: 118px; height: 177px; }
+  .game-shelf__item--duo .game-shelf__duo img { height: 177px !important; }
+  .gta-countdown__timer strong { font-size: 17px; }
+}

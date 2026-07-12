@@ -774,10 +774,19 @@
     function itemTitle(item) {
       var caption = item.querySelector('figcaption');
       if (!caption) return 'Game artwork';
+      var named = caption.querySelector('strong');
+      if (named) return named.textContent.trim();
       var clone = caption.cloneNode(true);
       var number = clone.querySelector('span');
       if (number) number.remove();
       return clone.textContent.trim();
+    }
+
+    function itemCollection(item) {
+      if (item.dataset.collection) return item.dataset.collection;
+      if (item.closest('.game-wishlist')) return 'Want to play';
+      if (item.closest('.game-rotation')) return 'In rotation';
+      return 'Games I Like';
     }
 
     function render(index) {
@@ -788,7 +797,7 @@
       image.src = source.currentSrc || source.src;
       image.alt = source.alt || itemTitle(item);
       title.textContent = itemTitle(item);
-      if (count) count.textContent = 'Shelf 01 · ' + String(current + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
+      if (count) count.textContent = itemCollection(item) + ' · ' + String(current + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
     }
 
     function open(index) {
@@ -840,6 +849,97 @@
   }
 
   /* ------------------------------------------------------------ */
+  /* Sunflower — playable iTunes preview                             */
+  /* ------------------------------------------------------------ */
+  function initSunflowerPlayer() {
+    var button = document.getElementById('sunflowerPlay');
+    var audio = document.getElementById('sunflowerAudio');
+    var label = document.getElementById('sunflowerPlayLabel');
+    var time = document.getElementById('sunflowerTime');
+    var progress = document.getElementById('sunflowerProgress');
+    var vinyl = document.getElementById('sunflowerVinyl');
+    if (!button || !audio) return;
+
+    function fmt(value) {
+      value = Math.max(0, Math.floor(value || 0));
+      return Math.floor(value / 60) + ':' + String(value % 60).padStart(2, '0');
+    }
+
+    function setPlaying(playing) {
+      button.classList.toggle('is-playing', playing);
+      if (vinyl) vinyl.classList.toggle('is-spinning', playing);
+      if (label) label.textContent = playing ? 'Pause preview' : 'Play 30s preview';
+    }
+
+    if (label) label.textContent = 'Loading preview…';
+    button.disabled = true;
+    fetch('https://itunes.apple.com/search?term=Post%20Malone%20Swae%20Lee%20Sunflower&entity=song&limit=5')
+      .then(function (response) { if (!response.ok) throw new Error('Preview unavailable'); return response.json(); })
+      .then(function (data) {
+        var tracks = data && data.results || [];
+        var match = tracks.find(function (track) {
+          return /sunflower/i.test(track.trackName || '') && /post malone/i.test(track.artistName || '');
+        });
+        if (!match || !match.previewUrl) throw new Error('Preview unavailable');
+        audio.src = match.previewUrl;
+        button.disabled = false;
+        if (label) label.textContent = 'Play 30s preview';
+      })
+      .catch(function () {
+        button.disabled = true;
+        if (label) label.textContent = 'Preview unavailable';
+      });
+
+    button.addEventListener('click', function () {
+      if (!audio.src) return;
+      if (audio.paused) audio.play().catch(function () {});
+      else audio.pause();
+    });
+    audio.addEventListener('play', function () { setPlaying(true); });
+    audio.addEventListener('pause', function () { setPlaying(false); });
+    audio.addEventListener('ended', function () { audio.currentTime = 0; setPlaying(false); });
+    audio.addEventListener('timeupdate', function () {
+      var duration = isFinite(audio.duration) && audio.duration ? audio.duration : 30;
+      if (time) time.textContent = fmt(audio.currentTime);
+      if (progress) progress.style.width = Math.min(100, audio.currentTime / duration * 100) + '%';
+    });
+  }
+
+  /* ------------------------------------------------------------ */
+  /* Grand Theft Auto VI official-date countdown                    */
+  /* ------------------------------------------------------------ */
+  function initGtaCountdown() {
+    var root = document.getElementById('gtaCountdown');
+    var daysEl = document.getElementById('gtaDays');
+    var hoursEl = document.getElementById('gtaHours');
+    var minutesEl = document.getElementById('gtaMinutes');
+    var secondsEl = document.getElementById('gtaSeconds');
+    if (!root || !daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+    var target = Date.UTC(2026, 10, 19, 0, 0, 0);
+    function pad(value, width) { return String(value).padStart(width || 2, '0'); }
+    function update() {
+      var remaining = target - Date.now();
+      if (remaining <= 0) {
+        remaining = 0;
+        root.classList.add('is-released');
+      }
+      var totalSeconds = Math.floor(remaining / 1000);
+      var days = Math.floor(totalSeconds / 86400);
+      var hours = Math.floor((totalSeconds % 86400) / 3600);
+      var minutes = Math.floor((totalSeconds % 3600) / 60);
+      var seconds = totalSeconds % 60;
+      daysEl.textContent = pad(days, 3);
+      hoursEl.textContent = pad(hours);
+      minutesEl.textContent = pad(minutes);
+      secondsEl.textContent = pad(seconds);
+      root.setAttribute('aria-label', days + ' days, ' + hours + ' hours, ' + minutes + ' minutes and ' + seconds + ' seconds until Grand Theft Auto VI on 19 November 2026');
+    }
+    update();
+    setInterval(update, 1000);
+  }
+
+  /* ------------------------------------------------------------ */
   /* Boot sequence                                                   */
   /* ------------------------------------------------------------ */
   function boot() {
@@ -853,6 +953,8 @@
     initLabFilters();
     initLightbox();
     initGameViewer();
+    initSunflowerPlayer();
+    initGtaCountdown();
     initArtsFilters();
     initEmailCopy();
     initBackToTop();
