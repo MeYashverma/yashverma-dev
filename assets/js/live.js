@@ -215,6 +215,71 @@
     });
   }
 
+  var DISCORD_CLIENTS = [
+    ['Desktop', 'active_on_discord_desktop'],
+    ['Web', 'active_on_discord_web'],
+    ['Mobile', 'active_on_discord_mobile'],
+    ['VR', 'active_on_discord_vr'],
+    ['Embedded', 'active_on_discord_embedded']
+  ];
+
+  function renderDiscordClients(data) {
+    DISCORD_CLIENTS.forEach(function (entry) {
+      var name = entry[0];
+      var active = !!(data && data[entry[1]]);
+      var tile = document.getElementById('liveDiscordClient' + name);
+      var state = document.getElementById('liveDiscordClient' + name + 'State');
+      if (tile) {
+        tile.classList.toggle('is-active', active);
+        tile.setAttribute('aria-label', name + ' client: ' + (active ? 'active now' : 'standby'));
+      }
+      if (state) state.textContent = active ? 'Active now' : 'Standby';
+    });
+  }
+
+  function humanizeCollectible(user) {
+    var nameplate = user && user.collectibles && user.collectibles.nameplate;
+    if (!nameplate) return 'None equipped';
+    var bits = String(nameplate.asset || '').split('/').filter(Boolean);
+    var raw = bits.length ? bits[bits.length - 1] : '';
+    var label = raw.replace(/[_-]+/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    if (!label && nameplate.label) {
+      label = String(nameplate.label).replace(/^COLLECTIBLES_NAMEPLATES?_V?\d*_?/i, '')
+        .replace(/[_-]+/g, ' ').toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    }
+    if (!label) label = 'Equipped';
+    return label + (nameplate.palette ? ' · ' + nameplate.palette : '');
+  }
+
+  function renderDiscordTelemetry(data, user) {
+    renderDiscordClients(data || {});
+
+    var guildDetail = document.getElementById('liveDiscordGuildDetail');
+    var guildIcon = document.getElementById('liveDiscordGuildIcon');
+    var nameplate = document.getElementById('liveDiscordNameplate');
+    var userId = document.getElementById('liveDiscordUserId');
+    var guild = user && user.primary_guild;
+
+    if (guildDetail) {
+      guildDetail.textContent = guild && guild.identity_enabled
+        ? ((guild.tag ? guild.tag + ' · ' : '') + 'Server identity')
+        : 'Not public';
+    }
+    if (guildIcon) {
+      if (guild && guild.identity_guild_id && guild.badge) {
+        guildIcon.src = 'https://cdn.discordapp.com/clan-badges/' + guild.identity_guild_id + '/' + guild.badge + '.png?size=32';
+        guildIcon.hidden = false;
+      } else {
+        guildIcon.hidden = true;
+      }
+    }
+    if (nameplate) nameplate.textContent = humanizeCollectible(user || {});
+    if (userId) {
+      userId.textContent = (user && user.id) || DISCORD_USER_ID;
+      userId.title = (user && user.id) || DISCORD_USER_ID;
+    }
+  }
+
   /* ------------------------------------------------------------ */
   /* Discord card (Lanyard)                                         */
   /* ------------------------------------------------------------ */
@@ -250,6 +315,7 @@
     if (badgeText) badgeText.textContent = '\u2014';
     if (sync) sync.textContent = 'Lanyard unavailable';
     if (rich) rich.hidden = true;
+    renderDiscordTelemetry({}, {});
     renderDiscordActivityList([]);
   }
 
@@ -326,6 +392,7 @@
     if (syncEl) {
       syncEl.textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
+    renderDiscordTelemetry(data, user);
 
     if (badgeEl) {
       badgeEl.className = 'live-card__status-badge status-' + status;

@@ -643,6 +643,72 @@
   }
 
   /* ------------------------------------------------------------ */
+  /* About — live age                                               */
+  /* Completed calendar years are calculated against the birthday  */
+  /* in India, then the days + HH:MM:SS since the latest birthday   */
+  /* tick in real time. This avoids a hard-coded age going stale.    */
+  /* ------------------------------------------------------------ */
+  function initLiveAge() {
+    var root = document.getElementById('liveAge');
+    var yearsEl = document.getElementById('liveAgeYears');
+    var daysEl = document.getElementById('liveAgeDays');
+    var clockEl = document.getElementById('liveAgeClock');
+    var totalDaysEl = document.getElementById('liveAgeTotalDays');
+    if (!root || !yearsEl || !daysEl || !clockEl) return;
+
+    var BIRTH_YEAR = 2005;
+    var BIRTH_TS = Date.parse('2005-01-08T00:00:00+05:30');
+    var DAY_MS = 86400000;
+
+    function yearInKolkata(date) {
+      try {
+        return parseInt(new Intl.DateTimeFormat('en', {
+          timeZone: 'Asia/Kolkata', year: 'numeric'
+        }).format(date), 10);
+      } catch (err) {
+        return date.getUTCFullYear();
+      }
+    }
+
+    function birthdayTimestamp(year) {
+      return Date.parse(String(year) + '-01-08T00:00:00+05:30');
+    }
+
+    function two(n) { return String(n).padStart(2, '0'); }
+
+    function updateAge() {
+      var now = Date.now();
+      var anniversaryYear = yearInKolkata(new Date(now));
+      var anniversary = birthdayTimestamp(anniversaryYear);
+      if (now < anniversary) {
+        anniversaryYear -= 1;
+        anniversary = birthdayTimestamp(anniversaryYear);
+      }
+
+      var years = anniversaryYear - BIRTH_YEAR;
+      var sinceBirthday = Math.max(0, now - anniversary);
+      var days = Math.floor(sinceBirthday / DAY_MS);
+      var remainder = sinceBirthday - (days * DAY_MS);
+      var hours = Math.floor(remainder / 3600000);
+      remainder -= hours * 3600000;
+      var minutes = Math.floor(remainder / 60000);
+      var seconds = Math.floor((remainder - minutes * 60000) / 1000);
+      var totalDays = Math.floor((now - BIRTH_TS) / DAY_MS);
+
+      yearsEl.textContent = String(years);
+      daysEl.textContent = String(days).padStart(3, '0');
+      clockEl.textContent = two(hours) + ':' + two(minutes) + ':' + two(seconds);
+      if (totalDaysEl) totalDaysEl.textContent = totalDays.toLocaleString('en-IN') + ' days lived';
+      root.setAttribute('aria-label',
+        'Age: ' + years + ' years, ' + days + ' days, ' + hours + ' hours, ' +
+        minutes + ' minutes and ' + seconds + ' seconds. Born 8 January 2005.');
+    }
+
+    updateAge();
+    setInterval(updateAge, 1000);
+  }
+
+  /* ------------------------------------------------------------ */
   /* Anchor nav links smooth-scroll (works even without Lenis)      */
   /* ------------------------------------------------------------ */
   function initAnchorLinks() {
@@ -676,6 +742,7 @@
     initEmailCopy();
     initBackToTop();
     initYear();
+    initLiveAge();
     initAnchorLinks();
     initMagnetic();
     initTextScramble();

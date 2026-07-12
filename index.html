@@ -265,6 +265,51 @@
           </ul>
         </div>
 
+        <div class="live-card__discord-console">
+          <div class="live-card__console-head">
+            <span>Connected clients</span>
+            <span><i aria-hidden="true"></i> public presence telemetry</span>
+          </div>
+          <div class="live-card__clients" aria-label="Discord clients">
+            <div class="live-card__client" id="liveDiscordClientDesktop">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              <span><strong>Desktop</strong><small id="liveDiscordClientDesktopState">Standby</small></span>
+            </div>
+            <div class="live-card__client" id="liveDiscordClientWeb">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+              <span><strong>Web</strong><small id="liveDiscordClientWebState">Standby</small></span>
+            </div>
+            <div class="live-card__client" id="liveDiscordClientMobile">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+              <span><strong>Mobile</strong><small id="liveDiscordClientMobileState">Standby</small></span>
+            </div>
+            <div class="live-card__client" id="liveDiscordClientVR">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2.5a2 2 0 0 1-1.6-.8L13.5 14h-3l-1.4 2.2a2 2 0 0 1-1.6.8H5a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3Z"/></svg>
+              <span><strong>VR</strong><small id="liveDiscordClientVRState">Standby</small></span>
+            </div>
+            <div class="live-card__client" id="liveDiscordClientEmbedded">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4M2 8h20M6 4v4"/></svg>
+              <span><strong>Console</strong><small id="liveDiscordClientEmbeddedState">Standby</small></span>
+            </div>
+          </div>
+
+          <div class="live-card__telemetry">
+            <div class="live-card__telemetry-item live-card__telemetry-item--guild">
+              <img id="liveDiscordGuildIcon" src="" alt="" hidden aria-hidden="true">
+              <span><label>Primary guild</label><strong id="liveDiscordGuildDetail">Not public</strong></span>
+            </div>
+            <div class="live-card__telemetry-item">
+              <span><label>Collectible nameplate</label><strong id="liveDiscordNameplate">None equipped</strong></span>
+            </div>
+            <div class="live-card__telemetry-item">
+              <span><label>Discord snowflake</label><strong id="liveDiscordUserId">848100520509308989</strong></span>
+            </div>
+            <div class="live-card__telemetry-item">
+              <span><label>Refresh cadence</label><strong>Every 30 seconds</strong></span>
+            </div>
+          </div>
+        </div>
+
         <div class="live-card__facts live-card__facts--discord" id="liveDiscordFacts">
           <div class="live-card__fact"><span id="liveDiscordStatusText">&mdash;</span><label>Status</label></div>
           <div class="live-card__fact"><span class="live-card__platform" id="liveDiscordPlatform"><span class="live-card__platform-icon" id="liveDiscordPlatformIcon" aria-hidden="true"></span><span id="liveDiscordPlatformText">&mdash;</span></span><label>Platform</label></div>
@@ -754,6 +799,24 @@
         <p class="about__lead">
           Hi, I'm <strong>Yash Verma</strong>.
         </p>
+
+        <div class="about__age" id="liveAge" aria-label="Live age calculated from 8 January 2005">
+          <div class="about__age-head">
+            <span>Age · live</span>
+            <span class="about__age-signal"><i aria-hidden="true"></i> Asia/Kolkata</span>
+          </div>
+          <div class="about__age-readout" aria-live="off">
+            <span class="about__age-unit"><strong id="liveAgeYears">&mdash;</strong><small>years</small></span>
+            <span class="about__age-sep" aria-hidden="true">:</span>
+            <span class="about__age-unit"><strong id="liveAgeDays">&mdash;</strong><small>days</small></span>
+            <span class="about__age-clock" id="liveAgeClock">00:00:00</span>
+          </div>
+          <div class="about__age-foot">
+            <span>Born <time datetime="2005-01-08">08 Jan 2005</time></span>
+            <span id="liveAgeTotalDays">Calculating lifetime&hellip;</span>
+          </div>
+        </div>
+
         <p class="about__body">
           I'm originally from Churu, a city in Rajasthan, India, and
           currently spend most of my time balancing life between work,
@@ -1295,5 +1358,5 @@
 <script src="assets/js/background.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/live.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19efc1dfb667f8d',t:'MTc4Mzg0ODE2MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19f3bb27f1b9a7e',t:'MTc4Mzg1MDc2NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19efc1dfb667f8d',t:'MTc4Mzg0ODE2MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19f3bb27f1b9a7e',t:'MTc4Mzg1MDc2NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19f60557ab2b33b',t:'MTc4Mzg1MjI2NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

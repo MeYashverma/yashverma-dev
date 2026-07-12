@@ -2562,3 +2562,289 @@ section { position: relative; padding: 0 var(--gutter); }
 @media (max-width: 900px) {
   .about__map { max-width: 320px; }
 }
+/* ============================================================
+   v6 — live age + denser Discord telemetry
+   ============================================================ */
+
+/* A deliberately clock-like age readout: completed calendar years, full
+   days since the last birthday, and the remainder ticking once per second. */
+.about__age {
+  position: relative;
+  max-width: 620px;
+  margin: -4px 0 28px;
+  padding: 16px 18px 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background:
+    radial-gradient(80% 140% at 0% 0%, rgba(217,255,63,.07), transparent 65%),
+    var(--panel);
+}
+.about__age::after {
+  content: '';
+  position: absolute;
+  right: -34px;
+  bottom: -52px;
+  width: 150px;
+  height: 150px;
+  border: 1px solid rgba(217,255,63,.08);
+  border-radius: 50%;
+  box-shadow: 0 0 0 18px rgba(217,255,63,.018), 0 0 0 36px rgba(217,255,63,.012);
+  pointer-events: none;
+}
+.about__age-head,
+.about__age-foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+.about__age-head {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--text-faint);
+  font-size: 9.5px;
+  letter-spacing: .16em;
+}
+.about__age-signal { display: inline-flex; align-items: center; gap: 7px; }
+.about__age-signal i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  animation: pulse 2s infinite;
+}
+.about__age-readout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto 10px auto minmax(120px,1fr);
+  align-items: end;
+  gap: 12px;
+  padding: 14px 0 12px;
+}
+.about__age-unit { display: flex; align-items: baseline; gap: 7px; }
+.about__age-unit strong,
+.about__age-clock {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.about__age-unit strong {
+  color: var(--text);
+  font-size: clamp(30px,4vw,44px);
+  font-weight: 500;
+  line-height: .9;
+  letter-spacing: -.055em;
+}
+.about__age-unit small {
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.about__age-sep {
+  align-self: center;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  opacity: .55;
+}
+.about__age-clock {
+  justify-self: end;
+  color: var(--accent);
+  font-size: clamp(18px,2.4vw,27px);
+  letter-spacing: .04em;
+  text-shadow: 0 0 18px rgba(217,255,63,.15);
+}
+.about__age-foot {
+  color: var(--text-faint);
+  font-size: 8.5px;
+  letter-spacing: .08em;
+}
+.about__age-foot time { color: var(--text-dim); }
+
+@media (max-width: 600px) {
+  .about__age-readout {
+    grid-template-columns: auto 8px auto;
+    gap: 8px;
+  }
+  .about__age-clock {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 4px;
+  }
+  .about__age-foot { align-items: flex-start; flex-direction: column; gap: 5px; }
+}
+
+/* A full Discord telemetry console fills the visual weight that the music
+   history naturally has on the neighbouring card. Every highlighted state
+   below is sourced from the same current Lanyard response. */
+.live-card__discord-console {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(88,101,242,.16);
+  border-radius: 14px;
+  background:
+    linear-gradient(rgba(88,101,242,.035), rgba(88,101,242,.015)),
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(255,255,255,.012) 38px 39px);
+}
+.live-card__console-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.live-card__console-head span:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-align: right;
+}
+.live-card__console-head i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #5865f2;
+  box-shadow: 0 0 8px rgba(88,101,242,.8);
+}
+.live-card__clients {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 6px;
+}
+.live-card__client {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 68px;
+  padding: 8px 5px;
+  border: 1px solid rgba(255,255,255,.055);
+  border-radius: 10px;
+  color: var(--text-faint);
+  background: rgba(0,0,0,.14);
+  transition: color .3s, border-color .3s, background .3s, box-shadow .3s;
+}
+.live-card__client::after {
+  content: '';
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  opacity: .35;
+}
+.live-card__client svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.live-card__client > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.live-card__client strong,
+.live-card__client small {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.live-card__client strong { color: inherit; font-size: 9.5px; font-weight: 500; }
+.live-card__client small {
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.live-card__client.is-active {
+  color: #c6c9ff;
+  border-color: rgba(88,101,242,.38);
+  background: rgba(88,101,242,.11);
+  box-shadow: inset 0 0 22px rgba(88,101,242,.06);
+}
+.live-card__client.is-active::after {
+  background: var(--accent);
+  opacity: 1;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+.live-card__client.is-active small { color: var(--accent); }
+
+.live-card__telemetry {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+.live-card__telemetry-item {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 48px;
+  gap: 9px;
+  padding: 9px 10px;
+  border: 1px solid rgba(255,255,255,.045);
+  border-radius: 9px;
+  background: rgba(255,255,255,.018);
+}
+.live-card__telemetry-item > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+.live-card__telemetry-item label {
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+.live-card__telemetry-item strong {
+  display: block;
+  overflow: hidden;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.live-card__telemetry-item img {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.live-card__telemetry-item img[hidden] { display: none !important; }
+.live-card--discord .live-card__link { margin-top: 0; }
+
+@media (max-width: 640px) {
+  .live-card__clients { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .live-card__telemetry { grid-template-columns: 1fr; }
+  .live-card__console-head { align-items: flex-start; flex-direction: column; gap: 5px; }
+}
