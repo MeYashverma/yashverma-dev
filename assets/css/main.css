@@ -3003,7 +3003,7 @@ section { position: relative; padding: 0 var(--gutter); }
 .notes__intro { max-width: 38ch; color: var(--text-dim); font-size: 15px; line-height: 1.7; }
 .notes__grid {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
-  counter-reset: notes;
+  margin: 0; padding: 0; list-style: none;
 }
 .note-card {
   position: relative; display: flex; min-height: 262px; flex-direction: column;
