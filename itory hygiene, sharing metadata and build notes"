@@ -1,0 +1,23 @@
+ CHANGES.md              |  Bin [31m81730[m -> [32m1427[m bytes
+ README.md               |  Bin [31m14886[m -> [32m3315[m bytes
+ activity.js             |    1 [31m-[m
+ activity.min.js         |  949 [31m--------------------------------[m
+ assets/css/main.css     |   63 [32m+++[m
+ assets/js/activity.js   |  619 [32m+++++++++++[m[31m----------[m
+ assets/js/main.js       |    4 [32m+[m[31m-[m
+ avatar-128.webp         |   52 [31m--[m
+ background.min.js       |    1 [31m-[m
+ bits-pilani-small.webp  |    1 [31m-[m
+ forza-horizon-6-hd.webp |    1 [31m-[m
+ genshin-stats.webp      |  Bin [31m2066[m -> [32m0[m bytes
+ index.html              |  120 [32m+++[m[31m-[m
+ live.min.js             | 1563 [31m-----------------------------------------------------[m
+ llms.txt                |  Bin [31m13996[m -> [32m794[m bytes
+ main.js                 | 4234 [31m----------------------------------------------------------------------------------------------------------------------------------------------[m
+ main.min.js             |    1 [31m-[m
+ performance.js          |    1 [31m-[m
+ performance.min.js      |  298 [31m----------[m
+ robots.txt              |  Bin [31m20530[m -> [32m89[m bytes
+ sitemap.xml             |  Bin [31m20688[m -> [32m286[m bytes
+ vinyl-fm.webp           |  Bin [31m5602[m -> [32m0[m bytes
+ 22 files changed, 499 insertions(+), 7409 deletions(-)

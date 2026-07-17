@@ -9,8 +9,12 @@
   var GITHUB_USER = 'MeYashverma';
   var GITHUB_CACHE_KEY = 'yv_recently_shipped_v1';
   var GITHUB_CACHE_MS = 30 * 60 * 1000;
-  var VISITOR_KEY = 'yashverma_dev_portfolio_pageviews_v1';
-  var VISITOR_CACHE_KEY = 'yv_last_pageview_count_v1';
+  // This is a fresh, versioned public bucket. The original counter had
+  // accumulated an invalid negative value, so its history is intentionally not
+  // carried forward. This remains a lightweight public signal, not analytics.
+  var VISITOR_KEY = 'yashverma_dev_portfolio_pageviews_v2';
+  var VISITOR_CACHE_KEY = 'yv_last_pageview_count_v2';
+  var VISITOR_HIT_DAY_KEY = 'yv_pageview_hit_day_v2';
   var COUNTER_BASE = 'https://countapi.mileshilliard.com/api/v1';
 
   function fetchJson(url, options, timeout) {
@@ -248,6 +252,34 @@
     requestAnimationFrame(frame);
   }
 
+  function currentDayKey() {
+    // A local date keeps this simple and transparent: a returning visitor can
+    // refresh freely without inflating the public number all day.
+    var now = new Date();
+    return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+  }
+
+  function didCountToday() {
+    try { return localStorage.getItem(VISITOR_HIT_DAY_KEY) === currentDayKey(); } catch (error) { return false; }
+  }
+
+  function rememberToday() {
+    try { localStorage.setItem(VISITOR_HIT_DAY_KEY, currentDayKey()); } catch (error) {}
+  }
+
+  function cacheVisitorValue(value) {
+    try { localStorage.setItem(VISITOR_CACHE_KEY, String(value)); } catch (error) {}
+  }
+
+  function readCachedVisitorValue() {
+    try {
+      var cached = parseInt(localStorage.getItem(VISITOR_CACHE_KEY), 10);
+      return !isNaN(cached) && cached >= 0 ? cached : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
   function loadVisitorCounter() {
     var count = document.getElementById('visitorCount');
     var status = document.getElementById('visitorCounterStatus');
@@ -261,16 +293,23 @@
       return;
     }
 
-    fetchJson(COUNTER_BASE + '/hit/' + VISITOR_KEY, { cache: 'no-store' }, 7000).then(function (data) {
+    var alreadyCounted = didCountToday();
+    var endpoint = COUNTER_BASE + (alreadyCounted ? '/get/' : '/hit/') + VISITOR_KEY;
+    fetchJson(endpoint, { cache: 'no-store' }, 7000).then(function (data) {
       var value = parseInt(data && data.value, 10);
-      if (isNaN(value)) throw new Error('Invalid counter value');
+      // Never surface a corrupt public value again. A fresh bucket starts at
+      // zero and this guard leaves a bad response visibly unavailable instead
+      // of pretending a negative visit count is meaningful.
+      if (isNaN(value) || value < 0) throw new Error('Invalid counter value');
       animateVisitorCount(count, value);
-      try { localStorage.setItem(VISITOR_CACHE_KEY, String(value)); } catch (error) {}
-      if (status) status.textContent = 'Persistent public page-view counter';
+      cacheVisitorValue(value);
+      if (!alreadyCounted) rememberToday();
+      if (status) status.textContent = alreadyCounted
+        ? 'Public page-view counter · counted today'
+        : 'Public page-view counter · once per browser/day';
     }).catch(function () {
-      var cachedValue = null;
-      try { cachedValue = parseInt(localStorage.getItem(VISITOR_CACHE_KEY), 10); } catch (error) {}
-      if (typeof cachedValue === 'number' && !isNaN(cachedValue)) {
+      var cachedValue = readCachedVisitorValue();
+      if (cachedValue !== null) {
         count.textContent = cachedValue.toLocaleString('en-IN');
         if (status) status.textContent = 'Last known count · counter offline';
       } else {

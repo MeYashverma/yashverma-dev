@@ -418,7 +418,7 @@
       });
     });
 
-    gsap.utils.toArray('.shipped-card:not(.shipped-card--loading), .journey-item, .journey-lab').forEach(function (el, i) {
+    gsap.utils.toArray('.shipped-card:not(.shipped-card--loading), .note-card, .journey-item, .journey-lab').forEach(function (el, i) {
       gsap.fromTo(el, { opacity: 0, y: 22 }, {
         opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', delay: (i % 3) * 0.05,
         scrollTrigger: { trigger: el, start: 'top 94%' }
@@ -1299,6 +1299,7 @@
     var MANIFEST = [
       { g: 'Sections',   t: 'Hero',             d: 'Top of the page',              h: '#top',     k: 'H' },
       { g: 'Sections',   t: 'Recently Shipped', d: 'Automatic public GitHub feed', h: '#shipped', k: '↻' },
+      { g: 'Sections',   t: 'Build Notes',      d: 'Short field notes from the lab', h: '#notes', k: 'N' },
       { g: 'Sections',   t: 'Work',             d: 'Selected daemon widgets',      h: '#work',    k: '1' },
       { g: 'Sections',   t: 'Lab',              d: 'Experiments & hobby',          h: '#lab',     k: '2' },
       { g: 'Sections',   t: 'Arts',             d: 'Digital art gallery',          h: '#arts',    k: '3' },
@@ -1447,6 +1448,7 @@
     var sections = [
       { id: 'hero',    name: 'hero'    },
       { id: 'shipped', name: 'shipped' },
+      { id: 'notes',   name: 'notes'   },
       { id: 'work',    name: 'work'    },
       { id: 'lab',     name: 'lab'     },
       { id: 'arts',    name: 'arts'    },

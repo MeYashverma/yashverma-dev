@@ -4,8 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Yash Verma — Systems, Widgets &amp; Weird Automation</title>
-<meta name="description" content="Yash Verma — Python/cloud engineer building GitHub-Actions-native Discord widgets, real-time data pipelines, and other things that shouldn't run on free infrastructure but do.">
+<meta name="description" content="Yash Verma — cloud & automation engineer building GitHub-Actions-native Discord widgets, real-time data pipelines, and other things that shouldn't run on free infrastructure but do.">
+<meta name="author" content="Yash Verma">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#050506">
 <meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://meyashverma.github.io/yashverma-dev/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Yash Verma">
+<meta property="og:title" content="Yash Verma — Systems, Widgets &amp; Weird Automation">
+<meta property="og:description" content="Cloud and automation experiments, Discord widgets, real-time data pipelines, and systems built on free infrastructure.">
+<meta property="og:url" content="https://meyashverma.github.io/yashverma-dev/">
+<meta property="og:image" content="https://meyashverma.github.io/yashverma-dev/assets/images/og-yash-verma.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Yash Verma — Systems, Widgets and Weird Automation">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Yash Verma — Systems, Widgets &amp; Weird Automation">
+<meta name="twitter:description" content="Cloud and automation experiments, Discord widgets, real-time data pipelines, and systems built on free infrastructure.">
+<meta name="twitter:image" content="https://meyashverma.github.io/yashverma-dev/assets/images/og-yash-verma.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Yash Verma",
+  "url": "https://meyashverma.github.io/yashverma-dev/",
+  "image": "https://meyashverma.github.io/yashverma-dev/assets/images/og-yash-verma.png",
+  "jobTitle": "GRC Analyst",
+  "description": "Cloud and automation engineer building real-time widgets and constraint-first systems.",
+  "sameAs": [
+    "https://github.com/MeYashverma",
+    "https://instagram.com/yashardcore",
+    "https://twitter.com/me_yashverma",
+    "https://www.youtube.com/@me_yashverma"
+  ],
+  "knowsAbout": ["Automation", "Cloud Computing", "GitHub Actions", "Python", "JavaScript", "APIs", "Cybersecurity"]
+}
+</script>
+
 <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
@@ -66,7 +105,7 @@
     <a href="#gallery" data-cursor="text" data-cursor-text="VIEW"><span>06</span>Gallery</a>
     <a href="#contact" data-cursor="text" data-cursor-text="VIEW"><span>07</span>Contact</a>
   </nav>
-  <button class="nav__menu-btn" id="menuBtn" aria-label="Toggle menu">
+  <button class="nav__menu-btn" id="menuBtn" aria-label="Toggle menu" type="button">
     <span></span><span></span>
   </button>
   <div class="nav__clock" id="navClock"></div>
@@ -79,6 +118,7 @@
   <div class="menu-overlay__links">
     <a href="#top" class="menu-link"><span class="menu-link__index">00</span><span class="menu-link__text">Top</span></a>
     <a href="#shipped" class="menu-link"><span class="menu-link__index">↻</span><span class="menu-link__text">Recently Shipped</span></a>
+    <a href="#notes" class="menu-link"><span class="menu-link__index">00.5</span><span class="menu-link__text">Build Notes</span></a>
     <a href="#work" class="menu-link"><span class="menu-link__index">01</span><span class="menu-link__text">Work</span></a>
     <a href="#lab" class="menu-link"><span class="menu-link__index">02</span><span class="menu-link__text">Lab</span></a>
     <a href="#arts" class="menu-link"><span class="menu-link__index">03</span><span class="menu-link__text">Arts</span></a>
@@ -211,7 +251,7 @@
       <div class="stat stat--visitors">
         <div class="stat__num stat__num--live" id="visitorCount" aria-live="polite">&mdash;</div>
         <div class="stat__label">
-          <span class="stat__live-label"><i aria-hidden="true"></i> Website page views</span>
+          <span class="stat__live-label" title="A lightweight public counter; one increment per browser per day where local storage is available."><i aria-hidden="true"></i> Website page views</span>
           <small id="visitorCounterStatus">Connecting to public counter&hellip;</small>
         </div>
       </div>
@@ -359,6 +399,54 @@
       <li class="shipped-card shipped-card--loading"><span></span><span></span><span></span></li>
       <li class="shipped-card shipped-card--loading"><span></span><span></span><span></span></li>
       <li class="shipped-card shipped-card--loading"><span></span><span></span><span></span></li>
+    </ol>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- BUILD NOTES — short field notes, deliberately not a blog      -->
+  <!-- ============================================================ -->
+  <section class="notes" id="notes" aria-labelledby="notesTitle">
+    <div class="notes__head">
+      <div>
+        <span class="notes__eyebrow">00.5 · Field notes</span>
+        <h2 class="notes__title" id="notesTitle">Things I learned<br>while making it work.</h2>
+      </div>
+      <p class="notes__intro">Not a formal blog—just the decisions, constraints and small failures worth keeping around after a build ships.</p>
+    </div>
+
+    <ol class="notes__grid">
+      <li>
+        <article class="note-card">
+          <div class="note-card__top"><span>NOTE_001</span><span>CONSTRAINTS</span></div>
+          <h3>GitHub Actions are workers, not a VPS.</h3>
+          <p>The useful trick is not pretending a scheduled workflow is always online. Give it one deterministic job, persist the output, exit cleanly, then let the next run pick up the state.</p>
+          <a class="note-card__link" href="#work">See the daemon builds <span aria-hidden="true">→</span></a>
+        </article>
+      </li>
+      <li>
+        <article class="note-card">
+          <div class="note-card__top"><span>NOTE_002</span><span>FALLBACKS</span></div>
+          <h3>Missing data is a normal state.</h3>
+          <p>A track can have no synced lyrics, no album art, or no current Discord presence. The better widget is the one that has a graceful second answer instead of a broken first screen.</p>
+          <a class="note-card__link" href="https://github.com/MeYashverma/discord-vinyl-fm-widget" target="_blank" rel="noopener">Open Vinyl.fm <span aria-hidden="true">↗</span></a>
+        </article>
+      </li>
+      <li>
+        <article class="note-card">
+          <div class="note-card__top"><span>NOTE_003</span><span>INTERFACES</span></div>
+          <h3>A browser tab can feel like a place.</h3>
+          <p>AetherOS started as a question about how far a single client-side page could go. State, motion and tiny interactions matter more than pretending the browser is something it is not.</p>
+          <a class="note-card__link" href="https://meyashverma.github.io/AetherOS-Prod/" target="_blank" rel="noopener">Try AetherOS <span aria-hidden="true">↗</span></a>
+        </article>
+      </li>
+      <li>
+        <article class="note-card">
+          <div class="note-card__top"><span>NOTE_004</span><span>HONESTY</span></div>
+          <h3>“Free” still has a cost.</h3>
+          <p>It means quotas, schedule drift, rate limits and failure paths you have to design for yourself. Constraints are only interesting when the trade-offs are visible too.</p>
+          <a class="note-card__link" href="#shipped">Check the latest ship <span aria-hidden="true">→</span></a>
+        </article>
+      </li>
     </ol>
   </section>
 
@@ -549,11 +637,11 @@
     </div>
 
     <div class="lab__filters" id="labFilters">
-      <button class="lab__filter is-active" data-filter="all">All</button>
-      <button class="lab__filter" data-filter="widget">Discord Widgets</button>
-      <button class="lab__filter" data-filter="cloud">Cloud &amp; Infra</button>
-      <button class="lab__filter" data-filter="web">Web Experiments</button>
-      <button class="lab__filter" data-filter="misc">Misc / Hobby</button>
+      <button class="lab__filter is-active" data-filter="all" type="button">All</button>
+      <button class="lab__filter" data-filter="widget" type="button">Discord Widgets</button>
+      <button class="lab__filter" data-filter="cloud" type="button">Cloud &amp; Infra</button>
+      <button class="lab__filter" data-filter="web" type="button">Web Experiments</button>
+      <button class="lab__filter" data-filter="misc" type="button">Misc / Hobby</button>
     </div>
 
     <div class="lab__grid" id="labGrid">
@@ -667,11 +755,11 @@
     </div>
 
     <div class="arts__filters" id="artsFilters">
-      <button class="arts__filter is-active" data-filter="all">All (11)</button>
-      <button class="arts__filter" data-filter="fanart">Fanart</button>
-      <button class="arts__filter" data-filter="portrait">Portraits</button>
-      <button class="arts__filter" data-filter="landscape">Landscapes</button>
-      <button class="arts__filter" data-filter="minimal">Minimal</button>
+      <button class="arts__filter is-active" data-filter="all" type="button">All (11)</button>
+      <button class="arts__filter" data-filter="fanart" type="button">Fanart</button>
+      <button class="arts__filter" data-filter="portrait" type="button">Portraits</button>
+      <button class="arts__filter" data-filter="landscape" type="button">Landscapes</button>
+      <button class="arts__filter" data-filter="minimal" type="button">Minimal</button>
     </div>
 
     <div class="arts__grid" id="artsGrid">
@@ -745,9 +833,9 @@
   <!-- Lightbox for Arts gallery                                     -->
   <!-- ============================================================ -->
   <div class="lightbox" id="lightbox">
-    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
-    <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous piece">&larr;</button>
-    <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next piece">&rarr;</button>
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close" type="button">&times;</button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous piece" type="button">&larr;</button>
+    <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next piece" type="button">&rarr;</button>
     <img class="lightbox__img" id="lightboxImg" src="" alt="" decoding="async">
     <div class="lightbox__caption" id="lightboxCaption"></div>
   </div>
