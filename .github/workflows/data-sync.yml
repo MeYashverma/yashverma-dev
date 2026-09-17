@@ -1,0 +1,61 @@
+name: Site data sync
+
+# Rebuilds the site's public data snapshots once a day:
+#   assets/data/radar.json     — public repo list for the Repo Radar section
+#   assets/data/pulse.json     — contribution heatmap data for Developer Pulse
+#   assets/data/wakatime.json  — coding-time stats (only when the
+#                                WAKATIME_API_KEY repository secret exists)
+#
+# The browser always tries live APIs first; these snapshots are the
+# rate-limit-proof fallback that keeps "automatic" true for every visitor.
+# Zero maintenance: push a repo and it lands on the site within 24h.
+
+on:
+  schedule:
+    # Daily at 05:37 UTC — odd minute to avoid GitHub's top-of-hour rush.
+    - cron: '37 5 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/sync-*.mjs'
+      - '.github/workflows/data-sync.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    # Only meaningful on the real repo — forks would just fail on push.
+    if: github.repository_owner == 'MeYashverma'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build radar.json (public repos)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-repo-radar.mjs
+
+      - name: Build pulse.json (contribution heatmap)
+        run: node scripts/sync-pulse.mjs
+
+      - name: Build wakatime.json (coding stats — optional)
+        env:
+          WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
+        run: node scripts/sync-wakatime.mjs
+
+      - name: Commit snapshots if anything changed
+        run: |
+          if git diff --quiet assets/data/; then
+            echo "No changes since last sync."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/
+          git commit -m "chore(data): daily site-data sync [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

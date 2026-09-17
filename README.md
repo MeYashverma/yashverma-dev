@@ -9,7 +9,8 @@ A deliberately overbuilt personal portfolio for **Yash Verma**: cloud and automa
 ## What is here
 
 - **Selected Work** — Discord widgets, automation pipelines, and AetherOS.
-- **Repo Radar** — a project section that edits itself: every public repo not already showcased renders automatically from the GitHub API, de-duplicated against the curated cards via `data-repo` attributes.
+- **Repo Radar** — a project section that edits itself: every public repo not already showcased renders automatically from the GitHub API (originals *and* working forks), de-duplicated against the curated cards via `data-repo` attributes.
+- **Developer Pulse** — the GitHub contribution heatmap (live mirror + daily snapshot) with streaks computed client-side, plus WakaTime editor telemetry when wired.
 - **Recently Shipped** — a small live GitHub activity feed.
 - **Chroma Engine** — five runtime accent themes (dock at bottom-right, `T` key, or ⌘K), applied to the DOM, the WebGL background and the dot-matrix portrait alike. Konami code unlocks Overdrive mode.
 - **Build Notes** — short field notes on constraints, fallbacks, interfaces, and free-tier trade-offs; intentionally not a formal blog.
@@ -44,12 +45,14 @@ assets/css/main.css       Site styles, responsive layouts and theme tokens
 assets/js/main.js         Interaction, navigation and visual behaviour
 assets/js/theme.js        Chroma Engine — themes, dock, overdrive, console egg
 assets/js/radar.js        Repo Radar — self-updating GitHub project sync
+assets/js/pulse.js        Developer Pulse — contribution heatmap + streaks
+assets/js/wakatime.js     WakaTime editor telemetry (snapshot-driven)
 assets/js/background.js   WebGL ambient shader field (theme-aware)
 assets/js/live.js         Public Discord and music widgets
 assets/js/activity.js     GitHub activity feed and public page-view counter
-assets/data/radar.json    Daily repo snapshot built by the Repo Radar Action
-scripts/sync-repo-radar.mjs  Snapshot builder used by the Action (or by hand)
-.github/workflows/repo-radar.yml  Daily cron that rebuilds radar.json
+assets/data/*.json        Daily snapshots built by the data-sync Action
+scripts/sync-*.mjs        Snapshot builders used by the Action (or by hand)
+.github/workflows/data-sync.yml  Daily cron that rebuilds the snapshots
 assets/images/            Local project, art, photo and social-sharing assets
 robots.txt                Search-crawler policy
 sitemap.xml               Canonical homepage sitemap
@@ -65,6 +68,13 @@ CHANGES.md                Human-readable change log
 - Add a matching image under `assets/images/`; use descriptive alt text and explicit dimensions.
 - New themes go in `assets/js/theme.js` (palette entry) plus a `:root[data-theme]` token block in `assets/css/main.css`.
 - Update `sitemap.xml`, `CHANGES.md`, and the `lastmod` value when a significant public change ships.
+
+## Wiring WakaTime
+
+The WakaTime panel stays hidden until real data exists — visitors never see a broken widget. Two options, no API key ever touches the browser:
+
+1. **GitHub Action (recommended)** — copy your API key from [wakatime.com/settings/api-key](https://wakatime.com/settings/api-key), add it as the `WAKATIME_API_KEY` repository secret (Settings → Secrets and variables → Actions). The daily `data-sync` workflow then bakes `assets/data/wakatime.json` automatically, and you can trigger it once manually from the Actions tab.
+2. **No-key embeds** — paste public share SVG URLs from [wakatime.com/share](https://wakatime.com/share) into the `SHARE_EMBEDS` array at the top of `assets/js/wakatime.js` (optionally set `PROFILE_URL` there too).
 
 ## Privacy and third-party data
 

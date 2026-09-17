@@ -127,6 +127,7 @@
     <a href="#notes" class="menu-link"><span class="menu-link__index">00.5</span><span class="menu-link__text">Build Notes</span></a>
     <a href="#work" class="menu-link"><span class="menu-link__index">01</span><span class="menu-link__text">Work</span></a>
     <a href="#radar" class="menu-link"><span class="menu-link__index">01.5</span><span class="menu-link__text">Repo Radar</span></a>
+    <a href="#pulse" class="menu-link"><span class="menu-link__index">01.6</span><span class="menu-link__text">Developer Pulse</span></a>
     <a href="#lab" class="menu-link"><span class="menu-link__index">02</span><span class="menu-link__text">Lab</span></a>
     <a href="#arts" class="menu-link"><span class="menu-link__index">03</span><span class="menu-link__text">Arts</span></a>
     <a href="#journey" class="menu-link"><span class="menu-link__index">04</span><span class="menu-link__text">Journey</span></a>
@@ -643,9 +644,10 @@
         <span class="radar__eyebrow"><i aria-hidden="true"></i> GitHub API · self-updating</span>
         <h2 class="radar__title" id="radarTitle">The&nbsp;Repo&nbsp;Radar</h2>
         <p class="radar__desc">
-          Everything public that isn&rsquo;t showcased above — synced straight from the GitHub API
-          and cached locally. New repos land here the moment they go public; the day one of these
-          graduates into a flagship, I tag it and the radar hands it up. Zero manual edits.
+          Everything public that isn&rsquo;t showcased above — originals <em>and</em> working forks —
+          synced straight from the GitHub API and cached locally. New repos land here the moment
+          they go public; the day one of these graduates into a flagship, I tag it and the radar
+          hands it up. Zero manual edits.
         </p>
       </div>
       <div class="radar__meta">
@@ -660,6 +662,65 @@
       <li class="radar-card radar-card--skeleton"><span></span><span></span><span></span><span></span></li>
     </ol>
     <div class="radar__foot" id="radarFoot"></div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- DEVELOPER PULSE — contribution heatmap + WakaTime stats      -->
+  <!-- Heatmap: live contribution mirror with cached + snapshot      -->
+  <!-- fallbacks. WakaTime: stays hidden until wakatime.json exists  -->
+  <!-- (see scripts/sync-wakatime.mjs — zero keys in the browser).   -->
+  <!-- ============================================================ -->
+  <section class="pulse" id="pulse" aria-labelledby="pulseTitle">
+    <div class="pulse__head">
+      <div>
+        <span class="pulse__eyebrow"><i aria-hidden="true"></i> GitHub pulse · automatic</span>
+        <h2 class="pulse__title" id="pulseTitle">The&nbsp;Developer&nbsp;Pulse</h2>
+        <p class="pulse__desc">
+          A year of commits, painted as a heatmap — every square is a real day of work,
+          plus the editor telemetry when WakaTime is plugged in. Synced automatically,
+          streaks computed on the fly, recoloured instantly by the theme dock.
+        </p>
+      </div>
+      <div class="pulse__meta">
+        <span id="pulseStatus">Loading contribution data&hellip;</span>
+        <a href="https://github.com/MeYashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Live on GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="pulse__panel">
+      <div class="pulse__stats" id="pulseStats">
+        <div class="pulse-stat"><span>Contributions</span><strong>&mdash;</strong><small>last 12 months</small></div>
+        <div class="pulse-stat"><span>Current streak</span><strong>&mdash;</strong><small>&nbsp;</small></div>
+        <div class="pulse-stat"><span>Longest streak</span><strong>&mdash;</strong><small>past 12 months</small></div>
+        <div class="pulse-stat"><span>Best day</span><strong>&mdash;</strong><small>&nbsp;</small></div>
+      </div>
+
+      <div class="pulse__heatmap-wrap" id="pulseHeatmapWrap">
+        <div class="pulse__weekdays" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span></div>
+        <div class="pulse__scroller">
+          <div class="pulse__grid" id="pulseGrid" role="img" aria-label="Contribution heatmap for the last 12 months"></div>
+          <div class="pulse__months" id="pulseMonths" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="pulse__foot">
+        <span class="pulse__readout" id="pulseReadout">hover a square &mdash; every one is a real day of work</span>
+        <span class="pulse__legend" aria-hidden="true">Less
+          <i class="pulse-cell" data-level="0"></i><i class="pulse-cell" data-level="1"></i>
+          <i class="pulse-cell" data-level="2"></i><i class="pulse-cell" data-level="3"></i>
+          <i class="pulse-cell" data-level="4"></i> More
+        </span>
+      </div>
+    </div>
+
+    <div class="pulse__waka" id="wakaPanel" hidden>
+      <div class="pulse__waka-head">
+        <span class="pulse__waka-title">Editor telemetry<span class="pulse__waka-src">via WakaTime · no keys in the browser</span></span>
+        <span class="pulse__waka-synced" id="wakaSynced"></span>
+      </div>
+      <div class="pulse__waka-body" id="wakaBody"></div>
+      <div class="pulse__waka-foot" id="wakaFoot"></div>
+    </div>
   </section>
 
   <!-- ============================================================ -->
@@ -1784,5 +1845,7 @@
 <script src="assets/js/live.js"></script>
 <script src="assets/js/activity.js"></script>
 <script src="assets/js/radar.js"></script>
+<script src="assets/js/pulse.js"></script>
+<script src="assets/js/wakatime.js"></script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1a0d20e6c6b8ef1',t:'MTc4Mzg2NzQwOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

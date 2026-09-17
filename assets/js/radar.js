@@ -91,6 +91,7 @@
       lang: repo.language || '',
       stars: typeof repo.stargazers_count === 'number' ? repo.stargazers_count : 0,
       forks: typeof repo.forks_count === 'number' ? repo.forks_count : 0,
+      isFork: !!repo.fork,
       pushedAt: repo.pushed_at || repo.updated_at || '',
       createdAt: repo.created_at || ''
     };
@@ -98,9 +99,11 @@
 
   function shortlist(repos) {
     var featured = featuredRepoNames();
+    // Forks are fair game — most forks here are working copies, not drive-by
+    // checkouts. They only get a badge so originals stay distinguishable.
     return (Array.isArray(repos) ? repos : [])
       .filter(function (repo) {
-        if (!repo || repo.fork || repo.archived) return false;
+        if (!repo || repo.archived) return false;
         return !featured[String(repo.name || '').toLowerCase()];
       })
       .map(normalize)
@@ -132,6 +135,13 @@
     var langColor = LANG_COLORS[repo.lang] || 'var(--accent)';
     lang.innerHTML = '<i style="--lang:' + langColor + '"></i>' + (repo.lang || 'notes');
     top.appendChild(lang);
+    if (repo.isFork) {
+      var forkBadge = document.createElement('span');
+      forkBadge.className = 'radar-card__fork-badge';
+      forkBadge.textContent = 'FORK';
+      forkBadge.title = 'Forked repository — usually a working copy';
+      top.appendChild(forkBadge);
+    }
     if (isNew(repo.createdAt)) {
       var badge = document.createElement('span');
       badge.className = 'radar-card__new';
