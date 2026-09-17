@@ -44,6 +44,7 @@ jobs:
         run: node scripts/sync-pulse.mjs
 
       - name: Build wakatime.json (coding stats — optional)
+        continue-on-error: true
         env:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
         run: node scripts/sync-wakatime.mjs
