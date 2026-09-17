@@ -9,7 +9,9 @@ A deliberately overbuilt personal portfolio for **Yash Verma**: cloud and automa
 ## What is here
 
 - **Selected Work** — Discord widgets, automation pipelines, and AetherOS.
+- **Repo Radar** — a project section that edits itself: every public repo not already showcased renders automatically from the GitHub API, de-duplicated against the curated cards via `data-repo` attributes.
 - **Recently Shipped** — a small live GitHub activity feed.
+- **Chroma Engine** — five runtime accent themes (dock at bottom-right, `T` key, or ⌘K), applied to the DOM, the WebGL background and the dot-matrix portrait alike. Konami code unlocks Overdrive mode.
 - **Build Notes** — short field notes on constraints, fallbacks, interfaces, and free-tier trade-offs; intentionally not a formal blog.
 - **Live cards** — public Discord presence and Last.fm listening data, with graceful fallbacks.
 - **The Lab, Arts, Journey, Equipment, Game Worlds, and Off Screen** — the fuller personal archive behind the work.
@@ -21,6 +23,7 @@ Static HTML, CSS, and vanilla JavaScript deployed on GitHub Pages.
 - GSAP + ScrollTrigger + Lenis for interaction and motion
 - WebGL/canvas visual treatments
 - Public GitHub, Lanyard, Last.fm, and iTunes APIs for optional live data
+- A GitHub Actions cron that bakes the repo snapshot (`assets/data/radar.json`) so live data survives API rate limits
 - Local fonts and local vendor files; no build step or server required
 
 ## Run locally
@@ -37,10 +40,16 @@ Then open [http://localhost:8080](http://localhost:8080). The public page-view c
 
 ```text
 index.html                Page structure, content, metadata and structured data
-assets/css/main.css       Site styles and responsive layouts
+assets/css/main.css       Site styles, responsive layouts and theme tokens
 assets/js/main.js         Interaction, navigation and visual behaviour
+assets/js/theme.js        Chroma Engine — themes, dock, overdrive, console egg
+assets/js/radar.js        Repo Radar — self-updating GitHub project sync
+assets/js/background.js   WebGL ambient shader field (theme-aware)
 assets/js/live.js         Public Discord and music widgets
 assets/js/activity.js     GitHub activity feed and public page-view counter
+assets/data/radar.json    Daily repo snapshot built by the Repo Radar Action
+scripts/sync-repo-radar.mjs  Snapshot builder used by the Action (or by hand)
+.github/workflows/repo-radar.yml  Daily cron that rebuilds radar.json
 assets/images/            Local project, art, photo and social-sharing assets
 robots.txt                Search-crawler policy
 sitemap.xml               Canonical homepage sitemap
@@ -50,9 +59,11 @@ CHANGES.md                Human-readable change log
 
 ## Editing the site
 
-- Add a project in the **Selected Work** or **Lab** markup in `index.html`.
+- Add a project in the **Selected Work** or **Lab** markup in `index.html` and give the card a `data-repo="<repo name>"` attribute; the Repo Radar will then skip it automatically.
+- Do **not** hand-edit the Repo Radar section — it renders itself from GitHub. Publishing a repo is the edit.
 - Add short, durable learnings to the **Build Notes** section in `index.html` rather than maintaining a separate blog system.
 - Add a matching image under `assets/images/`; use descriptive alt text and explicit dimensions.
+- New themes go in `assets/js/theme.js` (palette entry) plus a `:root[data-theme]` token block in `assets/css/main.css`.
 - Update `sitemap.xml`, `CHANGES.md`, and the `lastmod` value when a significant public change ships.
 
 ## Privacy and third-party data

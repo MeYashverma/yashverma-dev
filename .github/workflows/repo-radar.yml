@@ -1,0 +1,48 @@
+name: Repo Radar sync
+
+# Keeps assets/data/radar.json fresh so the portfolio's Repo Radar section
+# has a same-day snapshot even for visitors who hit GitHub's anonymous API
+# rate limit. Zero maintenance: push a repo, and it lands on the site within
+# 24h (or immediately for visitors who can reach the live API).
+
+on:
+  schedule:
+    # Daily at 05:37 UTC — odd minute to avoid GitHub's top-of-hour rush.
+    - cron: '37 5 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/sync-repo-radar.mjs'
+      - '.github/workflows/repo-radar.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    # Only meaningful on the real repo — forks would just fail on push.
+    if: github.repository_owner == 'MeYashverma'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build radar.json from the GitHub API
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-repo-radar.mjs
+
+      - name: Commit the snapshot if it changed
+        run: |
+          if git diff --quiet assets/data/radar.json; then
+            echo "No repo changes since last sync."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/radar.json
+          git commit -m "chore(radar): sync public repo snapshot [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -150,15 +150,43 @@
   /* ------------------------------------------------------------ */
   /* Custom cursor                                                  */
   /* ------------------------------------------------------------ */
+  var cursorRefs = null; // { cursor, ring, label } shared by binder+init
+
+  function bindCursorElement(el) {
+    if (!cursorRefs || el.__cursorBound) return;
+    el.__cursorBound = true;
+    var cursor = cursorRefs.cursor, ring = cursorRefs.ring;
+    el.addEventListener('mouseenter', function () {
+      var mode = el.getAttribute('data-cursor');
+      if (mode === 'view') {
+        cursor.classList.add('is-view');
+      } else {
+        cursor.classList.add('is-active');
+        var text = el.getAttribute('data-cursor-text');
+        if (text) {
+          if (!cursorRefs.label) {
+            cursorRefs.label = document.createElement('span');
+            ring.appendChild(cursorRefs.label);
+          }
+          cursorRefs.label.textContent = text;
+        }
+      }
+    });
+    el.addEventListener('mouseleave', function () {
+      cursor.classList.remove('is-active', 'is-view');
+    });
+  }
+
   function initCursor() {
     var cursor = document.getElementById('cursor');
     var dot = document.getElementById('cursorDot');
     var ring = document.getElementById('cursorRing');
     if (!cursor || !dot || !ring || window.matchMedia('(hover: none)').matches) return;
 
+    cursorRefs = { cursor: cursor, ring: ring, label: null };
+
     var pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     var ringPos = { x: pos.x, y: pos.y };
-    var label = null;
 
     window.addEventListener('pointermove', function (e) {
       pos.x = e.clientX; pos.y = e.clientY;
@@ -174,39 +202,21 @@
     loop();
 
     var interactiveEls = document.querySelectorAll('[data-cursor], a, button');
-    interactiveEls.forEach(function (el) {
-      el.addEventListener('mouseenter', function () {
-        var mode = el.getAttribute('data-cursor');
-        if (mode === 'view') {
-          cursor.classList.add('is-view');
-        } else {
-          cursor.classList.add('is-active');
-          var text = el.getAttribute('data-cursor-text');
-          if (text) {
-            if (!label) {
-              label = document.createElement('span');
-              ring.appendChild(label);
-            }
-            label.textContent = text;
-          }
-        }
-      });
-      el.addEventListener('mouseleave', function () {
-        cursor.classList.remove('is-active', 'is-view');
-      });
-    });
+    interactiveEls.forEach(bindCursorElement);
   }
 
   /* ------------------------------------------------------------ */
   /* Magnetic buttons — elements pull toward the cursor within a    */
   /* radius, then spring back on mouseleave. Desktop/hover only.    */
   /* ------------------------------------------------------------ */
-  function initMagnetic() {
+  function initMagnetic(root) {
     if (window.matchMedia('(hover: none)').matches) return;
-    var els = document.querySelectorAll('[data-magnetic]');
+    var els = (root || document).querySelectorAll('[data-magnetic]');
     if (!els.length) return;
 
     els.forEach(function (el) {
+      if (el.__magneticBound) return;
+      el.__magneticBound = true;
       var strength = parseFloat(el.getAttribute('data-magnetic')) || 0.35;
 
       el.addEventListener('mousemove', function (e) {
@@ -272,10 +282,12 @@
     tick();
   }
 
-  function initTextScramble() {
+  function initTextScramble(root) {
     if (window.matchMedia('(hover: none)').matches) return;
-    var els = document.querySelectorAll('[data-scramble]');
+    var els = (root || document).querySelectorAll('[data-scramble]');
     els.forEach(function (el) {
+      if (el.__scrambleBound) return;
+      el.__scrambleBound = true;
       el.addEventListener('mouseenter', function () { scrambleText(el); });
     });
   }
@@ -284,12 +296,14 @@
   /* 3D tilt — cards rotate slightly toward the cursor within their */
   /* own bounds, with a glossy highlight following the pointer.     */
   /* ------------------------------------------------------------ */
-  function initTilt() {
+  function initTilt(root) {
     if (window.matchMedia('(hover: none)').matches) return;
-    var els = document.querySelectorAll('[data-tilt]');
+    var els = (root || document).querySelectorAll('[data-tilt]');
     if (!els.length) return;
 
     els.forEach(function (el) {
+      if (el.__tiltBound) return;
+      el.__tiltBound = true;
       var maxTilt = 7;
       el.style.transformStyle = 'preserve-3d';
 
@@ -1129,7 +1143,18 @@
     if (!ctx) return;
 
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Start from the live theme accent rather than a hard-coded default —
+    // theme.js may have applied a saved theme before this module boots.
     var accent = '#d9ff3f';
+    try {
+      var cssAccent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+      if (cssAccent) accent = cssAccent;
+    } catch (e) {}
+    // Chroma Engine broadcasts `yv:theme` whenever the accent swaps — the
+    // dot-matrix repaints itself on the very next frame, no reload needed.
+    document.addEventListener('yv:theme', function (e) {
+      if (e.detail && e.detail.accent) accent = e.detail.accent;
+    });
     var GRID = saveData ? 12 : (compactTouch ? 10 : 8);
     var DOT_MAX = compactTouch ? 4.5 : 4.0;
     var FRAME_MS = 1000 / (saveData ? 16 : (compactTouch ? 24 : 36));
@@ -1301,6 +1326,7 @@
       { g: 'Sections',   t: 'Recently Shipped', d: 'Automatic public GitHub feed', h: '#shipped', k: '↻' },
       { g: 'Sections',   t: 'Build Notes',      d: 'Short field notes from the lab', h: '#notes', k: 'N' },
       { g: 'Sections',   t: 'Work',             d: 'Selected daemon widgets',      h: '#work',    k: '1' },
+      { g: 'Sections',   t: 'Repo Radar',       d: 'Self-updating GitHub sync',    h: '#radar',   k: 'R' },
       { g: 'Sections',   t: 'Lab',              d: 'Experiments & hobby',          h: '#lab',     k: '2' },
       { g: 'Sections',   t: 'Arts',             d: 'Digital art gallery',          h: '#arts',    k: '3' },
       { g: 'Sections',   t: 'Journey',          d: 'Experience and education',     h: '#journey', k: '4' },
@@ -1320,7 +1346,9 @@
       { g: 'External',   t: 'AetherOS',     d: 'Live demo · try the OS',  h: 'https://meyashverma.github.io/AetherOS-Prod/',                              ext: true, ico: '↗' },
       { g: 'External',   t: 'Google Cloud', d: 'Skills profile · Gold',   h: 'https://www.skills.google/public_profiles/a8a49bbd-9ef0-46d9-b3bd-ea25d115b90b', ext: true, ico: '↗' },
       { g: 'Actions',    t: 'Send email',   d: '1yash2verma3@gmail.com',  h: 'mailto:1yash2verma3@gmail.com',                              ico: '✉' },
-      { g: 'Actions',    t: 'Copy email',   d: '1yash2verma3@gmail.com',  action: 'copy-email',                                            ico: '⎘' }
+      { g: 'Actions',    t: 'Copy email',   d: '1yash2verma3@gmail.com',  action: 'copy-email',                                            ico: '⎘' },
+      { g: 'Actions',    t: 'Next theme',   d: 'Cycle the site accent colour',  action: 'next-theme',                                      ico: '🎨' },
+      { g: 'Actions',    t: 'Toggle overdrive', d: 'CRT arcade mode — for fun', action: 'toggle-overdrive',                                ico: '⚡' }
     ];
 
     var active = 0;
@@ -1383,6 +1411,14 @@
       var item = filtered[active];
       if (!item) return;
       close();
+      if (item.action === 'next-theme') {
+        document.dispatchEvent(new CustomEvent('yv:theme-next'));
+        return;
+      }
+      if (item.action === 'toggle-overdrive') {
+        document.dispatchEvent(new CustomEvent('yv:overdrive-toggle'));
+        return;
+      }
       if (item.action === 'copy-email') {
         var email = '1yash2verma3@gmail.com';
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1450,6 +1486,7 @@
       { id: 'shipped', name: 'shipped' },
       { id: 'notes',   name: 'notes'   },
       { id: 'work',    name: 'work'    },
+      { id: 'radar',   name: 'radar'   },
       { id: 'lab',     name: 'lab'     },
       { id: 'arts',    name: 'arts'    },
       { id: 'journey',   name: 'journey'   },
@@ -1523,6 +1560,25 @@
       cards.forEach(function (x) { x.classList.remove('is-focused'); });
     });
   }
+
+  /* ----------------------------------------------------------
+     Public enhance hook — dynamically rendered modules (such as
+     the Repo Radar cards) call this so they get the same tilt,
+     scramble and magnetic behaviour as statically authored cards.
+     Each binder is idempotent (guarded by __*Bound flags).
+     ---------------------------------------------------------- */
+  window.__yvEnhance = function (root) {
+    try {
+      initMagnetic(root);
+      initTextScramble(root);
+      initTilt(root);
+      if (root && root.querySelectorAll) {
+        root.querySelectorAll('[data-cursor], a, button').forEach(bindCursorElement);
+      }
+    } catch (e) {
+      // Enhancement is cosmetic — never let it break the live data layer.
+    }
+  };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {

@@ -6,6 +6,9 @@
 - GitHub: https://github.com/MeYashverma
 - Primary areas: automation, GitHub Actions, Python, JavaScript, Node.js, APIs, cloud, cybersecurity, design, and digital art.
 - Highlighted work: AetherOS, Lyrically, Vinyl.fm, Waifu Widget, Genshin Stats, and LaunchPad.
+- Repo Radar is a self-updating project section rendered from the public GitHub API (plus a daily Actions-built snapshot); it automatically lists every public repo not already showcased on the page.
+- The site has a runtime theme system (Chroma Engine) with five accent themes and a Konami-code "overdrive" easter egg.
+- Daily equipment includes an HP EliteBook 8 G1a laptop and an OPPO K13 Turbo Pro 5G phone.
 - Build Notes is a short, maintained field-notes section about engineering constraints and decisions; it is not a formal blog.
 
 For the most accurate current work and contact links, use the canonical site or GitHub profile above.
