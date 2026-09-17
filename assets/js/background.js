@@ -63,6 +63,7 @@
     'uniform vec2 uMouse;',
     'uniform float uScroll;',
     'uniform vec2 uResolution;',
+    'uniform vec3 uAccent;',
     '',
     'vec2 hash(vec2 p) {',
     '  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));',
@@ -113,7 +114,7 @@
     '',
     '  vec3 base = vec3(0.02, 0.02, 0.024);',
     '  vec3 mid  = vec3(0.055, 0.055, 0.065);',
-    '  vec3 accent = vec3(0.85, 1.0, 0.25);',
+    '  vec3 accent = uAccent;',
     '',
     '  vec3 color = mix(base, mid, field);',
     '  float accentMask = smoothstep(0.82, 1.0, field) * 0.18;',
@@ -125,6 +126,17 @@
     '  gl_FragColor = vec4(color, 1.0);',
     '}'
   ].join('\n');
+
+  // theme.js applies the saved accent before first paint; pick it up here so
+  // the shader matches even though it boots after the initial broadcast.
+  var initialAccent = [0.85, 1.0, 0.25];
+  try {
+    var rgbTokens = getComputedStyle(document.documentElement)
+      .getPropertyValue('--accent-rgb').split(',');
+    if (rgbTokens.length === 3 && rgbTokens.every(function (v) { return !isNaN(parseFloat(v)); })) {
+      initialAccent = rgbTokens.map(function (v) { return parseFloat(v) / 255; });
+    }
+  } catch (e) {}
 
   function init() {
     scene = new THREE.Scene();
@@ -147,11 +159,23 @@
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0.5, 0.5) },
         uScroll: { value: 0 },
-        uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+        uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        // Chroma Engine keeps this in lock-step with the site accent so a
+        // theme swap re-tints the ambient field as well as the DOM.
+        uAccent: { value: new THREE.Vector3(initialAccent[0], initialAccent[1], initialAccent[2]) }
       }
     });
     mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
+
+    document.addEventListener('yv:theme', function (e) {
+      if (!e.detail || !e.detail.rgb) return;
+      mesh.material.uniforms.uAccent.value.set(
+        e.detail.rgb[0] / 255,
+        e.detail.rgb[1] / 255,
+        e.detail.rgb[2] / 255
+      );
+    });
 
     resize();
     window.addEventListener('resize', resize, { passive: true });

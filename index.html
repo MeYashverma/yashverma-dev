@@ -49,6 +49,12 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
 
+<script>
+// Chroma Engine boot — applies the saved accent theme before first paint so
+// there is no lime flash for returning visitors. theme.js owns the logic;
+// this is deliberately a 5-line duplicate that cannot wait for a script tag.
+(function(){try{var t=localStorage.getItem('yv_chroma_theme');if(t&&t!=='acid'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
 <link rel="stylesheet" href="assets/fonts/fonts-local.css">
 <link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -120,6 +126,8 @@
     <a href="#shipped" class="menu-link"><span class="menu-link__index">↻</span><span class="menu-link__text">Recently Shipped</span></a>
     <a href="#notes" class="menu-link"><span class="menu-link__index">00.5</span><span class="menu-link__text">Build Notes</span></a>
     <a href="#work" class="menu-link"><span class="menu-link__index">01</span><span class="menu-link__text">Work</span></a>
+    <a href="#radar" class="menu-link"><span class="menu-link__index">01.5</span><span class="menu-link__text">Repo Radar</span></a>
+    <a href="#pulse" class="menu-link"><span class="menu-link__index">01.6</span><span class="menu-link__text">Developer Pulse</span></a>
     <a href="#lab" class="menu-link"><span class="menu-link__index">02</span><span class="menu-link__text">Lab</span></a>
     <a href="#arts" class="menu-link"><span class="menu-link__index">03</span><span class="menu-link__text">Arts</span></a>
     <a href="#journey" class="menu-link"><span class="menu-link__index">04</span><span class="menu-link__text">Journey</span></a>
@@ -233,7 +241,7 @@
   <section class="stats" aria-label="Quick stats">
     <div class="stats__row">
       <div class="stat">
-        <div class="stat__num" data-count="30">0</div>
+        <div class="stat__num" data-count="30" id="statRepos">0</div>
         <div class="stat__label">Public repos</div>
       </div>
       <div class="stat">
@@ -467,7 +475,7 @@
     <div class="work-grid" id="workList">
 
       <!-- FEATURED — AetherOS spans the full row -->
-      <article class="work-card work-card--featured" data-tilt>
+      <article class="work-card work-card--featured" data-tilt data-repo="AetherOS-Prod">
         <a href="https://meyashverma.github.io/AetherOS-Prod/" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/aetheros.webp')"></div>
           <img src="assets/images/widgets/aetheros.webp" alt="AetherOS — browser-native desktop OS with dock, floating windows, live telemetry panel, and Aether Chat sidebar" loading="lazy" decoding="async" width="1400" height="757">
@@ -492,7 +500,7 @@
         </div>
       </article>
 
-      <article class="work-card" data-tilt>
+      <article class="work-card" data-tilt data-repo="Discord-Lyrically-Widget">
         <a href="https://github.com/MeYashverma/Discord-Lyrically-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/lyrically.png')"></div>
           <img src="assets/images/widgets/lyrically.png" alt="Lyrically Discord widget showing real-time synced lyrics for 'I Had Some Help' by Post Malone" loading="lazy" decoding="async" width="500" height="376">
@@ -513,7 +521,7 @@
         </div>
       </article>
 
-      <article class="work-card" data-tilt>
+      <article class="work-card" data-tilt data-repo="discord-vinyl-fm-widget">
         <a href="https://github.com/MeYashverma/discord-vinyl-fm-widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/vinyl-fm.png')"></div>
           <img src="assets/images/widgets/vinyl-fm.png" alt="Vinyl.fm Discord widget showing now-playing track plus 4-week and 6-month top artist/album/song stats" loading="lazy" decoding="async" width="546" height="450">
@@ -534,7 +542,7 @@
         </div>
       </article>
 
-      <article class="work-card" data-tilt>
+      <article class="work-card" data-tilt data-repo="discord-waifu-widget">
         <a href="https://github.com/MeYashverma/discord-waifu-widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/waifu-widget.png')"></div>
           <img src="assets/images/widgets/waifu-widget.png" alt="Waifu of the Day Discord widget showing character Formidable from Azur Lane with simp count, vibe and rank stats" loading="lazy" decoding="async" width="562" height="431">
@@ -555,7 +563,7 @@
         </div>
       </article>
 
-      <article class="work-card" data-tilt>
+      <article class="work-card" data-tilt data-repo="Genshin-Stats">
         <a href="https://github.com/MeYashverma/Genshin-Stats" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/genshin-stats.png')"></div>
           <img src="assets/images/widgets/genshin-stats.png" alt="Genshin Stats Discord widget showing character Tighnari at level 40 with adventure rank, achievements and Spiral Abyss progress" loading="lazy" decoding="async" width="566" height="433">
@@ -576,7 +584,7 @@
         </div>
       </article>
 
-      <article class="work-card" data-tilt>
+      <article class="work-card" data-tilt data-repo="Discord-LaunchPad-Widget">
         <a href="https://github.com/MeYashverma/Discord-LaunchPad-Widget" target="_blank" rel="noopener" class="work-card__media" data-cursor="view">
           <div class="work-card__backdrop" style="background-image:url('assets/images/widgets/launchpad.png')"></div>
           <img src="assets/images/widgets/launchpad.png" alt="LaunchPad Discord widget showing the next scheduled Falcon 9 launch, countdown, pad and mission details" loading="lazy" decoding="async" width="493" height="475">
@@ -597,7 +605,7 @@
         </div>
       </article>
 
-      <article class="work-card" data-tilt>
+      <article class="work-card" data-tilt data-repo="discord-lastfm-widget">
         <a href="https://github.com/MeYashverma/discord-lastfm-widget" target="_blank" rel="noopener" class="work-card__media work-card__media--placeholder" data-cursor="view">
           <div class="widget-mock widget-mock--lastfm">
             <div class="widget-mock__row"><span class="widget-mock__badge">▶ Now Scrobbling</span></div>
@@ -624,6 +632,98 @@
   </section>
 
   <!-- ============================================================ -->
+  <!-- REPO RADAR — self-updating GitHub project sync               -->
+  <!-- Every card below is generated from the GitHub API at runtime — -->
+  <!-- nothing here is written by hand. Anything showcased in Work or -->
+  <!-- the Lab declares itself via data-repo and is de-duplicated,   -->
+  <!-- so a brand-new public repo simply appears here on its own.    -->
+  <!-- ============================================================ -->
+  <section class="radar" id="radar" aria-labelledby="radarTitle">
+    <div class="radar__head">
+      <div>
+        <span class="radar__eyebrow"><i aria-hidden="true"></i> GitHub API · self-updating</span>
+        <h2 class="radar__title" id="radarTitle">The&nbsp;Repo&nbsp;Radar</h2>
+        <p class="radar__desc">
+          Everything public that isn&rsquo;t showcased above — originals <em>and</em> working forks —
+          synced straight from the GitHub API and cached locally. New repos land here the moment
+          they go public; the day one of these graduates into a flagship, I tag it and the radar
+          hands it up. Zero manual edits.
+        </p>
+      </div>
+      <div class="radar__meta">
+        <span id="radarStatus">Contacting GitHub&hellip;</span>
+        <a href="https://github.com/MeYashverma?tab=repositories" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">All repositories ↗</a>
+      </div>
+    </div>
+
+    <ol class="radar__grid" id="radarGrid" aria-live="polite">
+      <li class="radar-card radar-card--skeleton"><span></span><span></span><span></span><span></span></li>
+      <li class="radar-card radar-card--skeleton"><span></span><span></span><span></span><span></span></li>
+      <li class="radar-card radar-card--skeleton"><span></span><span></span><span></span><span></span></li>
+    </ol>
+    <div class="radar__foot" id="radarFoot"></div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- DEVELOPER PULSE — contribution heatmap + WakaTime stats      -->
+  <!-- Heatmap: live contribution mirror with cached + snapshot      -->
+  <!-- fallbacks. WakaTime: stays hidden until wakatime.json exists  -->
+  <!-- (see scripts/sync-wakatime.mjs — zero keys in the browser).   -->
+  <!-- ============================================================ -->
+  <section class="pulse" id="pulse" aria-labelledby="pulseTitle">
+    <div class="pulse__head">
+      <div>
+        <span class="pulse__eyebrow"><i aria-hidden="true"></i> GitHub pulse · automatic</span>
+        <h2 class="pulse__title" id="pulseTitle">The&nbsp;Developer&nbsp;Pulse</h2>
+        <p class="pulse__desc">
+          A year of commits, painted as a heatmap — every square is a real day of work,
+          plus the editor telemetry when WakaTime is plugged in. Synced automatically,
+          streaks computed on the fly, recoloured instantly by the theme dock.
+        </p>
+      </div>
+      <div class="pulse__meta">
+        <span id="pulseStatus">Loading contribution data&hellip;</span>
+        <a href="https://github.com/MeYashverma" target="_blank" rel="noopener" data-cursor="text" data-cursor-text="↗">Live on GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="pulse__panel">
+      <div class="pulse__stats" id="pulseStats">
+        <div class="pulse-stat"><span>Contributions</span><strong>&mdash;</strong><small>last 12 months</small></div>
+        <div class="pulse-stat"><span>Current streak</span><strong>&mdash;</strong><small>&nbsp;</small></div>
+        <div class="pulse-stat"><span>Longest streak</span><strong>&mdash;</strong><small>past 12 months</small></div>
+        <div class="pulse-stat"><span>Best day</span><strong>&mdash;</strong><small>&nbsp;</small></div>
+      </div>
+
+      <div class="pulse__heatmap-wrap" id="pulseHeatmapWrap">
+        <div class="pulse__weekdays" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span></div>
+        <div class="pulse__scroller">
+          <div class="pulse__grid" id="pulseGrid" role="img" aria-label="Contribution heatmap for the last 12 months"></div>
+          <div class="pulse__months" id="pulseMonths" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="pulse__foot">
+        <span class="pulse__readout" id="pulseReadout">hover a square &mdash; every one is a real day of work</span>
+        <span class="pulse__legend" aria-hidden="true">Less
+          <i class="pulse-cell" data-level="0"></i><i class="pulse-cell" data-level="1"></i>
+          <i class="pulse-cell" data-level="2"></i><i class="pulse-cell" data-level="3"></i>
+          <i class="pulse-cell" data-level="4"></i> More
+        </span>
+      </div>
+    </div>
+
+    <div class="pulse__waka" id="wakaPanel" hidden>
+      <div class="pulse__waka-head">
+        <span class="pulse__waka-title">Editor telemetry<span class="pulse__waka-src">via WakaTime · no keys in the browser</span></span>
+        <span class="pulse__waka-synced" id="wakaSynced"></span>
+      </div>
+      <div class="pulse__waka-body" id="wakaBody"></div>
+      <div class="pulse__waka-foot" id="wakaFoot"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
   <!-- LAB — everything else, filterable archive                    -->
   <!-- ============================================================ -->
   <section class="lab" id="lab">
@@ -646,7 +746,7 @@
 
     <div class="lab__grid" id="labGrid">
 
-      <div class="lab-card" data-cat="web" data-tilt>
+      <div class="lab-card" data-cat="web" data-tilt data-repo="3d-Earth-Tracker">
         <div class="lab-card__top">
           <span class="lab-card__tag">Three.js / Satellite APIs</span>
           <span class="lab-card__year">2026</span>
@@ -656,7 +756,7 @@
         <a href="https://github.com/MeYashverma/3d-Earth-Tracker" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
       </div>
 
-      <div class="lab-card" data-cat="cloud" data-tilt>
+      <div class="lab-card" data-cat="cloud" data-tilt data-repo="mcserver">
         <div class="lab-card__top">
           <span class="lab-card__tag">Shell / GCP</span>
           <span class="lab-card__year">2025</span>
@@ -666,7 +766,7 @@
         <a href="https://github.com/MeYashverma/mcserver" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
       </div>
 
-      <div class="lab-card" data-cat="cloud" data-tilt>
+      <div class="lab-card" data-cat="cloud" data-tilt data-repo="discord-avatar-tracker">
         <div class="lab-card__top">
           <span class="lab-card__tag">Python / REST</span>
           <span class="lab-card__year">2025</span>
@@ -676,7 +776,7 @@
         <a href="https://github.com/MeYashverma/discord-avatar-tracker" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
       </div>
 
-      <div class="lab-card" data-cat="web" data-tilt>
+      <div class="lab-card" data-cat="web" data-tilt data-repo="LASTFM-Dashboard">
         <div class="lab-card__top">
           <span class="lab-card__tag">HTML / CSS / Chart APIs</span>
           <span class="lab-card__year">2026</span>
@@ -686,7 +786,7 @@
         <a href="https://github.com/MeYashverma/LASTFM-Dashboard" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
       </div>
 
-      <div class="lab-card" data-cat="misc" data-tilt>
+      <div class="lab-card" data-cat="misc" data-tilt data-repo="Codex">
         <div class="lab-card__top">
           <span class="lab-card__tag">Python</span>
           <span class="lab-card__year">2026</span>
@@ -696,7 +796,7 @@
         <a href="https://github.com/MeYashverma/Codex" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
       </div>
 
-      <div class="lab-card" data-cat="misc" data-tilt>
+      <div class="lab-card" data-cat="misc" data-tilt data-repo="Music">
         <div class="lab-card__top">
           <span class="lab-card__tag">Kotlin / Compose Multiplatform</span>
           <span class="lab-card__year">2026</span>
@@ -706,7 +806,7 @@
         <a href="https://github.com/MeYashverma/Music" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
       </div>
 
-      <div class="lab-card" data-cat="misc" data-tilt>
+      <div class="lab-card" data-cat="misc" data-tilt data-repo="WearBridge">
         <div class="lab-card__top">
           <span class="lab-card__tag">JSON / Health APIs</span>
           <span class="lab-card__year">2026</span>
@@ -716,7 +816,7 @@
         <a href="https://github.com/MeYashverma/WearBridge" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
       </div>
 
-      <div class="lab-card" data-cat="widget" data-tilt>
+      <div class="lab-card" data-cat="widget" data-tilt data-repo="spotify-github-profile">
         <div class="lab-card__top">
           <span class="lab-card__tag">Node.js / Fork</span>
           <span class="lab-card__year">2025</span>
@@ -726,7 +826,7 @@
         <a href="https://github.com/MeYashverma/spotify-github-profile" target="_blank" rel="noopener" class="lab-card__link" data-cursor="view">View repo ↗</a>
       </div>
 
-      <div class="lab-card" data-cat="misc" data-tilt>
+      <div class="lab-card" data-cat="misc" data-tilt data-repo="Ultraviolet">
         <div class="lab-card__top">
           <span class="lab-card__tag">JavaScript / Service Workers</span>
           <span class="lab-card__year">2024</span>
@@ -1416,9 +1516,9 @@
 
       <div class="equipment-companions">
         <article class="equipment-companion equipment-companion--phone">
-          <img class="equipment-companion__photo" src="assets/images/equipment/infinix-note-30-5g.png" alt="Infinix Note 30 5G smartphone" loading="lazy" decoding="async" width="558" height="700">
+          <img class="equipment-companion__photo" src="assets/images/equipment/oppo-k13-turbo-pro-5g.png" alt="OPPO K13 Turbo Pro 5G smartphone in Purple Phantom with its glowing RGB cooling-fan ring" loading="lazy" decoding="async" width="402" height="935">
           <div class="equipment-companion__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M10 5h4M11 19h2"/></svg></div>
-          <span>Mobile</span><strong>Infinix Note 30 5G</strong><small>Pocket endpoint</small>
+          <span>Mobile</span><strong>OPPO K13 Turbo Pro 5G</strong><small>Pocket turbo · yes, it has a fan</small>
         </article>
         <article class="equipment-companion equipment-companion--watch">
           <img class="equipment-companion__photo" src="assets/images/equipment/redmi-watch-move.webp" alt="Redmi Watch Move fitness tracker" loading="lazy" decoding="async" width="500" height="500">
@@ -1730,12 +1830,22 @@
   <span class="scrollspy__hint"><kbd>⌘</kbd><kbd>K</kbd></span>
 </div>
 
+<!-- ============================================================ -->
+<!-- CRT overlay — only visible while Overdrive mode is engaged.    -->
+<!-- The Chroma Engine dock (bottom-right) is built by theme.js.    -->
+<!-- ============================================================ -->
+<div class="crt-overlay" aria-hidden="true"></div>
+
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/gsap.min.js"></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
 <script src="assets/js/performance.js"></script>
+<script src="assets/js/theme.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/live.js"></script>
 <script src="assets/js/activity.js"></script>
+<script src="assets/js/radar.js"></script>
+<script src="assets/js/pulse.js"></script>
+<script src="assets/js/wakatime.js"></script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1a0d20e6c6b8ef1',t:'MTc4Mzg2NzQwOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
