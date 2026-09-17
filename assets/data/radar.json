@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-09-17T09:58:32Z",
+  "syncedAt": "2026-09-17T10:19:57.483Z",
   "publicRepos": 33,
   "repos": [
     {
@@ -43,7 +43,7 @@
     },
     {
       "name": "PC-Free",
-      "description": "\u2601\ufe0f Free Windows 10 Cloud Desktop - Run Windows in your browser without installation | Self-hosted virtual PC",
+      "description": "☁️ Free Windows 10 Cloud Desktop - Run Windows in your browser without installation | Self-hosted virtual PC",
       "html_url": "https://github.com/MeYashverma/PC-Free",
       "homepage": "",
       "language": null,
@@ -75,7 +75,7 @@
       "language": "CSS",
       "stargazers_count": 0,
       "forks_count": 0,
-      "pushed_at": "2026-07-17T17:57:05Z",
+      "pushed_at": "2026-09-17T10:19:42Z",
       "created_at": "2026-07-11T18:48:37Z",
       "fork": false,
       "archived": false
@@ -121,7 +121,7 @@
     },
     {
       "name": "discord-vinyl-fm-widget",
-      "description": "Vinyl.fm \u2014 a Discord profile widget powered by Last.fm and Discord Spotify presence",
+      "description": "Vinyl.fm — a Discord profile widget powered by Last.fm and Discord Spotify presence",
       "html_url": "https://github.com/MeYashverma/discord-vinyl-fm-widget",
       "homepage": "https://github.com/MeYashverma/discord-vinyl-fm-widget.git",
       "language": "TypeScript",
