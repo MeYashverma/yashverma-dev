@@ -1,7 +1,46 @@
 {
-  "syncedAt": "2026-10-05T12:33:40.850Z",
+  "syncedAt": "2026-10-06T12:11:34.797Z",
   "publicRepos": 15,
   "repos": [
+    {
+      "name": "discord-waifu-widget",
+      "description": null,
+      "html_url": "https://github.com/MeYashverma/discord-waifu-widget",
+      "homepage": "",
+      "language": "JavaScript",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2026-10-06T03:56:40Z",
+      "created_at": "2026-06-29T18:52:50Z",
+      "fork": false,
+      "archived": false
+    },
+    {
+      "name": "Genshin-Stats",
+      "description": "a discord widget for your genshin stats!",
+      "html_url": "https://github.com/MeYashverma/Genshin-Stats",
+      "homepage": "",
+      "language": "JavaScript",
+      "stargazers_count": 4,
+      "forks_count": 14,
+      "pushed_at": "2026-07-04T12:03:06Z",
+      "created_at": "2026-07-04T08:00:05Z",
+      "fork": false,
+      "archived": false
+    },
+    {
+      "name": "yashverma-dev",
+      "description": null,
+      "html_url": "https://github.com/MeYashverma/yashverma-dev",
+      "homepage": "",
+      "language": "CSS",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2026-10-05T12:33:44Z",
+      "created_at": "2026-07-11T18:48:37Z",
+      "fork": false,
+      "archived": false
+    },
     {
       "name": "Fixable",
       "description": null,
@@ -25,32 +64,6 @@
       "forks_count": 0,
       "pushed_at": "2026-10-05T03:48:27Z",
       "created_at": "2026-10-05T03:47:45Z",
-      "fork": false,
-      "archived": false
-    },
-    {
-      "name": "discord-waifu-widget",
-      "description": null,
-      "html_url": "https://github.com/MeYashverma/discord-waifu-widget",
-      "homepage": "",
-      "language": "JavaScript",
-      "stargazers_count": 0,
-      "forks_count": 0,
-      "pushed_at": "2026-10-05T03:07:38Z",
-      "created_at": "2026-06-29T18:52:50Z",
-      "fork": false,
-      "archived": false
-    },
-    {
-      "name": "yashverma-dev",
-      "description": null,
-      "html_url": "https://github.com/MeYashverma/yashverma-dev",
-      "homepage": "",
-      "language": "CSS",
-      "stargazers_count": 0,
-      "forks_count": 0,
-      "pushed_at": "2026-10-04T11:15:30Z",
-      "created_at": "2026-07-11T18:48:37Z",
       "fork": false,
       "archived": false
     },
@@ -103,19 +116,6 @@
       "forks_count": 0,
       "pushed_at": "2026-07-17T17:43:11Z",
       "created_at": "2026-06-28T21:31:14Z",
-      "fork": false,
-      "archived": false
-    },
-    {
-      "name": "Genshin-Stats",
-      "description": "a discord widget for your genshin stats!",
-      "html_url": "https://github.com/MeYashverma/Genshin-Stats",
-      "homepage": "",
-      "language": "JavaScript",
-      "stargazers_count": 3,
-      "forks_count": 14,
-      "pushed_at": "2026-07-04T12:03:06Z",
-      "created_at": "2026-07-04T08:00:05Z",
       "fork": false,
       "archived": false
     },
